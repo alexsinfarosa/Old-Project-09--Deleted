@@ -1,24 +1,21 @@
-import React, { Component } from "react";
-import { inject, observer } from "mobx-react";
-import { TileLayer, Marker } from "react-leaflet";
-import L from "leaflet";
+import React, { Component } from 'react';
+import { inject, observer } from 'mobx-react';
+import { TileLayer, Marker } from 'react-leaflet';
+import L from 'leaflet';
 // import { toJS } from "mobx";
 
-// states
-import { states } from "utils/states";
-
 // styled-components
-import { MapContainer } from "./styles";
+import { MapContainer } from './styles';
 
 // reflexbox
-import { Flex, Box } from "reflexbox";
+import { Flex, Box } from 'reflexbox';
 
 const myIcon = e =>
   L.icon({
     iconUrl: e
   });
 
-@inject("store")
+@inject('store')
 @observer
 export default class TheMap extends Component {
   onClickSetStation = e => {
@@ -33,7 +30,7 @@ export default class TheMap extends Component {
       const selectedStation = stations.filter(
         station => station.lat === lat && station.lon === lng
       )[0];
-      const state = states.filter(
+      const state = this.props.store.app.states.filter(
         state => state.postalCode === selectedStation.state
       )[0];
       alert(`Select ${state.name} from the State menu to access this station.`);
@@ -42,10 +39,10 @@ export default class TheMap extends Component {
 
   render() {
     // const position = [this.state.lat, this.state.lng];
-    const { stationsWithMatchedIcons, state, protocol } = this.props.store.app;
+    const { stations, state, protocol } = this.props.store.app;
     // const {mobile} = this.props;
 
-    const MarkerList = stationsWithMatchedIcons.map(station => (
+    const MarkerList = stations.map(station => (
       <Marker
         key={`${station.id} ${station.network}`}
         // network={station.network}
@@ -56,24 +53,6 @@ export default class TheMap extends Component {
         onClick={this.onClickSetStation}
       />
     ));
-
-    // const MyPopupMarker = ({ name, lat,  lon }) => (
-    //   <Marker position={[lat, lon]}>
-    //     <Popup>
-    //       <span>{name}</span>
-    //     </Popup>
-    //   </Marker>
-    // );
-
-    // const MyMarkersList = ({ markers }) => {
-    //   const items = markers.map(station => (
-    //     <MyPopupMarker key={`${station.id} ${station.network}`} {...station}/>
-    //   ));
-    //   return <div style={{ display: "none" }}>{items}</div>;
-    // };
-
-    // <MyMarkersList markers={stationsWithMatchedIcons} />
-    // <Rectangle bounds={toJS(state.bbox)} />
 
     return (
       <Flex justify="center">
@@ -87,8 +66,6 @@ export default class TheMap extends Component {
                 ? [42.9543, -75.5262]
                 : [state.lat, state.lon]
             }
-            // bounds={toJS(state.bbox)}
-            // boundsOptions={{ padding: [5, 5]}}
             zoom={Object.keys(state).length === 0 ? 6 : state.zoom}
           >
             <TileLayer

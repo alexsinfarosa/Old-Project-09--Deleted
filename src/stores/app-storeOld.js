@@ -42,48 +42,7 @@ export default class AppStore {
   @action toggleSidebar = () => (this.isSidebarOpen = !this.isSidebarOpen);
 
   // Subject--------------------------------------------------------------
-  @observable subjects = [
-    {
-      name: "Large crabgrass",
-      diseases: ["Large crabgrass"],
-      graph: false
-    },
-    {
-      name: "Giant foxtail",
-      diseases: ["Giant foxtail"],
-      graph: false
-    },
-    {
-      name: "Yellow foxtail",
-      diseases: ["Yellow foxtail"],
-      graph: false
-    },
-    {
-      name: "Common lambsquarters",
-      diseases: ["Common lambsquarters"],
-      graph: false
-    },
-    {
-      name: "Eastern black nightshade",
-      diseases: ["Eastern black nightshade"],
-      graph: false
-    },
-    {
-      name: "Smooth pigweed",
-      diseases: ["Smooth pigweed"],
-      graph: false
-    },
-    {
-      name: "Common ragweed",
-      diseases: ["Common ragweed"],
-      graph: false
-    },
-    {
-      name: "Velvetleaf",
-      diseases: ["Velvetleaf"],
-      graph: false
-    }
-  ];
+  @observable subjects = [];
   @observable subject = JSON.parse(localStorage.getItem("weed")) || {};
   @action resetSubject = () => (this.subject = {});
   @action setSubjectFromLocalStorage = d => (this.subject = d);
@@ -139,34 +98,33 @@ export default class AppStore {
 
   // ACISData ------------------------------------------------------------------
   @observable weedData = [];
-  @action setweedData = d => (this.weedData = d);
+  @action setWeedData = d => (this.weedData = d);
 
-  @action setWeedData = () => {
+  @action loadData = () => {
     this.setIsLoading(true);
     const params = {
       loc: `${this.station.lon}, ${this.station.lat}`,
       sdate: `2040-${format(new Date(), "MM-DD")}`,
       edate: `2069-${format(new Date(), "MM-DD")}`,
-      grid: 23,
+      grid: 3,
       elems: [
         {
-          name: "maxt",
-          interval: [1, 0, 0],
-          duration: "std",
-          season_start: "01-01",
-          reduce: `cnt_ge_${this.temperature}`
+          name: "air temp",
+          interval: "dly",
+          duration: "dly"
         }
       ]
     };
 
-    // console.log(params);
+    console.log(params);
 
     return axios
       .post(`${this.protocol}//grid.rcc-acis.org/GridData`, params)
       .then(res => {
         if (!res.data.hasOwnProperty("error")) {
           // return res.data.data;
-          this.setProjectedData2040(res.data.data);
+          this.setWeedData(res.data.data);
+          console.log(this.weedData);
           this.setIsLoading(false);
           return;
         }

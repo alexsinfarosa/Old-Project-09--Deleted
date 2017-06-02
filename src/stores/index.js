@@ -1,11 +1,12 @@
-import AppStore from "./app-store";
-// import BeetStore from "../../src/models/Beets/beet-store";
-// import BerryStore from "../../src/models/Berries/berry-store";
+import AppStore from './appStore';
+import LogicStore from './logicStore';
+const fetcher = url => window.fetch(url).then(response => response.json());
 
 const store = {
-  app: new AppStore()
-  // beet: new BeetStore(),
-  // berry: new BerryStore()
+  app: new AppStore(fetcher),
+  logic: new LogicStore()
 };
-
 export default store;
+
+store.app.loadStates();
+store.app.loadSpecies();

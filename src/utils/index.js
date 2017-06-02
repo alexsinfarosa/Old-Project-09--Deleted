@@ -14,8 +14,10 @@ import {
 } from "utils/api";
 
 // PRE FETCHING ---------------------------------------------------------
-export const matchIconsToStations = (protocol, stations, state) => {
-  const arr = [];
+export const matchIconsToStations = (protocol, station, state) => {
+  const { network } = station;
+  const { postalCode } = state;
+
   const newa = `${protocol}//newa2.nrcc.cornell.edu/gifs/newa_small.png`;
   const newaGray = `${protocol}//newa2.nrcc.cornell.edu/gifs/newa_smallGray.png`;
   const airport = `${protocol}//newa2.nrcc.cornell.edu/gifs/airport.png`;
@@ -23,36 +25,28 @@ export const matchIconsToStations = (protocol, stations, state) => {
   const culog = `${protocol}//newa2.nrcc.cornell.edu/gifs/culog.png`;
   const culogGray = `${protocol}//newa2.nrcc.cornell.edu/gifs/culogGray.png`;
 
-  stations.forEach(station => {
-    if (
-      station.network === "newa" ||
-      station.network === "njwx" ||
-      station.network === "miwx" ||
-      ((station.network === "cu_log" || station.network === "culog") &&
-        station.state !== "NY")
-    ) {
-      const newObj = station;
-      station.state === state.postalCode || state.postalCode === "ALL"
-        ? (newObj["icon"] = newa)
-        : (newObj["icon"] = newaGray);
-      arr.push(newObj);
-    } else if (station.network === "cu_log" || station.network === "culog") {
-      const newObj = station;
-      station.state === state.postalCode || state.postalCode === "ALL"
-        ? (newObj["icon"] = culog)
-        : (newObj["icon"] = culogGray);
-      newObj["icon"] = culog;
-      arr.push(newObj);
-    } else if (station.network === "icao") {
-      const newObj = station;
-      station.state === state.postalCode || state.postalCode === "ALL"
-        ? (newObj["icon"] = airport)
-        : (newObj["icon"] = airportGray);
-      arr.push(newObj);
-    }
-  });
-  // console.log(arr);
-  return arr;
+  if (
+    network === "newa" ||
+    network === "njwx" ||
+    network === "miwx" ||
+    ((network === "cu_log" || network === "culog") && station.state !== "NY")
+  ) {
+    return station.state === postalCode || postalCode === "ALL"
+      ? newa
+      : newaGray;
+  }
+
+  if (network === "cu_log" || network === "culog") {
+    return station.state === postalCode || postalCode === "ALL"
+      ? culog
+      : culogGray;
+  }
+
+  if (network === "icao") {
+    return station.state === postalCode || postalCode === "ALL"
+      ? airport
+      : airportGray;
+  }
 };
 
 // Handling Temperature parameter and Michigan network id adjustment
