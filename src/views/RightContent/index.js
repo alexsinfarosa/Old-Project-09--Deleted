@@ -3,7 +3,7 @@ import { inject, observer } from 'mobx-react';
 
 // components
 import Map from 'components/Map';
-// import Weed from 'models/Weed';
+// import Model from 'model';
 
 // styled-components
 import { Header, TextIcon, IconStyled, MainContent } from './styles';
@@ -42,7 +42,7 @@ class RightContent extends Component {
 
         <MainContent>
           {isMap && <Map {...this.props} />}
-          {/* {areRequiredFieldsSet && <Weed {...this.props} />} */}
+          {/* {areRequiredFieldsSet && <Model {...this.props} />} */}
         </MainContent>
       </div>
     );

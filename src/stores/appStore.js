@@ -239,6 +239,8 @@ export default class appStore {
       .then(res => {
         this.updateData(res.data.data);
         this.isLoading = false;
+        this.addTodata();
+        console.log(this.model.slice());
       })
       .catch(err => {
         console.log('Failed to load data model', err);
@@ -255,6 +257,15 @@ export default class appStore {
           maxt: day[3]
         })
       );
+    });
+  }
+
+  @action addTodata() {
+    let cdd = 0;
+    this.model.forEach(day => {
+      const dd = day.avgt - day.base > 0 ? day.avgt : 0;
+      cdd += dd;
+      (day['dd'] = dd), (day['cdd'] = cdd);
     });
   }
 }
