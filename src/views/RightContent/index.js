@@ -3,7 +3,7 @@ import { inject, observer } from 'mobx-react';
 
 // components
 import Map from 'components/Map';
-import Weed from 'models/Weed';
+// import Weed from 'models/Weed';
 
 // styled-components
 import { Header, TextIcon, IconStyled, MainContent } from './styles';
@@ -12,7 +12,7 @@ import { Header, TextIcon, IconStyled, MainContent } from './styles';
 @observer
 class RightContent extends Component {
   render() {
-    const { areRequiredFieldsSet } = this.props.store.app;
+    // const { areRequiredFieldsSet } = this.props.store.app;
     const { isMap, toggleSidebar } = this.props.store.logic;
     return (
       <div

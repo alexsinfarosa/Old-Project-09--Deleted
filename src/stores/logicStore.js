@@ -1,4 +1,4 @@
-import { observable, action, computed } from "mobx";
+import { observable, action } from 'mobx';
 
 export default class LogicStore {
   @observable isVisible = true;
@@ -17,12 +17,12 @@ export default class LogicStore {
   @action setIsGraph = d => (this.isGraph = !this.isGraph);
 
   @observable breakpoints = {
-    xs: "(max-width: 767px)",
-    su: "(min-width: 768px)",
-    sm: "(min-width: 768px) and (max-width: 991px)",
-    md: "(min-width: 992px) and (max-width: 1199px)",
-    mu: "(min-width: 992px)",
-    lg: "(min-width: 1200px)"
+    xs: '(max-width: 767px)',
+    su: '(min-width: 768px)',
+    sm: '(min-width: 768px) and (max-width: 991px)',
+    md: '(min-width: 992px) and (max-width: 1199px)',
+    mu: '(min-width: 992px)',
+    lg: '(min-width: 1200px)'
   };
   @observable isSidebarOpen;
   @action setIsSidebarOpen = d => (this.isSidebarOpen = d);
