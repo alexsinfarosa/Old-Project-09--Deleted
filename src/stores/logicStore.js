@@ -24,6 +24,7 @@ export default class LogicStore {
     mu: '(min-width: 992px)',
     lg: '(min-width: 1200px)'
   };
+
   @observable isSidebarOpen;
   @action setIsSidebarOpen = d => (this.isSidebarOpen = d);
   @action toggleSidebar = () => (this.isSidebarOpen = !this.isSidebarOpen);

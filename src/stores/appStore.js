@@ -54,6 +54,22 @@ class Specie {
   }
 }
 
+class Model {
+  @observable date;
+  @observable mint;
+  @observable avgt;
+  @observable maxt;
+  @observable base;
+
+  constructor({ date, mint, avgt, maxt, base = 9 }) {
+    this.date = date;
+    this.mint = mint;
+    this.avgt = avgt;
+    this.maxt = maxt;
+    this.base = base;
+  }
+}
+
 export default class appStore {
   @observable protocol = window.location.protocol;
   @observable isLoading = false;
@@ -186,5 +202,59 @@ export default class appStore {
   }
   @computed get startDateYear() {
     return format(this.endDate, 'YYYY');
+  }
+
+  // Current Model --------------------------------------------------------------
+  @observable model = [];
+  @action loadData() {
+    this.isLoading = true;
+    const params = {
+      loc: `${this.station.lon}, ${this.station.lat}`,
+      sdate: this.startDate,
+      edate: this.endDate,
+      grid: 3,
+      elems: [
+        {
+          name: 'mint', // ˚F
+          interval: 'dly',
+          duration: 'dly'
+        },
+        {
+          name: 'avgt', // ˚F
+          interval: 'dly',
+          duration: 'dly'
+        },
+        {
+          name: 'maxt', // ˚F
+          interval: 'dly',
+          duration: 'dly'
+        }
+      ]
+    };
+
+    // console.log(params);
+
+    return axios
+      .post(`${this.protocol}//grid.rcc-acis.org/GridData`, params)
+      .then(res => {
+        this.updateData(res.data.data);
+        this.isLoading = false;
+      })
+      .catch(err => {
+        console.log('Failed to load data model', err);
+      });
+  }
+
+  @action updateData(data) {
+    data.forEach((day, i) => {
+      this.model.push(
+        new Model({
+          date: day[0],
+          mint: day[1],
+          avgt: day[2],
+          maxt: day[3]
+        })
+      );
+    });
   }
 }
