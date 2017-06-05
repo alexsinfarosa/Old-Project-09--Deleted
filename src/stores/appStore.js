@@ -1,9 +1,9 @@
-import { observable, action, computed } from "mobx";
-import axios from "axios";
-import format from "date-fns/format";
-import addDays from "date-fns/add_days";
+import { observable, action, computed } from 'mobx';
+import axios from 'axios';
+import format from 'date-fns/format';
+import addDays from 'date-fns/add_days';
 
-import { matchIconsToStations } from "utils";
+import { matchIconsToStations } from 'utils';
 
 class Station {
   @observable id;
@@ -61,44 +61,15 @@ class Model {
   @observable avgt;
   @observable maxt;
   @observable gdd;
+  @observable cdd;
 
-  @observable crabgrass;
-  @observable gFoxtail;
-  @observable yFoxtail;
-  @observable lambsquarters;
-  @observable nightshade;
-  @observable pigweed;
-  @observable ragweed;
-  @observable velvetleaf;
-
-  constructor({
-    date,
-    mint,
-    avgt,
-    maxt,
-    gdd,
-    crabgrass,
-    gFoxtail,
-    yFoxtail,
-    lambsquarters,
-    nightshade,
-    pigweed,
-    ragweed,
-    velvetleaf
-  }) {
+  constructor({ date, mint, avgt, maxt, gdd, cdd = 0 }) {
     this.date = date;
     this.mint = mint;
     this.avgt = avgt;
     this.maxt = maxt;
     this.gdd = gdd;
-    this.crabgrass = crabgrass;
-    this.gFoxtail = gFoxtail;
-    this.yFoxtail = yFoxtail;
-    this.lambsquarters = lambsquarters;
-    this.nightshade = nightshade;
-    this.pigweed = pigweed;
-    this.ragweed = ragweed;
-    this.velvetleaf = velvetleaf;
+    this.cdd = cdd;
   }
 }
 
@@ -123,13 +94,13 @@ export default class appStore {
   @action
   loadSpecies() {
     this.isLoading = true;
-    this.fetch("species.json")
+    this.fetch('species.json')
       .then(json => {
         this.updateSpecies(json);
         this.isLoading = false;
       })
       .catch(err => {
-        console.log("Failed to load species", err);
+        console.log('Failed to load species', err);
       });
   }
 
@@ -141,9 +112,9 @@ export default class appStore {
     });
   }
 
-  @observable specie = JSON.parse(localStorage.getItem("specie")) || {};
+  @observable specie = JSON.parse(localStorage.getItem('specie')) || {};
   @action setSpecie = d => {
-    localStorage.removeItem("specie");
+    localStorage.removeItem('specie');
     this.specie = this.species.find(specie => specie.name === d);
     localStorage.setItem(`specie`, JSON.stringify(this.specie));
   };
@@ -153,14 +124,14 @@ export default class appStore {
   @action
   loadStates() {
     this.isLoading = true;
-    this.fetch("states.json")
+    this.fetch('states.json')
       .then(json => {
         this.updateStates(json);
         this.isLoading = false;
         // console.log(this.states.slice());
       })
       .catch(err => {
-        console.log("Failed to load states", err);
+        console.log('Failed to load states', err);
       });
   }
 
@@ -172,12 +143,12 @@ export default class appStore {
     });
   }
 
-  @observable state = JSON.parse(localStorage.getItem("state")) || {};
+  @observable state = JSON.parse(localStorage.getItem('state')) || {};
   @action setState = stateName => {
-    localStorage.removeItem("state");
+    localStorage.removeItem('state');
     this.station = {};
     this.state = this.states.find(state => state.name === stateName);
-    localStorage.setItem("state", JSON.stringify(this.state));
+    localStorage.setItem('state', JSON.stringify(this.state));
   };
 
   // Stations -----------------------------------------------------------------
@@ -196,7 +167,7 @@ export default class appStore {
         // console.log(this.stations.slice());
       })
       .catch(err => {
-        console.log("Failed to load stations", err);
+        console.log('Failed to load stations', err);
       });
   }
 
@@ -215,36 +186,36 @@ export default class appStore {
     );
   }
 
-  @observable station = JSON.parse(localStorage.getItem("station")) || {};
+  @observable station = JSON.parse(localStorage.getItem('station')) || {};
   @action setStation = stationName => {
-    localStorage.removeItem("station");
+    localStorage.removeItem('station');
     this.station = this.stations.find(station => station.name === stationName);
-    localStorage.setItem("station", JSON.stringify(this.station));
+    localStorage.setItem('station', JSON.stringify(this.station));
   };
 
   @action
   addIconsToStations() {
     const { protocol, stations, state } = this;
     stations.forEach(station => {
-      station["icon"] = matchIconsToStations(protocol, station, state);
+      station['icon'] = matchIconsToStations(protocol, station, state);
     });
   }
 
   // Dates---------------------------------------------------------------------
   @observable currentYear = new Date().getFullYear().toString();
-  @observable endDate = JSON.parse(localStorage.getItem("endDate")) ||
-    format(new Date(), "YYYY-MM-DD");
+  @observable endDate = JSON.parse(localStorage.getItem('endDate')) ||
+    format(new Date(), 'YYYY-MM-DD');
   @action setEndDate = d => {
-    this.endDate = format(d, "YYYY-MM-DD");
-    localStorage.setItem("endDate", JSON.stringify(this.endDate));
+    this.endDate = format(d, 'YYYY-MM-DD');
+    localStorage.setItem('endDate', JSON.stringify(this.endDate));
   };
   @computed
   get startDate() {
-    return `${format(this.endDate, "YYYY")}-01-01`;
+    return `${format(this.endDate, 'YYYY')}-01-01`;
   }
   @computed
   get startDateYear() {
-    return format(this.endDate, "YYYY");
+    return format(this.endDate, 'YYYY');
   }
 
   // Current Model ------------------------------------------------------------
@@ -255,25 +226,25 @@ export default class appStore {
     const params = {
       loc: `${this.station.lon}, ${this.station.lat}`,
       sdate: this.startDate,
-      edate: format(addDays(this.endDate, 5), "YYYY-MM-DD"),
+      edate: format(addDays(this.endDate, 5), 'YYYY-MM-DD'),
       grid: 3,
       elems: [
         {
-          name: "mint",
-          units: "degreeC"
+          name: 'mint',
+          units: 'degreeC'
         },
         {
-          name: "avgt",
-          units: "degreeC"
+          name: 'avgt',
+          units: 'degreeC'
         },
         {
-          name: "maxt",
-          units: "degreeC"
+          name: 'maxt',
+          units: 'degreeC'
         },
         {
-          name: "gdd",
+          name: 'gdd',
           base: 9, // ˚C
-          units: "degreeC"
+          units: 'degreeC'
         }
       ]
     };
@@ -284,11 +255,12 @@ export default class appStore {
       .post(`${this.protocol}//grid.rcc-acis.org/GridData`, params)
       .then(res => {
         this.updateData(res.data.data);
+        this.setCrabgrass(res.data.data);
         this.isLoading = false;
-        console.log(this.model.slice());
+        // console.log(this.model.slice());
       })
       .catch(err => {
-        console.log("Failed to load data model", err);
+        console.log('Failed to load data model', err);
       });
   }
 
@@ -305,6 +277,34 @@ export default class appStore {
           gdd: day[4] // 5
         })
       );
+    });
+  }
+
+  @observable crabgrass = [];
+
+  @action
+  setCrabgrass(data) {
+    let cdd = 0;
+    data.forEach(day => {
+      let riskLevel = null;
+      let color = null;
+      cdd += day[4];
+      let y = 100 / (1 + Math.exp(19.44 - 3.06 * Math.log(cdd)));
+      y = Math.round(y * 100);
+      // console.log(day[0], y, day[4], cdd);
+
+      if (y >= 25) {
+        cdd = 0;
+        riskLevel = 'High';
+        color = '#F04134';
+      }
+      this.crabgrass.push({
+        date: day[0],
+        y: y,
+        cdd: cdd,
+        riskLevel: riskLevel,
+        color: color
+      });
     });
   }
 }

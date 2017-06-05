@@ -1,6 +1,5 @@
-import styled from "styled-components";
-import {Box} from 'reflexbox';
-
+import styled from 'styled-components';
+import { Box } from 'reflexbox';
 
 export const RiskLevel = styled(Box)`
   font-size: .6rem;
@@ -31,10 +30,10 @@ export const Value = styled(Box)`
     font-size: .4rem;
   }
 
-`
+`;
 export const Info = styled(Box)`
   margin-left: 3px;
-  color: red;
+  color: white;
   font-size: .7rem;
 
   @media (max-width: 992px) {
@@ -47,4 +46,4 @@ export const Info = styled(Box)`
     font-size: .4rem;
   }
 
-`
+`;
