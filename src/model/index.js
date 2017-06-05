@@ -1,28 +1,39 @@
-import React, { Component } from 'react';
-import { inject, observer } from 'mobx-react';
-import takeRight from 'lodash/takeRight';
-import { autorun } from 'mobx';
+import React, { Component } from "react";
+import { inject, observer } from "mobx-react";
 
-import 'styles/table.styl';
-import { Flex, Box } from 'reflexbox';
+import takeRight from "lodash/takeRight";
+import isAfter from "date-fns/is_after";
+import format from "date-fns/format";
 
-import Table from 'antd/lib/table';
-import 'antd/lib/table/style/css';
+import "styles/table.styl";
+import { Flex, Box } from "reflexbox";
+
+import Table from "antd/lib/table";
+import "antd/lib/table/style/css";
 
 // styled-components
-import { RiskLevel, Value, Info } from './styles';
+import { Value, Info } from "./styles";
 
 // To display the 'forecast text' and style the cell
 const forecastText = date => {
+  const today = new Date();
+  if (isAfter(date, today)) {
+    return (
+      <Flex justify="center" align="center" column>
+        <Value>
+          {format(date, "MMM D")}
+        </Value>
+        <Info>
+          Forecast
+        </Info>
+      </Flex>
+    );
+  }
   return (
     <Flex justify="center" align="center" column>
       <Value>
-        {date.split('-')[0]}
+        {format(date, "MMM D")}
       </Value>
-
-      <Info>
-        {date.split('-')[1]}
-      </Info>
     </Flex>
   );
 };
@@ -30,19 +41,26 @@ const forecastText = date => {
 //columns for the model
 const columns = [
   {
-    title: 'Date',
-    dataIndex: 'dateTable',
-    key: 'dateTable',
-    className: 'table',
+    title: "Date",
+    dataIndex: "crabgrass.date",
+    key: "date",
+    className: "table",
     render: date => forecastText(date)
+  },
+  {
+    title: "Crabgrass",
+    dataIndex: "crabgrass.y",
+    key: "crabgrass",
+    className: "table"
+    // render: date => forecastText(date)
   }
 ];
 
-@inject('store')
+@inject("store")
 @observer
-export default class CercosporaBeticola extends Component {
+export default class Weed extends Component {
   render() {
-    const { stations, station, areRequiredFieldsSet } = this.props.store.app;
+    const { model, station, areRequiredFieldsSet } = this.props.store.app;
     const { mobile } = this.props;
 
     return (
@@ -51,25 +69,25 @@ export default class CercosporaBeticola extends Component {
           {!mobile
             ? <h2>
                 Weed model for
-                {' '}
-                <em style={{ color: '#008751' }}>{station.name}</em>
+                {" "}
+                <em style={{ color: "#008751" }}>{station.name}</em>
               </h2>
             : <h3>
                 Weed model for
-                {' '}
-                <em style={{ color: '#008751' }}>{station.name}</em>
+                {" "}
+                <em style={{ color: "#008751" }}>{station.name}</em>
               </h3>}
         </Box>
 
         <Flex justify="center">
           <Box mt={1} col={12} lg={12} md={12} sm={12}>
             <Table
-              size={mobile ? 'small' : 'middle'}
+              size={mobile ? "small" : "middle"}
               columns={columns}
               rowKey={record => record.date}
-              loading={stations.length === 0}
+              loading={this.props.store.app.isLoading}
               pagination={false}
-              dataSource={areRequiredFieldsSet ? takeRight(stations, 18) : null}
+              dataSource={areRequiredFieldsSet ? takeRight(model, 10) : null}
             />
           </Box>
         </Flex>
