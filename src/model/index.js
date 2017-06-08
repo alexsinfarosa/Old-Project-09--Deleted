@@ -57,28 +57,40 @@ const riskLevel = (text, record, i) => {
 //columns for the model
 const columns = [
   {
-    title: 'Date',
-    dataIndex: 'date',
-    key: 'date',
-    className: 'table',
-    width: 150,
-    render: date => forecastText(date)
+    title: 'Species',
+    dataIndex: 'name',
+    key: 'name',
+    // className: 'table',
+    width: 150
   },
   {
-    title: '% Cumulative Emergence',
+    title: '% Cumulative emergence',
     dataIndex: 'y',
     key: 'y',
-    className: 'table',
+    // className: 'table',
     width: 150,
-    render: (text, record, i) => riskLevel(text, record, i)
+    render: (text, record) =>
+      record.y.slice().map((e, i) => <div key={i}>{e}</div>)
   },
   {
     title: 'Soil DD',
     dataIndex: 'cdd',
     key: 'cdd',
-    className: 'table',
-    width: 150
-    // render: date => forecastText(date)
+    // className: 'table',
+    width: 150,
+    render: (text, record) =>
+      record.cdd.slice().map((e, i) => <div key={i}>{e}</div>)
+  },
+  {
+    title: 'Dates',
+    dataIndex: 'dates',
+    key: 'dates',
+    // className: 'table',
+    width: 150,
+    render: (text, record) =>
+      record.dates
+        .slice()
+        .map((e, i) => <div key={i}>{format(e, 'MMM DD')}</div>)
   }
 ];
 
@@ -86,8 +98,17 @@ const columns = [
 @observer
 export default class Weed extends Component {
   render() {
-    const { crabgrass, station, areRequiredFieldsSet } = this.props.store.app;
-    const filteredCrabgrass = crabgrass.filter(day => day.y >= 20);
+    const { model, station, areRequiredFieldsSet } = this.props.store.app;
+    const crabgrass = model.filter(specie => specie.name === 'crabgrass');
+    const gFoxtail = model.filter(specie => specie.name === 'gFoxtail');
+    const yFoxtail = model.filter(specie => specie.name === 'yFoxtail');
+    const lambsquarters = model.filter(
+      specie => specie.name === 'lambsquarters'
+    );
+    const nightshade = model.filter(specie => specie.name === 'nightshade');
+    const pigweed = model.filter(specie => specie.name === 'pigweed');
+    const ragweed = model.filter(specie => specie.name === 'ragweed');
+    const velvetleaf = model.filter(specie => specie.name === 'velvetleaf');
     const { mobile } = this.props;
 
     return (
@@ -112,10 +133,80 @@ export default class Weed extends Component {
               size={mobile ? 'small' : 'middle'}
               columns={columns}
               scroll={{ y: 500 }}
-              rowKey={record => record.date}
+              rowKey={record => record}
               loading={this.props.store.app.isLoading}
               pagination={false}
-              dataSource={areRequiredFieldsSet ? filteredCrabgrass : null}
+              dataSource={areRequiredFieldsSet ? crabgrass : null}
+            />
+            <Table
+              showHeader={false}
+              size={mobile ? 'small' : 'middle'}
+              columns={columns}
+              scroll={{ y: 500 }}
+              rowKey={record => record}
+              loading={this.props.store.app.isLoading}
+              pagination={false}
+              dataSource={areRequiredFieldsSet ? gFoxtail : null}
+            />
+            <Table
+              showHeader={false}
+              size={mobile ? 'small' : 'middle'}
+              columns={columns}
+              scroll={{ y: 500 }}
+              rowKey={record => record}
+              loading={this.props.store.app.isLoading}
+              pagination={false}
+              dataSource={areRequiredFieldsSet ? yFoxtail : null}
+            />
+            <Table
+              showHeader={false}
+              size={mobile ? 'small' : 'middle'}
+              columns={columns}
+              scroll={{ y: 500 }}
+              rowKey={record => record}
+              loading={this.props.store.app.isLoading}
+              pagination={false}
+              dataSource={areRequiredFieldsSet ? lambsquarters : null}
+            />
+            <Table
+              showHeader={false}
+              size={mobile ? 'small' : 'middle'}
+              columns={columns}
+              scroll={{ y: 500 }}
+              rowKey={record => record}
+              loading={this.props.store.app.isLoading}
+              pagination={false}
+              dataSource={areRequiredFieldsSet ? nightshade : null}
+            />
+            <Table
+              showHeader={false}
+              size={mobile ? 'small' : 'middle'}
+              columns={columns}
+              scroll={{ y: 500 }}
+              rowKey={record => record}
+              loading={this.props.store.app.isLoading}
+              pagination={false}
+              dataSource={areRequiredFieldsSet ? pigweed : null}
+            />
+            <Table
+              showHeader={false}
+              size={mobile ? 'small' : 'middle'}
+              columns={columns}
+              scroll={{ y: 500 }}
+              rowKey={record => record}
+              loading={this.props.store.app.isLoading}
+              pagination={false}
+              dataSource={areRequiredFieldsSet ? ragweed : null}
+            />
+            <Table
+              showHeader={false}
+              size={mobile ? 'small' : 'middle'}
+              columns={columns}
+              scroll={{ y: 500 }}
+              rowKey={record => record}
+              loading={this.props.store.app.isLoading}
+              pagination={false}
+              dataSource={areRequiredFieldsSet ? velvetleaf : null}
             />
           </Box>
         </Flex>
