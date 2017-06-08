@@ -164,6 +164,7 @@ export default class appStore {
         this.updateStations(res.data.stations);
         this.addIconsToStations();
         this.isLoading = false;
+        console.log('ciccio');
         // console.log(this.stations.slice());
       })
       .catch(err => {
@@ -173,6 +174,7 @@ export default class appStore {
 
   @action
   updateStations(res) {
+    console.log('della');
     this.stations.clear();
     res.forEach(station => {
       this.stations.push(new Station(station));
@@ -195,10 +197,12 @@ export default class appStore {
 
   @action
   addIconsToStations() {
+    // if (Object.keys(this.station).length !== 0) {
     const { protocol, stations, state } = this;
     stations.forEach(station => {
       station['icon'] = matchIconsToStations(protocol, station, state);
     });
+    // }
   }
 
   // Dates---------------------------------------------------------------------
@@ -228,8 +232,13 @@ export default class appStore {
       edate = format(addDays(this.endDate, 5), 'YYYY-MM-DD');
     }
     edate = format(this.endDate, 'YYYY-MM-DD');
+    let loc = '-75.7000, 42.5000';
+    if (this.state.name) {
+      loc = `${this.station.lon}, ${this.station.lat}`;
+    }
+
     const params = {
-      loc: `${this.station.lon}, ${this.station.lat}`,
+      loc: loc,
       sdate: this.startDate,
       edate: edate,
       grid: 3,
@@ -254,7 +263,7 @@ export default class appStore {
       ]
     };
 
-    // console.log(params);
+    console.log(params);
 
     return axios
       .post(`${this.protocol}//grid.rcc-acis.org/GridData`, params)
