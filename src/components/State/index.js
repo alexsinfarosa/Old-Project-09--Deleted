@@ -10,7 +10,7 @@ const Option = Select.Option;
 export default class State extends Component {
   handleChange = value => {
     this.props.store.app.setState(value);
-    this.props.store.app.loadData();
+    this.props.store.app.addIconsToStations();
   };
   render() {
     const { state, states } = this.props.store.app;

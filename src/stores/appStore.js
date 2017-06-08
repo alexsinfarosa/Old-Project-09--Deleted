@@ -254,7 +254,7 @@ export default class appStore {
       ]
     };
 
-    console.log(params);
+    // console.log(params);
 
     return axios
       .post(`${this.protocol}//grid.rcc-acis.org/GridData`, params)
@@ -388,7 +388,7 @@ export default class appStore {
         velvetleafCDD = 0;
       }
     });
-    console.log(crabgrass);
+
     this.model.push(
       crabgrass,
       gFoxtail,

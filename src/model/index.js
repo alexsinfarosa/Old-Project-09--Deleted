@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
 
 // import takeRight from 'lodash/takeRight';
-import isAfter from 'date-fns/is_after';
+// import isAfter from 'date-fns/is_after';
 import format from 'date-fns/format';
 
 import 'styles/table.styl';
@@ -12,47 +12,47 @@ import Table from 'antd/lib/table';
 import 'antd/lib/table/style/css';
 
 // styled-components
-import { Value, Info } from './styles';
+// import { Value, Info } from './styles';
 
 // To display the 'forecast text' and style the cell
-const forecastText = date => {
-  const today = new Date();
-  if (isAfter(date, today)) {
-    return (
-      <Flex justify="center" align="center" column>
-        <Value>
-          {format(date, 'MMM D')}
-        </Value>
-        <Info>
-          Forecast
-        </Info>
-      </Flex>
-    );
-  }
-  return (
-    <Flex justify="center" align="center" column>
-      <Value>
-        {format(date, 'MMM D')}
-      </Value>
-    </Flex>
-  );
-};
+// const forecastText = date => {
+//   const today = new Date();
+//   if (isAfter(date, today)) {
+//     return (
+//       <Flex justify="center" align="center" column>
+//         <Value>
+//           {format(date, 'MMM D')}
+//         </Value>
+//         <Info>
+//           Forecast
+//         </Info>
+//       </Flex>
+//     );
+//   }
+//   return (
+//     <Flex justify="center" align="center" column>
+//       <Value>
+//         {format(date, 'MMM D')}
+//       </Value>
+//     </Flex>
+//   );
+// };
 
-const riskLevel = (text, record, i) => {
-  // console.log(text, record, i);
-  return (
-    <Flex justify="center" align="center" column>
-      {record.y >= 25
-        ? <Value style={{ color: record.color }}>
-            {text}
-          </Value>
-        : <Value>{text}</Value>}
-      {/* <Info col={7} lg={4} md={4} sm={7} style={{ background: record.color }}>
-        {record.riskLevel}
-      </Info> */}
-    </Flex>
-  );
-};
+// const riskLevel = (text, record, i) => {
+//   // console.log(text, record, i);
+//   return (
+//     <Flex justify="center" align="center" column>
+//       {record.y >= 25
+//         ? <Value style={{ color: record.color }}>
+//             {text}
+//           </Value>
+//         : <Value>{text}</Value>}
+//       {/* <Info col={7} lg={4} md={4} sm={7} style={{ background: record.color }}>
+//         {record.riskLevel}
+//       </Info> */}
+//     </Flex>
+//   );
+// };
 
 //columns for the model
 const columns = [

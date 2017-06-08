@@ -5,7 +5,7 @@ import Button from 'antd/lib/button';
 import 'antd/lib/button/style/css';
 
 // components
-import Specie from 'components/Specie';
+// import Specie from 'components/Specie';
 import State from 'components/State';
 import Station from 'components/Station';
 import DatePicker from 'components/DatePicker';
