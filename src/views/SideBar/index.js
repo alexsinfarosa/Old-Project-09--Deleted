@@ -51,7 +51,7 @@ class SideBar extends Component {
         <hr />
         <br />
 
-        <Specie size={this.props.size} />
+        {/* <Specie size={this.props.size} /> */}
         <State size={this.props.size} />
         <Station size={this.props.size} />
         <DatePicker size={this.props.size} />

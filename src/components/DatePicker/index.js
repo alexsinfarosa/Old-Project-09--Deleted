@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
+import { when } from 'mobx';
 
 import DatePicker from 'antd/lib/date-picker';
 import 'antd/lib/date-picker/style/css';
@@ -12,6 +13,7 @@ export default class Datepicker extends Component {
     const { areRequiredFieldsSet } = this.props.store.app;
     const mobile = this.props.size;
     this.props.store.app.setEndDate(dateString);
+    this.props.store.app.loadData();
     if (areRequiredFieldsSet && mobile) {
       this.props.store.logic.setIsSidebarOpen(false);
     }

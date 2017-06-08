@@ -11,6 +11,7 @@ export default class Station extends Component {
   handleChange = async value => {
     const mobile = this.props.size;
     await this.props.store.app.setStation(value);
+    this.props.store.app.loadData();
 
     if (this.props.store.app.areRequiredFieldsSet && mobile) {
       this.props.store.logic.setIsSidebarOpen(false);
@@ -19,11 +20,11 @@ export default class Station extends Component {
   render() {
     const { currentStateStations, station } = this.props.store.app;
 
-    const stationList = currentStateStations.map(station => (
+    const stationList = currentStateStations.map(station =>
       <Option key={`${station.id} ${station.network}`} value={station.name}>
         {station.name}
       </Option>
-    ));
+    );
 
     return (
       <div style={{ marginBottom: '2rem' }}>

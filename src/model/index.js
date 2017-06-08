@@ -99,16 +99,18 @@ const columns = [
 export default class Weed extends Component {
   render() {
     const { model, station, areRequiredFieldsSet } = this.props.store.app;
-    const crabgrass = model.filter(specie => specie.name === 'crabgrass');
-    const gFoxtail = model.filter(specie => specie.name === 'gFoxtail');
-    const yFoxtail = model.filter(specie => specie.name === 'yFoxtail');
+    const crabgrass = model.filter(specie => specie.name === 'Large crabgrass');
+    const gFoxtail = model.filter(specie => specie.name === 'Giant foxtail');
+    const yFoxtail = model.filter(specie => specie.name === 'Yellow foxtail');
     const lambsquarters = model.filter(
-      specie => specie.name === 'lambsquarters'
+      specie => specie.name === 'Common lambsquarters'
     );
-    const nightshade = model.filter(specie => specie.name === 'nightshade');
-    const pigweed = model.filter(specie => specie.name === 'pigweed');
-    const ragweed = model.filter(specie => specie.name === 'ragweed');
-    const velvetleaf = model.filter(specie => specie.name === 'velvetleaf');
+    const pigweed = model.filter(specie => specie.name === 'Smooth pigweed');
+    const nightshade = model.filter(
+      specie => specie.name === 'Eastern black nightshade'
+    );
+    const ragweed = model.filter(specie => specie.name === 'Common ragweed');
+    const velvetleaf = model.filter(specie => specie.name === 'Velvetleaf');
     const { mobile } = this.props;
 
     return (

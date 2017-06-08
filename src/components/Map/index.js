@@ -26,6 +26,7 @@ export default class TheMap extends Component {
     )[0];
     if (selectedStation.state === state.postalCode) {
       this.props.store.app.setStation(selectedStation.name);
+      this.props.store.app.loadData();
     } else {
       const selectedStation = stations.filter(
         station => station.lat === lat && station.lon === lng
@@ -42,7 +43,7 @@ export default class TheMap extends Component {
     const { stations, state, protocol } = this.props.store.app;
     // const {mobile} = this.props;
 
-    const MarkerList = stations.map(station => (
+    const MarkerList = stations.map(station =>
       <Marker
         key={`${station.id} ${station.network}`}
         // network={station.network}
@@ -52,7 +53,7 @@ export default class TheMap extends Component {
         title={station.name}
         onClick={this.onClickSetStation}
       />
-    ));
+    );
 
     return (
       <Flex justify="center">

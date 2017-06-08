@@ -10,12 +10,13 @@ const Option = Select.Option;
 export default class State extends Component {
   handleChange = value => {
     this.props.store.app.setState(value);
+    this.props.store.app.loadData();
   };
   render() {
     const { state, states } = this.props.store.app;
-    const stateList = states.map(state => (
+    const stateList = states.map(state =>
       <Option key={state.postalCode} value={state.name}>{state.name}</Option>
-    ));
+    );
     return (
       <div style={{ marginBottom: '2rem' }}>
         <label>State:</label>

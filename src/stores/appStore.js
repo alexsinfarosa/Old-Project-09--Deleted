@@ -79,7 +79,7 @@ export default class appStore {
   @computed
   get areRequiredFieldsSet() {
     return (
-      Object.keys(this.specie).length !== 0 &&
+      // Object.keys(this.specie).length !== 0 &&
       Object.keys(this.state).length !== 0 &&
       Object.keys(this.station).length !== 0
     );
@@ -254,7 +254,7 @@ export default class appStore {
       ]
     };
 
-    // console.log(params);
+    console.log(params);
 
     return axios
       .post(`${this.protocol}//grid.rcc-acis.org/GridData`, params)
@@ -271,14 +271,24 @@ export default class appStore {
   @action
   updateData(data) {
     this.model.clear();
-    let crabgrass = { name: 'crabgrass', y: [], dates: [], cdd: [] };
-    let gFoxtail = { name: 'gFoxtail', y: [], dates: [], cdd: [] };
-    let yFoxtail = { name: 'yFoxtail', y: [], dates: [], cdd: [] };
-    let lambsquarters = { name: 'lambsquarters', y: [], dates: [], cdd: [] };
-    let nightshade = { name: 'nightshade', y: [], dates: [], cdd: [] };
-    let pigweed = { name: 'pigweed', y: [], dates: [], cdd: [] };
-    let ragweed = { name: 'ragweed', y: [], dates: [], cdd: [] };
-    let velvetleaf = { name: 'velvetleaf', y: [], dates: [], cdd: [] };
+    let crabgrass = { name: 'Large crabgrass', y: [], dates: [], cdd: [] };
+    let gFoxtail = { name: 'Giant foxtail', y: [], dates: [], cdd: [] };
+    let yFoxtail = { name: 'Yellow foxtail', y: [], dates: [], cdd: [] };
+    let lambsquarters = {
+      name: 'Common lambsquarters',
+      y: [],
+      dates: [],
+      cdd: []
+    };
+    let pigweed = { name: 'Smooth pigweed', y: [], dates: [], cdd: [] };
+    let nightshade = {
+      name: 'Eastern black nightshade',
+      y: [],
+      dates: [],
+      cdd: []
+    };
+    let ragweed = { name: 'Common ragweed', y: [], dates: [], cdd: [] };
+    let velvetleaf = { name: 'Velvetleaf', y: [], dates: [], cdd: [] };
 
     let crabgrassCDD = 0;
     let gFoxtailCDD = 0;
