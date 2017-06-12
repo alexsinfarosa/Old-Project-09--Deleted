@@ -11,6 +11,9 @@ import { Flex, Box } from 'reflexbox';
 import Table from 'antd/lib/table';
 import 'antd/lib/table/style/css';
 
+import UserTable from './UserTable';
+import Graph from './Graph';
+
 // styled-components
 // import { Value, Info } from './styles';
 
@@ -212,6 +215,8 @@ export default class Weed extends Component {
             />
           </Box>
         </Flex>
+        {this.props.store.app.dates.length > 0 && <UserTable />}
+        <Graph />
       </Flex>
     );
   }
