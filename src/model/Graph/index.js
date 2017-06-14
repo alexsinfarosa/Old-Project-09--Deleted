@@ -1,14 +1,11 @@
 import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
-import { toJS } from 'mobx';
+// import { toJS } from 'mobx';
 
 import { Flex, Box } from 'reflexbox';
 import {
   LineChart,
   Line,
-  AreaChart,
-  Area,
-  Brush,
   XAxis,
   YAxis,
   CartesianGrid,

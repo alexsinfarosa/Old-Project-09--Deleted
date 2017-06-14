@@ -14,48 +14,38 @@ import 'antd/lib/table/style/css';
 import UserTable from './UserTable';
 import Graph from './Graph';
 
-// styled-components
-// import { Value, Info } from './styles';
+// import { RiskLevel, Value, Info } from './styles';
+const today = format(new Date(), 'YYYY-MM-DD');
 
-// To display the 'forecast text' and style the cell
-// const forecastText = date => {
-//   const today = new Date();
-//   if (isAfter(date, today)) {
-//     return (
-//       <Flex justify="center" align="center" column>
-//         <Value>
-//           {format(date, 'MMM D')}
-//         </Value>
-//         <Info>
-//           Forecast
-//         </Info>
-//       </Flex>
-//     );
-//   }
-//   return (
-//     <Flex justify="center" align="center" column>
-//       <Value>
-//         {format(date, 'MMM D')}
-//       </Value>
-//     </Flex>
-//   );
-// };
+const displayDate = text => {
+  return text.map((e, i) => {
+    const date = format(e, 'MMM DD');
+    if (e === today) {
+      return <div style={{ color: '#008751' }} key={i}>Today</div>;
+    }
+    return <div key={i}>{date}</div>;
+  });
+};
 
-// const riskLevel = (text, record, i) => {
-//   // console.log(text, record, i);
-//   return (
-//     <Flex justify="center" align="center" column>
-//       {record.y >= 25
-//         ? <Value style={{ color: record.color }}>
-//             {text}
-//           </Value>
-//         : <Value>{text}</Value>}
-//       {/* <Info col={7} lg={4} md={4} sm={7} style={{ background: record.color }}>
-//         {record.riskLevel}
-//       </Info> */}
-//     </Flex>
-//   );
-// };
+const displayDD = (text, record) => {
+  return record.dates.map((e, i) => {
+    console.log(e);
+    if (e === today) {
+      return <div style={{ color: '#008751' }} key={i}>{text[i]}</div>;
+    }
+    return <div key={i}>{text[i]}</div>;
+  });
+};
+
+const displayEmergence = (text, record) => {
+  return record.dates.map((e, i) => {
+    console.log(e);
+    if (e === today) {
+      return <div style={{ color: '#008751' }} key={i}>{text[i]}</div>;
+    }
+    return <div key={i}>{text[i]}</div>;
+  });
+};
 
 //columns for the model
 const columns = [
@@ -72,8 +62,7 @@ const columns = [
     key: 'y',
     // className: 'table',
     width: 150,
-    render: (text, record) =>
-      record.y.slice().map((e, i) => <div key={i}>{e}</div>)
+    render: (text, record) => displayEmergence(text, record)
   },
   {
     title: 'Soil DD',
@@ -81,8 +70,7 @@ const columns = [
     key: 'cdd',
     // className: 'table',
     width: 150,
-    render: (text, record) =>
-      record.cdd.slice().map((e, i) => <div key={i}>{e}</div>)
+    render: (text, record) => displayDD(text, record)
   },
   {
     title: 'Dates',
@@ -90,10 +78,7 @@ const columns = [
     key: 'dates',
     // className: 'table',
     width: 150,
-    render: (text, record) =>
-      record.dates
-        .slice()
-        .map((e, i) => <div key={i}>{format(e, 'MMM DD')}</div>)
+    render: (text, record) => displayDate(text, record)
   }
 ];
 
@@ -137,7 +122,6 @@ export default class Weed extends Component {
             <Table
               size={mobile ? 'small' : 'middle'}
               columns={columns}
-              scroll={{ y: 500 }}
               rowKey={record => record}
               loading={this.props.store.app.isLoading}
               pagination={false}
@@ -147,7 +131,6 @@ export default class Weed extends Component {
               showHeader={false}
               size={mobile ? 'small' : 'middle'}
               columns={columns}
-              scroll={{ y: 500 }}
               rowKey={record => record}
               loading={this.props.store.app.isLoading}
               pagination={false}
@@ -157,7 +140,6 @@ export default class Weed extends Component {
               showHeader={false}
               size={mobile ? 'small' : 'middle'}
               columns={columns}
-              scroll={{ y: 500 }}
               rowKey={record => record}
               loading={this.props.store.app.isLoading}
               pagination={false}
@@ -167,7 +149,6 @@ export default class Weed extends Component {
               showHeader={false}
               size={mobile ? 'small' : 'middle'}
               columns={columns}
-              scroll={{ y: 500 }}
               rowKey={record => record}
               loading={this.props.store.app.isLoading}
               pagination={false}
@@ -177,7 +158,6 @@ export default class Weed extends Component {
               showHeader={false}
               size={mobile ? 'small' : 'middle'}
               columns={columns}
-              scroll={{ y: 500 }}
               rowKey={record => record}
               loading={this.props.store.app.isLoading}
               pagination={false}
@@ -187,7 +167,6 @@ export default class Weed extends Component {
               showHeader={false}
               size={mobile ? 'small' : 'middle'}
               columns={columns}
-              scroll={{ y: 500 }}
               rowKey={record => record}
               loading={this.props.store.app.isLoading}
               pagination={false}
@@ -197,7 +176,6 @@ export default class Weed extends Component {
               showHeader={false}
               size={mobile ? 'small' : 'middle'}
               columns={columns}
-              scroll={{ y: 500 }}
               rowKey={record => record}
               loading={this.props.store.app.isLoading}
               pagination={false}
@@ -207,7 +185,6 @@ export default class Weed extends Component {
               showHeader={false}
               size={mobile ? 'small' : 'middle'}
               columns={columns}
-              scroll={{ y: 500 }}
               rowKey={record => record}
               loading={this.props.store.app.isLoading}
               pagination={false}

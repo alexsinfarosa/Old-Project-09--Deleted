@@ -1,4 +1,4 @@
-import { observable, action, computed, toJS } from 'mobx';
+import { observable, action, computed } from 'mobx';
 import axios from 'axios';
 import format from 'date-fns/format';
 import addDays from 'date-fns/add_days';
@@ -166,7 +166,6 @@ export default class appStore {
         this.updateStations(res.data.stations);
         this.addIconsToStations();
         this.isLoading = false;
-        console.log('ciccio');
         // console.log(this.stations.slice());
       })
       .catch(err => {
@@ -176,7 +175,6 @@ export default class appStore {
 
   @action
   updateStations(res) {
-    console.log('della');
     this.stations.clear();
     res.forEach(station => {
       this.stations.push(new Station(station));
@@ -228,6 +226,7 @@ export default class appStore {
   }
 
   // Current Model ------------------------------------------------------------
+  @observable gridData = [];
   @observable model = [];
   @observable graph = [];
   @action
@@ -248,28 +247,10 @@ export default class appStore {
       sdate: this.startDate,
       edate: edate,
       grid: 3,
-      elems: [
-        {
-          name: 'mint',
-          units: 'degreeC'
-        },
-        {
-          name: 'avgt',
-          units: 'degreeC'
-        },
-        {
-          name: 'maxt',
-          units: 'degreeC'
-        },
-        {
-          name: 'gdd',
-          base: 9, // ˚C
-          units: 'degreeC'
-        }
-      ]
+      elems: [{ name: 'avgt' }]
     };
 
-    console.log(params);
+    // console.log(params);
 
     return axios
       .post(`${this.protocol}//grid.rcc-acis.org/GridData`, params)
@@ -316,19 +297,23 @@ export default class appStore {
     let ragweedCDD = 0;
     let velvetleafCDD = 0;
 
+    const base = 48.2; // 9˚C
     data.forEach((day, i) => {
-      crabgrassCDD += day[4];
-      gFoxtailCDD += day[4];
-      yFoxtailCDD += day[4];
-      lambsquartersCDD += day[4];
-      nightshadeCDD += day[4];
-      pigweedCDD += day[4];
-      ragweedCDD += day[4];
-      velvetleafCDD += day[4];
+      const dd = day[1] - base > 0 ? Math.round(day[1] - base) : 0;
+      crabgrassCDD += dd;
+      gFoxtailCDD += dd;
+      yFoxtailCDD += dd;
+      lambsquartersCDD += dd;
+      nightshadeCDD += dd;
+      pigweedCDD += dd;
+      ragweedCDD += dd;
+      velvetleafCDD += dd;
 
+      const today = format(new Date(), 'YYYY-MM-DD');
       const crabgrassY = Math.round(
-        100 / (1 + Math.exp(19.44 - 3.06 * Math.log(crabgrassCDD))) * 100
+        100 / (1 + Math.exp(19.44 - 3.06 * Math.log(crabgrassCDD)))
       );
+
       if (crabgrassY >= 25) {
         crabgrass['y'].push(crabgrassY);
         crabgrass['dates'].push(day[0]);
@@ -336,8 +321,14 @@ export default class appStore {
         crabgrassCDD = 0;
       }
 
+      if (day[0] === today && !crabgrass.dates.includes(today)) {
+        crabgrass['y'].push(crabgrassY);
+        crabgrass['dates'].push(day[0]);
+        crabgrass['cdd'].push(crabgrassCDD);
+      }
+
       const gFoxtailY = Math.round(
-        100 / (1 + Math.exp(18.05 - 3.06 * Math.log(gFoxtailCDD))) * 100
+        100 / (1 + Math.exp(18.05 - 3.06 * Math.log(gFoxtailCDD)))
       );
       if (gFoxtailY >= 25) {
         gFoxtail['y'].push(gFoxtailY);
@@ -346,8 +337,14 @@ export default class appStore {
         gFoxtailCDD = 0;
       }
 
+      if (day[0] === today && !gFoxtail.dates.includes(today)) {
+        gFoxtail['y'].push(gFoxtailY);
+        gFoxtail['dates'].push(day[0]);
+        gFoxtail['cdd'].push(gFoxtailCDD);
+      }
+
       const yFoxtailY = Math.round(
-        100 / (1 + Math.exp(19.46 - 3.31 * Math.log(yFoxtailCDD))) * 100
+        100 / (1 + Math.exp(19.46 - 3.31 * Math.log(yFoxtailCDD)))
       );
       if (yFoxtailY >= 25) {
         yFoxtail['y'].push(yFoxtailY);
@@ -356,8 +353,14 @@ export default class appStore {
         yFoxtailCDD = 0;
       }
 
+      if (day[0] === today && !yFoxtail.dates.includes(today)) {
+        yFoxtail['y'].push(yFoxtailY);
+        yFoxtail['dates'].push(day[0]);
+        yFoxtail['cdd'].push(yFoxtailCDD);
+      }
+
       const lambsquartersY = Math.round(
-        100 / (1 + Math.exp(11.69 - 1.9 * Math.log(lambsquartersCDD))) * 100
+        100 / (1 + Math.exp(11.69 - 1.9 * Math.log(lambsquartersCDD)))
       );
       if (lambsquartersY >= 25) {
         lambsquarters['y'].push(lambsquartersY);
@@ -366,8 +369,14 @@ export default class appStore {
         lambsquartersCDD = 0;
       }
 
+      if (day[0] === today && !lambsquarters.dates.includes(today)) {
+        lambsquarters['y'].push(lambsquartersY);
+        lambsquarters['dates'].push(day[0]);
+        lambsquarters['cdd'].push(lambsquartersCDD);
+      }
+
       const nightshadeY = Math.round(
-        100 / (1 + Math.exp(27.93 - 4.18 * Math.log(nightshadeCDD))) * 100
+        100 / (1 + Math.exp(27.93 - 4.18 * Math.log(nightshadeCDD)))
       );
 
       if (nightshadeY >= 25) {
@@ -377,8 +386,14 @@ export default class appStore {
         nightshadeCDD = 0;
       }
 
+      if (day[0] === today && !nightshade.dates.includes(today)) {
+        nightshade['y'].push(nightshadeY);
+        nightshade['dates'].push(day[0]);
+        nightshade['cdd'].push(nightshadeCDD);
+      }
+
       const pigweedY = Math.round(
-        100 / (1 + Math.exp(20.06 - 3.12 * Math.log(pigweedCDD))) * 100
+        100 / (1 + Math.exp(20.06 - 3.12 * Math.log(pigweedCDD)))
       );
       if (pigweedY >= 25) {
         pigweed['y'].push(pigweedY);
@@ -387,8 +402,14 @@ export default class appStore {
         pigweedCDD = 0;
       }
 
+      if (day[0] === today && !pigweed.dates.includes(today)) {
+        pigweed['y'].push(pigweedY);
+        pigweed['dates'].push(day[0]);
+        pigweed['cdd'].push(pigweedCDD);
+      }
+
       const ragweedY = Math.round(
-        100 / (1 + Math.exp(12.93 - 2.63 * Math.log(ragweedCDD))) * 100
+        100 / (1 + Math.exp(12.93 - 2.63 * Math.log(ragweedCDD)))
       );
       if (ragweedY >= 25) {
         ragweed['y'].push(ragweedY);
@@ -396,14 +417,26 @@ export default class appStore {
         ragweed['cdd'].push(ragweedCDD);
         ragweedCDD = 0;
       }
+      if (day[0] === today && !ragweed.dates.includes(today)) {
+        ragweed['y'].push(ragweedY);
+        ragweed['dates'].push(day[0]);
+        ragweed['cdd'].push(ragweedCDD);
+      }
+
       const velvetleafY = Math.round(
-        100 / (1 + Math.exp(18.86 - 3.21 * Math.log(velvetleafCDD))) * 100
+        100 / (1 + Math.exp(18.86 - 3.21 * Math.log(velvetleafCDD)))
       );
       if (velvetleafY >= 25) {
         velvetleaf['y'].push(velvetleafY);
         velvetleaf['dates'].push(day[0]);
         velvetleaf['cdd'].push(velvetleafCDD);
         velvetleafCDD = 0;
+      }
+
+      if (day[0] === today && !velvetleaf.dates.includes(today)) {
+        velvetleaf['y'].push(velvetleafY);
+        velvetleaf['dates'].push(day[0]);
+        velvetleaf['cdd'].push(velvetleafCDD);
       }
     });
 
@@ -417,10 +450,12 @@ export default class appStore {
       ragweed,
       velvetleaf
     );
+    // this.model.map(e => console.log(toJS(e)));
   }
 
   @action
   updateGraph(data) {
+    this.graph.clear();
     let crabgrassCDD = 0;
     let gFoxtailCDD = 0;
     let yFoxtailCDD = 0;
@@ -430,15 +465,17 @@ export default class appStore {
     let ragweedCDD = 0;
     let velvetleafCDD = 0;
 
+    const base = 48.2; // 9˚C
     data.forEach((day, i) => {
-      crabgrassCDD += day[4];
-      gFoxtailCDD += day[4];
-      yFoxtailCDD += day[4];
-      lambsquartersCDD += day[4];
-      nightshadeCDD += day[4];
-      pigweedCDD += day[4];
-      ragweedCDD += day[4];
-      velvetleafCDD += day[4];
+      const dd = day[1] - base > 0 ? Math.round(day[1] - base) : 0;
+      crabgrassCDD += dd;
+      gFoxtailCDD += dd;
+      yFoxtailCDD += dd;
+      lambsquartersCDD += dd;
+      nightshadeCDD += dd;
+      pigweedCDD += dd;
+      ragweedCDD += dd;
+      velvetleafCDD += dd;
 
       const crabgrassY = Math.round(
         100 / (1 + Math.exp(19.44 - 3.06 * Math.log(crabgrassCDD)))
@@ -471,6 +508,7 @@ export default class appStore {
       const velvetleafY = Math.round(
         100 / (1 + Math.exp(18.86 - 3.21 * Math.log(velvetleafCDD)))
       );
+
       this.graph.push({
         field: `field ${i}`,
         date: format(day[0], 'MMM D'),
@@ -505,7 +543,6 @@ export default class appStore {
     const selectedDate = this.graph.find(
       day => day.date === this.graphStartDate
     );
-    console.log(selectedDate);
     // this.userData.clear();
     if (this.startDateIndex !== -1) {
       this.userData = this.graph.slice(this.startDateIndex);
