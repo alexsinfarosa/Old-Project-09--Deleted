@@ -229,6 +229,7 @@ export default class appStore {
   @observable gridData = [];
   @observable model = [];
   @observable graph = [];
+
   @action
   loadData() {
     this.isLoading = true;
@@ -257,7 +258,7 @@ export default class appStore {
       .then(res => {
         this.updateData(res.data.data);
         this.updateGraph(res.data.data);
-        this.setUserData();
+        // this.setUserData();
         this.isLoading = false;
         // console.log(this.model.slice());
       })
@@ -525,7 +526,6 @@ export default class appStore {
   }
   @observable userData = [];
   @observable graphStartDate;
-  @observable dates = [];
 
   @action
   setGraphStartDate = d => {
@@ -543,17 +543,10 @@ export default class appStore {
     const selectedDate = this.graph.find(
       day => day.date === this.graphStartDate
     );
-    // this.userData.clear();
+    console.log(this.userData.slice());
     if (this.startDateIndex !== -1) {
-      this.userData = this.graph.slice(this.startDateIndex);
-      this.setDates(selectedDate);
+      this.userData.push(selectedDate);
       return;
     }
-    this.userData = this.graph.slice(0);
   }
-
-  @action
-  setDates = d => {
-    this.dates.push(d);
-  };
 }

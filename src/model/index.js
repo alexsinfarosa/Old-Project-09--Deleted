@@ -29,7 +29,6 @@ const displayDate = text => {
 
 const displayDD = (text, record) => {
   return record.dates.map((e, i) => {
-    console.log(e);
     if (e === today) {
       return <div style={{ color: '#008751' }} key={i}>{text[i]}</div>;
     }
@@ -39,7 +38,6 @@ const displayDD = (text, record) => {
 
 const displayEmergence = (text, record) => {
   return record.dates.map((e, i) => {
-    console.log(e);
     if (e === today) {
       return <div style={{ color: '#008751' }} key={i}>{text[i]}</div>;
     }
@@ -192,7 +190,7 @@ export default class Weed extends Component {
             />
           </Box>
         </Flex>
-        {this.props.store.app.dates.length > 0 && <UserTable />}
+        {this.props.store.app.userData.length > 0 && <UserTable />}
         <Graph />
       </Flex>
     );

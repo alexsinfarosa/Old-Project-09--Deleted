@@ -10,8 +10,8 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
-  ResponsiveContainer,
-  Legend
+  ResponsiveContainer
+  // Legend
 } from 'recharts';
 
 // components
@@ -21,7 +21,7 @@ import CustomLabels from './CustomLabel';
 @observer
 export default class Graph extends Component {
   render() {
-    const { userData } = this.props.store.app;
+    const { graph } = this.props.store.app;
     let aspect;
     const w = window.innerWidth;
     if (w >= 0 && w <= 401) {
@@ -39,7 +39,7 @@ export default class Graph extends Component {
               <LineChart
                 width={600}
                 height={200}
-                data={userData.slice()}
+                data={graph.slice()}
                 syncId="anyId"
                 margin={{ top: 30, right: 0, left: -30, bottom: 30 }}
                 onClick={d =>
@@ -49,7 +49,7 @@ export default class Graph extends Component {
                 <YAxis />
                 <CartesianGrid strokeDasharray="3 3" vertical={false} />
                 <Tooltip />
-                <Legend verticalAlign="top" layout="horizontal" height={72} />
+                {/* <Legend verticalAlign="top" layout="horizontal" height={72} /> */}
                 <Line dataKey="Large crabgrass" stroke="#ff7f00" dot={false} />
                 <Line dataKey="Giant foxtail" stroke="#fdbf6f" dot={false} />
                 <Line dataKey="Yellow foxtail" stroke="#e31a1c" dot={false} />

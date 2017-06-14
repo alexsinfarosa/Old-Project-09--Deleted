@@ -29,7 +29,7 @@ const columns = [
 export default class UserTable extends Component {
   render() {
     const { mobile } = this.props;
-    const { dates, areRequiredFieldsSet } = this.props.store.app;
+    const { userData, areRequiredFieldsSet } = this.props.store.app;
 
     return (
       <Flex justify="center">
@@ -42,7 +42,7 @@ export default class UserTable extends Component {
             rowKey={record => record.date}
             loading={this.props.store.app.isLoading}
             pagination={false}
-            dataSource={areRequiredFieldsSet ? dates.slice() : null}
+            dataSource={areRequiredFieldsSet ? userData.slice() : null}
           />
         </Box>
       </Flex>
