@@ -16,7 +16,11 @@ export default class LogicStore {
   @observable isGraph = false;
   @action setIsGraph = d => (this.isGraph = !this.isGraph);
 
-  @observable breakpoints = {
+  @observable isTable = false;
+  @action setIsTable = d => (this.isTable = !this.isTable);
+
+  @observable
+  breakpoints = {
     xs: '(max-width: 767px)',
     su: '(min-width: 768px)',
     sm: '(min-width: 768px) and (max-width: 991px)',

@@ -33,7 +33,7 @@ export default class UserTable extends Component {
 
     return (
       <Flex justify="center">
-        <Box mt={4} mb={4} col={12} lg={12} md={12} sm={12}>
+        <Box mb={1} col={12} lg={12} md={12} sm={12}>
           <h2>User Data</h2>
           <Table
             size={mobile ? 'small' : 'middle'}

@@ -25,15 +25,15 @@ class SideBar extends Component {
     this.props.store.logic.setIsSidebarOpen(false);
   };
 
-  toggleGraph = () => {
+  toggleTable = () => {
     // console.log(`switch to ${checked}`);
-    this.props.store.logic.setIsGraph();
+    this.props.store.logic.setIsTable();
     this.props.store.logic.setIsSidebarOpen(false);
   };
 
   render() {
     const { specie } = this.props.store.app;
-    const { isGraph, isMap } = this.props.store.logic;
+    const { isGraph, isMap, isTable } = this.props.store.logic;
     return (
       <SideBarContent>
         <Box mb={2} style={{ textAlign: 'center', letterSpacing: '1px' }}>
@@ -55,6 +55,12 @@ class SideBar extends Component {
         <State size={this.props.size} />
         <Station size={this.props.size} />
         <DatePicker size={this.props.size} />
+
+        <Box mb={2} mt={2}>
+          <Button size="large" icon="layout" onClick={this.toggleTable}>
+            {isTable ? 'Hide Table' : 'Display Table'}
+          </Button>
+        </Box>
 
         <Box mb={2} mt={2}>
           <Button size="large" icon="environment-o" onClick={this.toggleMap}>

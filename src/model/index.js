@@ -85,6 +85,7 @@ const columns = [
 export default class Weed extends Component {
   render() {
     const { model, station, areRequiredFieldsSet } = this.props.store.app;
+    const { isTable } = this.props.store.logic;
     const crabgrass = model.filter(specie => specie.name === 'Large crabgrass');
     const gFoxtail = model.filter(specie => specie.name === 'Giant foxtail');
     const yFoxtail = model.filter(specie => specie.name === 'Yellow foxtail');
@@ -100,99 +101,102 @@ export default class Weed extends Component {
     const { mobile } = this.props;
 
     return (
-      <Flex column>
-        <Box>
-          {!mobile
-            ? <h2>
-                Crabgrass specie for
-                {' '}
-                <em style={{ color: '#008751' }}>{station.name}</em>
-              </h2>
-            : <h3>
-                Crabgrass specie for
-                {' '}
-                <em style={{ color: '#008751' }}>{station.name}</em>
-              </h3>}
-        </Box>
+      <div>
+        {isTable &&
+          <Flex column>
+            <Box>
+              {!mobile
+                ? <h2>
+                    Crabgrass specie for
+                    {' '}
+                    <em style={{ color: '#008751' }}>{station.name}</em>
+                  </h2>
+                : <h3>
+                    Crabgrass specie for
+                    {' '}
+                    <em style={{ color: '#008751' }}>{station.name}</em>
+                  </h3>}
+            </Box>
 
-        <Flex justify="center">
-          <Box mt={1} col={12} lg={12} md={12} sm={12}>
-            <Table
-              size={mobile ? 'small' : 'middle'}
-              columns={columns}
-              rowKey={record => record}
-              loading={this.props.store.app.isLoading}
-              pagination={false}
-              dataSource={areRequiredFieldsSet ? crabgrass : null}
-            />
-            <Table
-              showHeader={false}
-              size={mobile ? 'small' : 'middle'}
-              columns={columns}
-              rowKey={record => record}
-              loading={this.props.store.app.isLoading}
-              pagination={false}
-              dataSource={areRequiredFieldsSet ? gFoxtail : null}
-            />
-            <Table
-              showHeader={false}
-              size={mobile ? 'small' : 'middle'}
-              columns={columns}
-              rowKey={record => record}
-              loading={this.props.store.app.isLoading}
-              pagination={false}
-              dataSource={areRequiredFieldsSet ? yFoxtail : null}
-            />
-            <Table
-              showHeader={false}
-              size={mobile ? 'small' : 'middle'}
-              columns={columns}
-              rowKey={record => record}
-              loading={this.props.store.app.isLoading}
-              pagination={false}
-              dataSource={areRequiredFieldsSet ? lambsquarters : null}
-            />
-            <Table
-              showHeader={false}
-              size={mobile ? 'small' : 'middle'}
-              columns={columns}
-              rowKey={record => record}
-              loading={this.props.store.app.isLoading}
-              pagination={false}
-              dataSource={areRequiredFieldsSet ? nightshade : null}
-            />
-            <Table
-              showHeader={false}
-              size={mobile ? 'small' : 'middle'}
-              columns={columns}
-              rowKey={record => record}
-              loading={this.props.store.app.isLoading}
-              pagination={false}
-              dataSource={areRequiredFieldsSet ? pigweed : null}
-            />
-            <Table
-              showHeader={false}
-              size={mobile ? 'small' : 'middle'}
-              columns={columns}
-              rowKey={record => record}
-              loading={this.props.store.app.isLoading}
-              pagination={false}
-              dataSource={areRequiredFieldsSet ? ragweed : null}
-            />
-            <Table
-              showHeader={false}
-              size={mobile ? 'small' : 'middle'}
-              columns={columns}
-              rowKey={record => record}
-              loading={this.props.store.app.isLoading}
-              pagination={false}
-              dataSource={areRequiredFieldsSet ? velvetleaf : null}
-            />
-          </Box>
-        </Flex>
+            <Flex justify="center">
+              <Box mt={1} col={12} lg={12} md={12} sm={12}>
+                <Table
+                  size={mobile ? 'small' : 'middle'}
+                  columns={columns}
+                  rowKey={record => record}
+                  loading={this.props.store.app.isLoading}
+                  pagination={false}
+                  dataSource={areRequiredFieldsSet ? crabgrass : null}
+                />
+                <Table
+                  showHeader={false}
+                  size={mobile ? 'small' : 'middle'}
+                  columns={columns}
+                  rowKey={record => record}
+                  loading={this.props.store.app.isLoading}
+                  pagination={false}
+                  dataSource={areRequiredFieldsSet ? gFoxtail : null}
+                />
+                <Table
+                  showHeader={false}
+                  size={mobile ? 'small' : 'middle'}
+                  columns={columns}
+                  rowKey={record => record}
+                  loading={this.props.store.app.isLoading}
+                  pagination={false}
+                  dataSource={areRequiredFieldsSet ? yFoxtail : null}
+                />
+                <Table
+                  showHeader={false}
+                  size={mobile ? 'small' : 'middle'}
+                  columns={columns}
+                  rowKey={record => record}
+                  loading={this.props.store.app.isLoading}
+                  pagination={false}
+                  dataSource={areRequiredFieldsSet ? lambsquarters : null}
+                />
+                <Table
+                  showHeader={false}
+                  size={mobile ? 'small' : 'middle'}
+                  columns={columns}
+                  rowKey={record => record}
+                  loading={this.props.store.app.isLoading}
+                  pagination={false}
+                  dataSource={areRequiredFieldsSet ? nightshade : null}
+                />
+                <Table
+                  showHeader={false}
+                  size={mobile ? 'small' : 'middle'}
+                  columns={columns}
+                  rowKey={record => record}
+                  loading={this.props.store.app.isLoading}
+                  pagination={false}
+                  dataSource={areRequiredFieldsSet ? pigweed : null}
+                />
+                <Table
+                  showHeader={false}
+                  size={mobile ? 'small' : 'middle'}
+                  columns={columns}
+                  rowKey={record => record}
+                  loading={this.props.store.app.isLoading}
+                  pagination={false}
+                  dataSource={areRequiredFieldsSet ? ragweed : null}
+                />
+                <Table
+                  showHeader={false}
+                  size={mobile ? 'small' : 'middle'}
+                  columns={columns}
+                  rowKey={record => record}
+                  loading={this.props.store.app.isLoading}
+                  pagination={false}
+                  dataSource={areRequiredFieldsSet ? velvetleaf : null}
+                />
+              </Box>
+            </Flex>
+          </Flex>}
         {this.props.store.app.userData.length > 0 && <UserTable />}
         <Graph />
-      </Flex>
+      </div>
     );
   }
 }

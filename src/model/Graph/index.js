@@ -32,7 +32,7 @@ export default class Graph extends Component {
       aspect = 2;
     }
     return (
-      <Box mb={4} mt={4}>
+      <Box mb={2} mt={1}>
         <Flex column>
           <Box mb={4}>
             <ResponsiveContainer width="100%" aspect={aspect}>
