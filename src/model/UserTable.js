@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
+import format from 'date-fns/format';
 // import { toJS } from 'mobx';
 
 import 'styles/table.styl';
@@ -7,6 +8,9 @@ import { Flex, Box } from 'reflexbox';
 
 import Table from 'antd/lib/table';
 import 'antd/lib/table/style/css';
+
+import Button from 'antd/lib/button';
+import 'antd/lib/button/style/css';
 
 //columns for the model
 const columns = [
@@ -34,7 +38,12 @@ export default class UserTable extends Component {
     return (
       <Flex justify="center">
         <Box mb={1} col={12} lg={12} md={12} sm={12}>
-          <h2>User Data</h2>
+          <Flex justify="space-between" align="center" mt={1} mb={1}>
+            <h2>User Data</h2>
+            <Button type="default">
+              ADD
+            </Button>
+          </Flex>
           <Table
             size={mobile ? 'small' : 'middle'}
             columns={columns}

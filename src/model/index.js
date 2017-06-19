@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
-import takeRight from 'lodash/takeRight';
 
 // import takeRight from 'lodash/takeRight';
 // import isAfter from 'date-fns/is_after';
-import format from 'date-fns/format';
+// import format from 'date-fns/format';
 
 import 'styles/table.styl';
 import { Flex, Box } from 'reflexbox';
@@ -18,21 +17,26 @@ import Graph from './Graph';
 // import { RiskLevel, Value, Info } from './styles';
 // const today = format(new Date(), 'YYYY-MM-DD');
 
-const displayDate = text => {
-  console.log(text);
-  return <div key={text}>{text}</div>;
-};
+// const displayDate = text => {
+//   return <div key={text}>{text}</div>;
+// };
 
-const yesterday = (text, record) => {
-  console.log(text);
-  // return <div key={i}>{text[i]}</div>;
-};
+// const displayDD = (text, record) => {
+//   return record.dates.map((e, i) => {
+//     if (e === today) {
+//       return <div style={{ color: '#008751' }} key={i}>{text[i]}</div>;
+//     }
+//     return <div key={i}>{text[i]}</div>;
+//   });
+// };
 //
 // const displayEmergence = (text, record) => {
-//   if (e === today) {
-//     return <div style={{ color: '#008751' }} key={i}>{text[i]}</div>;
-//   }
-//   return <div key={i}>{text[i]}</div>;
+//   return record.dates.map((e, i) => {
+//     if (e === today) {
+//       return <div style={{ color: '#008751' }} key={i}>{text[i]}</div>;
+//     }
+//     return <div key={i}>{text[i]}</div>;
+//   });
 // };
 
 //columns for the model
@@ -42,24 +46,28 @@ const columns = [
     dataIndex: 'name',
     key: 'name',
     width: 150
-    // render: text => displayDate(text)
   },
   {
-    title: '% Cumulative emergence',
+    title: 'Percent Cumulative Emergence',
     children: [
       {
         title: 'Yesterday',
-        dataIndex: 'y',
-        key: 'y',
+        dataIndex: 'yesterday',
+        key: 'yesterday',
         width: 150
-        // render: text => yesterday(text)
+      },
+      {
+        title: 'Today',
+        dataIndex: 'today',
+        key: 'today',
+        width: 150
+      },
+      {
+        title: 'Tomorrow/Forecast',
+        dataIndex: 'tomorrow',
+        key: 'tomorrow',
+        width: 150
       }
-      // {
-      //   title: 'Today',
-      //   dataIndex: 'y',
-      //   key: 'y',
-      //   width: 150
-      // }
     ]
   }
 ];
@@ -70,14 +78,15 @@ export default class Weed extends Component {
   render() {
     const {
       station,
+      state,
       areRequiredFieldsSet,
       crabgrass,
       gFoxtail,
       yFoxtail,
       lambsquarters,
       pigweed,
-      nightshade,
       ragweed,
+      nightshade,
       velvetleaf
     } = this.props.store.app;
     const { isTable } = this.props.store.logic;
@@ -85,19 +94,25 @@ export default class Weed extends Component {
 
     return (
       <div>
+        <UserTable />
+        <Graph />
         {isTable &&
           <Flex column>
             <Box>
               {!mobile
                 ? <h2>
-                    Crabgrass specie for
+                    Weed species for
                     {' '}
-                    <em style={{ color: '#008751' }}>{station.name}</em>
+                    <em style={{ color: '#008751' }}>
+                      {station.name}, {state.postalCode}
+                    </em>
                   </h2>
                 : <h3>
-                    Crabgrass specie for
+                    Weed species for
                     {' '}
-                    <em style={{ color: '#008751' }}>{station.name}</em>
+                    <em style={{ color: '#008751' }}>
+                      {station.name}, {state.postalCode}
+                    </em>
                   </h3>}
             </Box>
 
@@ -106,95 +121,83 @@ export default class Weed extends Component {
                 <Table
                   size={mobile ? 'small' : 'middle'}
                   columns={columns}
-                  rowKey={record => record.date}
+                  rowKey={record => record}
+                  loading={this.props.store.app.isLoading}
+                  pagination={false}
+                  dataSource={areRequiredFieldsSet ? crabgrass.slice(-1) : null}
+                />
+                <Table
+                  showHeader={false}
+                  size={mobile ? 'small' : 'middle'}
+                  columns={columns}
+                  rowKey={record => record}
+                  loading={this.props.store.app.isLoading}
+                  pagination={false}
+                  dataSource={areRequiredFieldsSet ? gFoxtail.slice(-1) : null}
+                />
+                <Table
+                  showHeader={false}
+                  size={mobile ? 'small' : 'middle'}
+                  columns={columns}
+                  rowKey={record => record}
+                  loading={this.props.store.app.isLoading}
+                  pagination={false}
+                  dataSource={areRequiredFieldsSet ? yFoxtail.slice(-1) : null}
+                />
+                <Table
+                  showHeader={false}
+                  size={mobile ? 'small' : 'middle'}
+                  columns={columns}
+                  rowKey={record => record}
                   loading={this.props.store.app.isLoading}
                   pagination={false}
                   dataSource={
-                    areRequiredFieldsSet ? takeRight(crabgrass, 2) : null
+                    areRequiredFieldsSet ? lambsquarters.slice(-1) : null
                   }
                 />
                 <Table
                   showHeader={false}
                   size={mobile ? 'small' : 'middle'}
                   columns={columns}
-                  rowKey={record => record.date}
+                  rowKey={record => record}
                   loading={this.props.store.app.isLoading}
                   pagination={false}
                   dataSource={
-                    areRequiredFieldsSet ? takeRight(gFoxtail, 2) : null
+                    areRequiredFieldsSet ? nightshade.slice(-1) : null
                   }
                 />
                 <Table
                   showHeader={false}
                   size={mobile ? 'small' : 'middle'}
                   columns={columns}
-                  rowKey={record => record.date}
+                  rowKey={record => record}
                   loading={this.props.store.app.isLoading}
                   pagination={false}
-                  dataSource={
-                    areRequiredFieldsSet ? takeRight(yFoxtail, 2) : null
-                  }
+                  dataSource={areRequiredFieldsSet ? pigweed.slice(-1) : null}
                 />
                 <Table
                   showHeader={false}
                   size={mobile ? 'small' : 'middle'}
                   columns={columns}
-                  rowKey={record => record.date}
+                  rowKey={record => record}
                   loading={this.props.store.app.isLoading}
                   pagination={false}
-                  dataSource={
-                    areRequiredFieldsSet ? takeRight(lambsquarters, 2) : null
-                  }
+                  dataSource={areRequiredFieldsSet ? ragweed.slice(-1) : null}
                 />
                 <Table
                   showHeader={false}
                   size={mobile ? 'small' : 'middle'}
                   columns={columns}
-                  rowKey={record => record.date}
+                  rowKey={record => record}
                   loading={this.props.store.app.isLoading}
                   pagination={false}
                   dataSource={
-                    areRequiredFieldsSet ? takeRight(nightshade, 2) : null
-                  }
-                />
-                <Table
-                  showHeader={false}
-                  size={mobile ? 'small' : 'middle'}
-                  columns={columns}
-                  rowKey={record => record.date}
-                  loading={this.props.store.app.isLoading}
-                  pagination={false}
-                  dataSource={
-                    areRequiredFieldsSet ? takeRight(pigweed, 2) : null
-                  }
-                />
-                <Table
-                  showHeader={false}
-                  size={mobile ? 'small' : 'middle'}
-                  columns={columns}
-                  rowKey={record => record.date}
-                  loading={this.props.store.app.isLoading}
-                  pagination={false}
-                  dataSource={
-                    areRequiredFieldsSet ? takeRight(ragweed, 2) : null
-                  }
-                />
-                <Table
-                  showHeader={false}
-                  size={mobile ? 'small' : 'middle'}
-                  columns={columns}
-                  rowKey={record => record.date}
-                  loading={this.props.store.app.isLoading}
-                  pagination={false}
-                  dataSource={
-                    areRequiredFieldsSet ? takeRight(velvetleaf, 2) : null
+                    areRequiredFieldsSet ? velvetleaf.slice(-1) : null
                   }
                 />
               </Box>
             </Flex>
           </Flex>}
-        {this.props.store.app.userData.length > 0 && <UserTable />}
-        <Graph />
       </div>
     );
   }

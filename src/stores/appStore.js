@@ -301,84 +301,117 @@ export default class appStore {
       ragweedCDD += dd;
       velvetleafCDD += dd;
 
+      let yesterday;
       const crabgrassY = Math.round(
         100 / (1 + Math.exp(19.44 - 3.06 * Math.log(crabgrassCDD)))
       );
+
+      if (i > 0) {
+        yesterday = this.crabgrass[i - 1].today;
+      }
       this.crabgrass.push({
         name: 'Large crabgrass',
-        y: crabgrassY,
+        today: crabgrassY,
         date: day[0],
+        yesterday: yesterday,
         cdd: crabgrassCDD
       });
 
       const gFoxtailY = Math.round(
         100 / (1 + Math.exp(18.05 - 3.06 * Math.log(gFoxtailCDD)))
       );
+      if (i > 0) {
+        yesterday = this.gFoxtail[i - 1].today;
+      }
       this.gFoxtail.push({
         name: 'Giant foxtail',
-        y: gFoxtailY,
+        today: gFoxtailY,
         date: day[0],
+        yesterday: yesterday,
         cdd: gFoxtailCDD
       });
 
       const yFoxtailY = Math.round(
         100 / (1 + Math.exp(19.46 - 3.31 * Math.log(yFoxtailCDD)))
       );
-
+      if (i > 0) {
+        yesterday = this.yFoxtail[i - 1].today;
+      }
       this.yFoxtail.push({
         name: 'Yellow foxtail',
-        y: yFoxtailY,
+        today: yFoxtailY,
         date: day[0],
+        yesterday: yesterday,
         cdd: yFoxtailCDD
       });
 
       const lambsquartersY = Math.round(
         100 / (1 + Math.exp(11.69 - 1.9 * Math.log(lambsquartersCDD)))
       );
+      if (i > 0) {
+        yesterday = this.lambsquarters[i - 1].today;
+      }
       this.lambsquarters.push({
         name: 'Common lambsquarters',
-        y: lambsquartersY,
+        today: lambsquartersY,
         date: day[0],
+        yesterday: yesterday,
         cdd: lambsquartersCDD
       });
 
       const nightshadeY = Math.round(
         100 / (1 + Math.exp(27.93 - 4.18 * Math.log(nightshadeCDD)))
       );
+      if (i > 0) {
+        yesterday = this.nightshade[i - 1].today;
+      }
       this.nightshade.push({
         name: 'Eastern black nightshade',
-        y: nightshadeY,
+        today: nightshadeY,
         date: day[0],
+        yesterday: yesterday,
         cdd: nightshadeCDD
       });
 
       const pigweedY = Math.round(
         100 / (1 + Math.exp(20.06 - 3.12 * Math.log(pigweedCDD)))
       );
+      if (i > 0) {
+        yesterday = this.pigweed[i - 1].today;
+      }
       this.pigweed.push({
         name: 'Smooth pigweed',
-        y: pigweedY,
+        today: pigweedY,
         date: day[0],
+        yesterday: yesterday,
         cdd: pigweedCDD
       });
 
       const ragweedY = Math.round(
         100 / (1 + Math.exp(12.93 - 2.63 * Math.log(ragweedCDD)))
       );
+      if (i > 0) {
+        yesterday = this.ragweed[i - 1].today;
+      }
       this.ragweed.push({
         name: 'Common ragweed',
-        y: ragweedY,
+        today: ragweedY,
         date: day[0],
+        yesterday: yesterday,
         cdd: ragweedCDD
       });
 
       const velvetleafY = Math.round(
         100 / (1 + Math.exp(18.86 - 3.21 * Math.log(velvetleafCDD)))
       );
+      if (i > 0) {
+        yesterday = this.velvetleaf[i - 1].today;
+      }
       this.velvetleaf.push({
-        name: 'velvetleaf',
-        y: velvetleafY,
+        name: 'Velvetleaf',
+        today: velvetleafY,
         date: day[0],
+        yesterday: yesterday,
         cdd: velvetleafCDD
       });
     });
@@ -473,10 +506,9 @@ export default class appStore {
     const selectedDate = this.graph.find(
       day => day.date === this.graphStartDate
     );
-    console.log(this.userData.slice());
+
     if (this.startDateIndex !== -1) {
       this.userData.push(selectedDate);
-      return;
     }
   }
 }
