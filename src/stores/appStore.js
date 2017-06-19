@@ -267,27 +267,18 @@ export default class appStore {
       });
   }
 
+  @observable crabgrass = [];
+  @observable gFoxtail = [];
+  @observable yFoxtail = [];
+  @observable lambsquarters = [];
+  @observable pigweed = [];
+  @observable nightshade = [];
+  @observable ragweed = [];
+  @observable velvetleaf = [];
+
   @action
   updateData(data) {
     this.model.clear();
-    let crabgrass = { name: 'Large crabgrass', y: [], dates: [], cdd: [] };
-    let gFoxtail = { name: 'Giant foxtail', y: [], dates: [], cdd: [] };
-    let yFoxtail = { name: 'Yellow foxtail', y: [], dates: [], cdd: [] };
-    let lambsquarters = {
-      name: 'Common lambsquarters',
-      y: [],
-      dates: [],
-      cdd: []
-    };
-    let pigweed = { name: 'Smooth pigweed', y: [], dates: [], cdd: [] };
-    let nightshade = {
-      name: 'Eastern black nightshade',
-      y: [],
-      dates: [],
-      cdd: []
-    };
-    let ragweed = { name: 'Common ragweed', y: [], dates: [], cdd: [] };
-    let velvetleaf = { name: 'Velvetleaf', y: [], dates: [], cdd: [] };
 
     let crabgrassCDD = 0;
     let gFoxtailCDD = 0;
@@ -310,148 +301,87 @@ export default class appStore {
       ragweedCDD += dd;
       velvetleafCDD += dd;
 
-      const today = format(new Date(), 'YYYY-MM-DD');
       const crabgrassY = Math.round(
         100 / (1 + Math.exp(19.44 - 3.06 * Math.log(crabgrassCDD)))
       );
-
-      if (crabgrassY >= 25) {
-        crabgrass['y'].push(crabgrassY);
-        crabgrass['dates'].push(day[0]);
-        crabgrass['cdd'].push(crabgrassCDD);
-        crabgrassCDD = 0;
-      }
-
-      if (day[0] === today && !crabgrass.dates.includes(today)) {
-        crabgrass['y'].push(crabgrassY);
-        crabgrass['dates'].push(day[0]);
-        crabgrass['cdd'].push(crabgrassCDD);
-      }
+      this.crabgrass.push({
+        name: 'Large crabgrass',
+        y: crabgrassY,
+        date: day[0],
+        cdd: crabgrassCDD
+      });
 
       const gFoxtailY = Math.round(
         100 / (1 + Math.exp(18.05 - 3.06 * Math.log(gFoxtailCDD)))
       );
-      if (gFoxtailY >= 25) {
-        gFoxtail['y'].push(gFoxtailY);
-        gFoxtail['dates'].push(day[0]);
-        gFoxtail['cdd'].push(gFoxtailCDD);
-        gFoxtailCDD = 0;
-      }
-
-      if (day[0] === today && !gFoxtail.dates.includes(today)) {
-        gFoxtail['y'].push(gFoxtailY);
-        gFoxtail['dates'].push(day[0]);
-        gFoxtail['cdd'].push(gFoxtailCDD);
-      }
+      this.gFoxtail.push({
+        name: 'Giant foxtail',
+        y: gFoxtailY,
+        date: day[0],
+        cdd: gFoxtailCDD
+      });
 
       const yFoxtailY = Math.round(
         100 / (1 + Math.exp(19.46 - 3.31 * Math.log(yFoxtailCDD)))
       );
-      if (yFoxtailY >= 25) {
-        yFoxtail['y'].push(yFoxtailY);
-        yFoxtail['dates'].push(day[0]);
-        yFoxtail['cdd'].push(yFoxtailCDD);
-        yFoxtailCDD = 0;
-      }
 
-      if (day[0] === today && !yFoxtail.dates.includes(today)) {
-        yFoxtail['y'].push(yFoxtailY);
-        yFoxtail['dates'].push(day[0]);
-        yFoxtail['cdd'].push(yFoxtailCDD);
-      }
+      this.yFoxtail.push({
+        name: 'Yellow foxtail',
+        y: yFoxtailY,
+        date: day[0],
+        cdd: yFoxtailCDD
+      });
 
       const lambsquartersY = Math.round(
         100 / (1 + Math.exp(11.69 - 1.9 * Math.log(lambsquartersCDD)))
       );
-      if (lambsquartersY >= 25) {
-        lambsquarters['y'].push(lambsquartersY);
-        lambsquarters['dates'].push(day[0]);
-        lambsquarters['cdd'].push(lambsquartersCDD);
-        lambsquartersCDD = 0;
-      }
-
-      if (day[0] === today && !lambsquarters.dates.includes(today)) {
-        lambsquarters['y'].push(lambsquartersY);
-        lambsquarters['dates'].push(day[0]);
-        lambsquarters['cdd'].push(lambsquartersCDD);
-      }
+      this.lambsquarters.push({
+        name: 'Common lambsquarters',
+        y: lambsquartersY,
+        date: day[0],
+        cdd: lambsquartersCDD
+      });
 
       const nightshadeY = Math.round(
         100 / (1 + Math.exp(27.93 - 4.18 * Math.log(nightshadeCDD)))
       );
-
-      if (nightshadeY >= 25) {
-        nightshade['y'].push(nightshadeY);
-        nightshade['dates'].push(day[0]);
-        nightshade['cdd'].push(nightshadeCDD);
-        nightshadeCDD = 0;
-      }
-
-      if (day[0] === today && !nightshade.dates.includes(today)) {
-        nightshade['y'].push(nightshadeY);
-        nightshade['dates'].push(day[0]);
-        nightshade['cdd'].push(nightshadeCDD);
-      }
+      this.nightshade.push({
+        name: 'Eastern black nightshade',
+        y: nightshadeY,
+        date: day[0],
+        cdd: nightshadeCDD
+      });
 
       const pigweedY = Math.round(
         100 / (1 + Math.exp(20.06 - 3.12 * Math.log(pigweedCDD)))
       );
-      if (pigweedY >= 25) {
-        pigweed['y'].push(pigweedY);
-        pigweed['dates'].push(day[0]);
-        pigweed['cdd'].push(pigweedCDD);
-        pigweedCDD = 0;
-      }
-
-      if (day[0] === today && !pigweed.dates.includes(today)) {
-        pigweed['y'].push(pigweedY);
-        pigweed['dates'].push(day[0]);
-        pigweed['cdd'].push(pigweedCDD);
-      }
+      this.pigweed.push({
+        name: 'Smooth pigweed',
+        y: pigweedY,
+        date: day[0],
+        cdd: pigweedCDD
+      });
 
       const ragweedY = Math.round(
         100 / (1 + Math.exp(12.93 - 2.63 * Math.log(ragweedCDD)))
       );
-      if (ragweedY >= 25) {
-        ragweed['y'].push(ragweedY);
-        ragweed['dates'].push(day[0]);
-        ragweed['cdd'].push(ragweedCDD);
-        ragweedCDD = 0;
-      }
-      if (day[0] === today && !ragweed.dates.includes(today)) {
-        ragweed['y'].push(ragweedY);
-        ragweed['dates'].push(day[0]);
-        ragweed['cdd'].push(ragweedCDD);
-      }
+      this.ragweed.push({
+        name: 'Common ragweed',
+        y: ragweedY,
+        date: day[0],
+        cdd: ragweedCDD
+      });
 
       const velvetleafY = Math.round(
         100 / (1 + Math.exp(18.86 - 3.21 * Math.log(velvetleafCDD)))
       );
-      if (velvetleafY >= 25) {
-        velvetleaf['y'].push(velvetleafY);
-        velvetleaf['dates'].push(day[0]);
-        velvetleaf['cdd'].push(velvetleafCDD);
-        velvetleafCDD = 0;
-      }
-
-      if (day[0] === today && !velvetleaf.dates.includes(today)) {
-        velvetleaf['y'].push(velvetleafY);
-        velvetleaf['dates'].push(day[0]);
-        velvetleaf['cdd'].push(velvetleafCDD);
-      }
+      this.velvetleaf.push({
+        name: 'velvetleaf',
+        y: velvetleafY,
+        date: day[0],
+        cdd: velvetleafCDD
+      });
     });
-
-    this.model.push(
-      crabgrass,
-      gFoxtail,
-      yFoxtail,
-      lambsquarters,
-      nightshade,
-      pigweed,
-      ragweed,
-      velvetleaf
-    );
-    // this.model.map(e => console.log(toJS(e)));
   }
 
   @action
