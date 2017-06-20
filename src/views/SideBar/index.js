@@ -57,14 +57,14 @@ class SideBar extends Component {
         <DatePicker size={this.props.size} />
 
         <Box mb={2} mt={2}>
-          <Button size="large" icon="layout" onClick={this.toggleTable}>
-            {isTable ? 'Hide Table' : 'Display Table'}
+          <Button size="large" icon="environment-o" onClick={this.toggleMap}>
+            {isMap ? 'Hide Map' : 'Display Map'}
           </Button>
         </Box>
 
         <Box mb={2} mt={2}>
-          <Button size="large" icon="environment-o" onClick={this.toggleMap}>
-            {isMap ? 'Hide Map' : 'Display Map'}
+          <Button size="large" icon="layout" onClick={this.toggleTable}>
+            {isTable ? 'Hide Table' : 'Display Table'}
           </Button>
         </Box>
 
