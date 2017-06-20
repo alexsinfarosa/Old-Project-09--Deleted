@@ -441,6 +441,7 @@ export default class appStore {
       ragweedCDD += dd;
       velvetleafCDD += dd;
 
+      let aboveZero = false;
       const crabgrassY = Math.round(
         100 / (1 + Math.exp(19.44 - 3.06 * Math.log(crabgrassCDD)))
       );
@@ -473,6 +474,19 @@ export default class appStore {
         100 / (1 + Math.exp(18.86 - 3.21 * Math.log(velvetleafCDD)))
       );
 
+      if (
+        (crabgrassY ||
+          gFoxtailY ||
+          yFoxtailY ||
+          lambsquartersY ||
+          nightshadeY ||
+          pigweedY ||
+          ragweedY ||
+          velvetleafY) > 0
+      ) {
+        aboveZero = true;
+      }
+
       this.graph.push({
         field: `field ${i}`,
         date: format(day[0], 'MMM D'),
@@ -483,7 +497,8 @@ export default class appStore {
         'Eastern black nightshade': nightshadeY,
         'Smooth pigweed': pigweedY,
         'Common ragweed': ragweedY,
-        Velvetleaf: velvetleafY
+        Velvetleaf: velvetleafY,
+        aboveZero: aboveZero
       });
     });
   }
