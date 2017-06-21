@@ -1,22 +1,22 @@
-import React, { Component } from "react";
-import { inject, observer } from "mobx-react";
+import React, { Component } from 'react';
+import { inject, observer } from 'mobx-react';
 
 // components
-import Map from "components/Map";
-import Model from "model";
+import Map from 'components/Map';
+import Model from 'model';
 
 // styled-components
-import { Header, TextIcon, IconStyled, MainContent } from "./styles";
+import { Header, TextIcon, IconStyled, MainContent } from './styles';
 
-@inject("store")
+@inject('store')
 @observer
 class RightContent extends Component {
   render() {
-    const { areRequiredFieldsSet } = this.props.store.app;
+    const { state, areRequiredFieldsSet } = this.props.store.app;
     const { isMap, toggleSidebar } = this.props.store.logic;
     return (
       <div
-        style={{ display: "flex", flexDirection: "column", height: "100vh" }}
+        style={{ display: 'flex', flexDirection: 'column', height: '100vh' }}
       >
         {this.props.mobile
           ? <Header>
@@ -33,14 +33,21 @@ class RightContent extends Component {
           : <Header>
               <div>Weed Model</div>
               <div>
-                <div style={{ textAlign: "right" }}>NEWA</div>
-                <div style={{ fontSize: ".7rem", letterSpacing: "1px" }}>
+                <div style={{ textAlign: 'right' }}>NEWA</div>
+                <div style={{ fontSize: '.7rem', letterSpacing: '1px' }}>
                   Network for Environment and Weather Applications
                 </div>
               </div>
             </Header>}
 
         <MainContent>
+          {state.name === 'All States' &&
+            <h3>
+              Click one of the icons on the map or select a state and a station
+              from the
+              left panel.
+            </h3>}
+          <br />
           {isMap && <Map {...this.props} />}
           {areRequiredFieldsSet && <Model {...this.props} />}
         </MainContent>

@@ -122,6 +122,7 @@ export default class appStore {
 
   // States -------------------------------------------------------------------
   @observable states = [];
+
   @action
   loadStates() {
     this.isLoading = true;
@@ -144,12 +145,26 @@ export default class appStore {
     });
   }
 
-  @observable state = JSON.parse(localStorage.getItem('state')) || {};
+  @observable
+  state = JSON.parse(localStorage.getItem('state')) || {
+    postalCode: 'ALL',
+    lat: 42.5,
+    lon: -75.7,
+    zoom: 6,
+    name: 'All States'
+  };
+
   @action
   setState = stateName => {
     localStorage.removeItem('state');
     this.station = {};
     this.state = this.states.find(state => state.name === stateName);
+    localStorage.setItem('state', JSON.stringify(this.state));
+  };
+
+  @action
+  setStateFromEntireMap = d => {
+    this.state = this.states.find(state => state.postalCode === d);
     localStorage.setItem('state', JSON.stringify(this.state));
   };
 
@@ -164,7 +179,6 @@ export default class appStore {
       )
       .then(res => {
         this.updateStations(res.data.stations);
-        this.addIconsToStations();
         this.isLoading = false;
         // console.log(this.stations.slice());
       })
@@ -181,6 +195,27 @@ export default class appStore {
     });
   }
 
+  @observable stationsWithIcons = [];
+  @action
+  addIconsToStations() {
+    // console.log(this.stations);
+    let arr = [];
+    this.stations.forEach(station => {
+      station['icon'] = matchIconsToStations(
+        this.protocol,
+        station,
+        this.state
+      );
+      arr.push(station);
+    });
+    this.stationsWithIcons = arr;
+  }
+
+  // @computed
+  // get stationsWithMatchedIcons() {
+  //   return matchIconsToStations(this.protocol, this.stations, this.state);
+  // }
+
   @computed
   get currentStateStations() {
     return this.stations.filter(
@@ -195,16 +230,6 @@ export default class appStore {
     this.station = this.stations.find(station => station.name === stationName);
     localStorage.setItem('station', JSON.stringify(this.station));
   };
-
-  @action
-  addIconsToStations() {
-    // if (Object.keys(this.station).length !== 0) {
-    const { protocol, stations, state } = this;
-    stations.forEach(station => {
-      station['icon'] = matchIconsToStations(protocol, station, state);
-    });
-    // }
-  }
 
   // Dates---------------------------------------------------------------------
   @observable currentYear = new Date().getFullYear().toString();
@@ -239,7 +264,7 @@ export default class appStore {
     }
     edate = format(this.endDate, 'YYYY-MM-DD');
     let loc = '-75.7000, 42.5000';
-    if (this.state.name) {
+    if (this.state.name !== 'All States') {
       loc = `${this.station.lon}, ${this.station.lat}`;
     }
 
@@ -278,8 +303,6 @@ export default class appStore {
 
   @action
   updateData(data) {
-    this.model.clear();
-
     let crabgrassCDD = 0;
     let gFoxtailCDD = 0;
     let yFoxtailCDD = 0;

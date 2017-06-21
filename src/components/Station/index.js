@@ -12,6 +12,7 @@ export default class Station extends Component {
     const mobile = this.props.size;
     await this.props.store.app.setStation(value);
     this.props.store.app.loadData();
+    this.props.store.logic.setIsMap(false);
 
     if (this.props.store.app.areRequiredFieldsSet && mobile) {
       this.props.store.logic.setIsSidebarOpen(false);

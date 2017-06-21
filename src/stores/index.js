@@ -9,5 +9,4 @@ const store = {
 export default store;
 
 store.app.loadStates();
-store.app.loadSpecies();
 store.app.loadData();

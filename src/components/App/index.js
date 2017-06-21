@@ -13,7 +13,10 @@ class App extends Component {
     super(props);
     when(
       () => this.props.store.app.stations.length === 0,
-      () => this.props.store.app.loadStations()
+      () =>
+        this.props.store.app
+          .loadStations()
+          .then(() => this.props.store.app.addIconsToStations())
     );
   }
   render() {

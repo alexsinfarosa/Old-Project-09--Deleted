@@ -10,8 +10,10 @@ export default class LogicStore {
   @observable isLoading = false;
   @action setIsLoading = d => (this.isLoading = d);
 
-  @observable isMap = false;
-  @action setIsMap = d => (this.isMap = !this.isMap);
+  @observable
+  isMap = JSON.parse(localStorage.getItem('state')) !== null ? false : true;
+  @action setIsMap = d => (this.isMap = d);
+  @action toggleMap = d => (this.isMap = !this.isMap);
 
   @observable isGraph = false;
   @action setIsGraph = d => (this.isGraph = !this.isGraph);

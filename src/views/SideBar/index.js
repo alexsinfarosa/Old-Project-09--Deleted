@@ -21,7 +21,7 @@ class SideBar extends Component {
   // toggle Map component
   toggleMap = () => {
     // console.log(`switch to ${checked}`);
-    this.props.store.logic.setIsMap();
+    this.props.store.logic.toggleMap();
     this.props.store.logic.setIsSidebarOpen(false);
   };
 

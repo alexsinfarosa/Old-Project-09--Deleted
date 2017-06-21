@@ -37,6 +37,47 @@ export const matchIconsToStations = (protocol, station, state) => {
   }
 };
 
+// export const matchIconsToStations = (protocol, stations, state) => {
+//   const arr = [];
+//   const newa = `${protocol}//newa2.nrcc.cornell.edu/gifs/newa_small.png`;
+//   const newaGray = `${protocol}//newa2.nrcc.cornell.edu/gifs/newa_smallGray.png`;
+//   const airport = `${protocol}//newa2.nrcc.cornell.edu/gifs/airport.png`;
+//   const airportGray = `${protocol}//newa2.nrcc.cornell.edu/gifs/airportGray.png`;
+//   const culog = `${protocol}//newa2.nrcc.cornell.edu/gifs/culog.png`;
+//   const culogGray = `${protocol}//newa2.nrcc.cornell.edu/gifs/culogGray.png`;
+//
+//   stations.forEach(station => {
+//     if (
+//       station.network === 'newa' ||
+//       station.network === 'njwx' ||
+//       station.network === 'miwx' ||
+//       ((station.network === 'cu_log' || station.network === 'culog') &&
+//         station.state !== 'NY')
+//     ) {
+//       const newObj = station;
+//       station.state === state.postalCode || state.postalCode === 'ALL'
+//         ? (newObj['icon'] = newa)
+//         : (newObj['icon'] = newaGray);
+//       arr.push(newObj);
+//     } else if (station.network === 'cu_log' || station.network === 'culog') {
+//       const newObj = station;
+//       station.state === state.postalCode || state.postalCode === 'ALL'
+//         ? (newObj['icon'] = culog)
+//         : (newObj['icon'] = culogGray);
+//       newObj['icon'] = culog;
+//       arr.push(newObj);
+//     } else if (station.network === 'icao') {
+//       const newObj = station;
+//       station.state === state.postalCode || state.postalCode === 'ALL'
+//         ? (newObj['icon'] = airport)
+//         : (newObj['icon'] = airportGray);
+//       arr.push(newObj);
+//     }
+//   });
+//   console.log(arr);
+//   return arr;
+// };
+
 // Handling Temperature parameter and Michigan network id adjustment
 export const networkTemperatureAdjustment = network => {
   // Handling different temperature parameter for each network

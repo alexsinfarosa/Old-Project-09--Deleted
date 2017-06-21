@@ -20,30 +20,39 @@ const myIcon = e =>
 export default class TheMap extends Component {
   onClickSetStation = e => {
     const { lat, lng } = e.latlng;
-    const { stations, state } = this.props.store.app;
-    const selectedStation = stations.filter(
+    const { stations, state, states } = this.props.store.app;
+    const selectedStation = stations.find(
       station => station.lat === lat && station.lon === lng
-    )[0];
+    );
+
+    if (state.name === 'All States') {
+      this.props.store.app.setStateFromEntireMap(selectedStation.state);
+      this.props.store.app.setStation(selectedStation.name);
+      this.props.store.app.loadData();
+      this.props.store.logic.setIsMap(false);
+      return;
+    }
+
     if (selectedStation.state === state.postalCode) {
       this.props.store.app.setStation(selectedStation.name);
       this.props.store.app.loadData();
+      this.props.store.logic.setIsMap(false);
     } else {
-      const selectedStation = stations.filter(
+      const selectedStation = stations.find(
         station => station.lat === lat && station.lon === lng
-      )[0];
-      const state = this.props.store.app.states.filter(
+      );
+      const state = states.find(
         state => state.postalCode === selectedStation.state
-      )[0];
+      );
       alert(`Select ${state.name} from the State menu to access this station.`);
     }
   };
-
   render() {
     // const position = [this.state.lat, this.state.lng];
-    const { stations, state, protocol } = this.props.store.app;
+    const { stationsWithIcons, state, protocol } = this.props.store.app;
     // const {mobile} = this.props;
 
-    const MarkerList = stations.map(station =>
+    const MarkerList = stationsWithIcons.map(station =>
       <Marker
         key={`${station.id} ${station.network}`}
         // network={station.network}
