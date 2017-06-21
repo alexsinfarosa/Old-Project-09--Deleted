@@ -198,23 +198,17 @@ export default class appStore {
   @observable stationsWithIcons = [];
   @action
   addIconsToStations() {
-    // console.log(this.stations);
-    let arr = [];
+    this.stationsWithIcons.clear();
     this.stations.forEach(station => {
+      console.log(station);
       station['icon'] = matchIconsToStations(
         this.protocol,
         station,
         this.state
       );
-      arr.push(station);
+      this.stationsWithIcons.push(station);
     });
-    this.stationsWithIcons = arr;
   }
-
-  // @computed
-  // get stationsWithMatchedIcons() {
-  //   return matchIconsToStations(this.protocol, this.stations, this.state);
-  // }
 
   @computed
   get currentStateStations() {

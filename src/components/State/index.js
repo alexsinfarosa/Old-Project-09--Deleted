@@ -11,7 +11,7 @@ export default class State extends Component {
   handleChange = value => {
     this.props.store.app.setState(value);
     this.props.store.logic.setIsMap(true);
-    // this.props.store.app.addIconsToStations();
+    this.props.store.app.addIconsToStations();
   };
   render() {
     const { state, states } = this.props.store.app;
