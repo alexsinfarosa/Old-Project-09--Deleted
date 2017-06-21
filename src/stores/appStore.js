@@ -200,7 +200,6 @@ export default class appStore {
   addIconsToStations() {
     this.stationsWithIcons.clear();
     this.stations.forEach(station => {
-      console.log(station);
       station['icon'] = matchIconsToStations(
         this.protocol,
         station,
