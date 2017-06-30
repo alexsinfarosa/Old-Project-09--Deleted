@@ -32,7 +32,7 @@ const columns = [
 export default class UserTable extends Component {
   isRecordInArray = () => {
     const { endDate, userData } = this.props.store.app;
-    if (userData.find(record => record.date === endDate) !== undefined)
+    if (userData.find(record => record.date === endDate) === undefined)
       return true;
   };
   render() {
@@ -61,6 +61,7 @@ export default class UserTable extends Component {
             rowKey={record => record.key}
             loading={this.props.store.app.isLoading}
             pagination={false}
+            onRowClick={(record, index, event) => console.log(record)}
             dataSource={areRequiredFieldsSet ? userData.slice() : null}
           />
         </Box>

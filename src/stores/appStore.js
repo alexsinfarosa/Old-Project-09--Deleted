@@ -528,12 +528,7 @@ export default class appStore {
 
   @action
   setUserData() {
-    // const selectedDate = this.graph.find(
-    //   day => day.date === this.graphStartDate
-    // );
     const selectedDate = this.graph.find(day => day.date === this.endDate);
-    console.log(selectedDate);
-
     if (this.startDateIndex !== -1) {
       this.userData.push(selectedDate);
       localStorage.setItem("userData", JSON.stringify(this.userData));
