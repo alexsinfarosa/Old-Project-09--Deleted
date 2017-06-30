@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
-import { inject, observer } from 'mobx-react';
-import format from 'date-fns/format';
+import React, { Component } from "react";
+import { inject, observer } from "mobx-react";
+import format from "date-fns/format";
 // import { toJS } from 'mobx';
 
-import { Flex, Box } from 'reflexbox';
+import { Flex, Box } from "reflexbox";
 import {
   LineChart,
   Line,
@@ -13,14 +13,14 @@ import {
   Tooltip,
   ResponsiveContainer
   // Legend
-} from 'recharts';
+} from "recharts";
 
 // components
-import CustomLabels from './CustomLabel';
-import Spin from 'antd/lib/spin';
-import 'antd/lib/spin/style/css';
+import CustomLabels from "./CustomLabel";
+import Spin from "antd/lib/spin";
+import "antd/lib/spin/style/css";
 
-@inject('store')
+@inject("store")
 @observer
 export default class Graph extends Component {
   render() {
@@ -44,8 +44,8 @@ export default class Graph extends Component {
           ? <Flex mb={4} mt={4} column>
               <Box>
                 <h2>
-                  Percent Cumulative Emergence for{' '}
-                  <span style={{ color: '#008751' }}>
+                  Percent Cumulative Emergence for{" "}
+                  <span style={{ color: "#008751" }}>
                     {station.name}, {state.postalCode}
                   </span>
                 </h2>
@@ -54,9 +54,8 @@ export default class Graph extends Component {
                 {idx > 20 &&
                   aboveZero &&
                   <h4>
-                    From January 1 to {format(aboveZero.date, 'MMMM DD')}, all
-                    species
-                    are at 0%.
+                    From January 1 to {format(aboveZero.date, "MMMM D")}, all
+                    species are at 0%.
                   </h4>}
               </Box>
               <Box mb={4}>
@@ -67,10 +66,10 @@ export default class Graph extends Component {
                     data={filteredGraph}
                     syncId="anyId"
                     margin={{ top: 30, right: 0, left: -30, bottom: 30 }}
-                    onClick={d =>
-                      this.props.store.app.setGraphStartDate(d.activeLabel)}
+                    // onClick={d =>
+                    //   this.props.store.app.setGraphStartDate(d.activeLabel)}
                   >
-                    <XAxis dataKey="date" tick={<CustomLabels />} />
+                    <XAxis dataKey="dateTable" tick={<CustomLabels />} />
                     <YAxis unit="%" />
                     <CartesianGrid strokeDasharray="3 3" vertical={false} />
                     <Tooltip />
@@ -111,7 +110,6 @@ export default class Graph extends Component {
                       dot={false}
                     />
                     <Line dataKey="Velvetleaf" stroke="#a6cee3" dot={false} />
-
                   </LineChart>
                 </ResponsiveContainer>
               </Box>

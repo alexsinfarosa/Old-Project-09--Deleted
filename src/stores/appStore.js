@@ -1,9 +1,9 @@
-import { observable, action, computed } from 'mobx';
-import axios from 'axios';
-import format from 'date-fns/format';
-import addDays from 'date-fns/add_days';
+import { observable, action, computed } from "mobx";
+import axios from "axios";
+import format from "date-fns/format";
+import addDays from "date-fns/add_days";
 
-import { matchIconsToStations } from 'utils';
+import { matchIconsToStations } from "utils";
 
 class Station {
   @observable id;
@@ -55,23 +55,15 @@ class Specie {
   }
 }
 
-// class Model {
-//   @observable date;
-//   @observable mint;
-//   @observable avgt;
-//   @observable maxt;
-//   @observable gdd;
-//   @observable cdd;
-//
-//   constructor({ date, mint, avgt, maxt, gdd, cdd = 0 }) {
-//     this.date = date;
-//     this.mint = mint;
-//     this.avgt = avgt;
-//     this.maxt = maxt;
-//     this.gdd = gdd;
-//     this.cdd = cdd;
-//   }
-// }
+class Record {
+  @observable date;
+  @observable field;
+
+  constructor({ date, field }) {
+    this.date = date;
+    this.field = field;
+  }
+}
 
 export default class appStore {
   @observable protocol = window.location.protocol;
@@ -94,13 +86,13 @@ export default class appStore {
   @action
   loadSpecies() {
     this.isLoading = true;
-    this.fetch('species.json')
+    this.fetch("species.json")
       .then(json => {
         this.updateSpecies(json);
         this.isLoading = false;
       })
       .catch(err => {
-        console.log('Failed to load species', err);
+        console.log("Failed to load species", err);
       });
   }
 
@@ -112,10 +104,10 @@ export default class appStore {
     });
   }
 
-  @observable specie = JSON.parse(localStorage.getItem('specie')) || {};
+  @observable specie = JSON.parse(localStorage.getItem("specie")) || {};
   @action
   setSpecie = d => {
-    localStorage.removeItem('specie');
+    localStorage.removeItem("specie");
     this.specie = this.species.find(specie => specie.name === d);
     localStorage.setItem(`specie`, JSON.stringify(this.specie));
   };
@@ -126,14 +118,14 @@ export default class appStore {
   @action
   loadStates() {
     this.isLoading = true;
-    this.fetch('states.json')
+    this.fetch("states.json")
       .then(json => {
         this.updateStates(json);
         this.isLoading = false;
         // console.log(this.states.slice());
       })
       .catch(err => {
-        console.log('Failed to load states', err);
+        console.log("Failed to load states", err);
       });
   }
 
@@ -146,26 +138,26 @@ export default class appStore {
   }
 
   @observable
-  state = JSON.parse(localStorage.getItem('state')) || {
-    postalCode: 'ALL',
+  state = JSON.parse(localStorage.getItem("state")) || {
+    postalCode: "ALL",
     lat: 42.5,
     lon: -75.7,
     zoom: 6,
-    name: 'All States'
+    name: "All States"
   };
 
   @action
   setState = stateName => {
-    localStorage.removeItem('state');
+    localStorage.removeItem("state");
     this.station = {};
     this.state = this.states.find(state => state.name === stateName);
-    localStorage.setItem('state', JSON.stringify(this.state));
+    localStorage.setItem("state", JSON.stringify(this.state));
   };
 
   @action
   setStateFromEntireMap = d => {
     this.state = this.states.find(state => state.postalCode === d);
-    localStorage.setItem('state', JSON.stringify(this.state));
+    localStorage.setItem("state", JSON.stringify(this.state));
   };
 
   // Stations -----------------------------------------------------------------
@@ -183,7 +175,7 @@ export default class appStore {
         // console.log(this.stations.slice());
       })
       .catch(err => {
-        console.log('Failed to load stations', err);
+        console.log("Failed to load stations", err);
       });
   }
 
@@ -200,7 +192,7 @@ export default class appStore {
   addIconsToStations() {
     this.stationsWithIcons.clear();
     this.stations.forEach(station => {
-      station['icon'] = matchIconsToStations(
+      station["icon"] = matchIconsToStations(
         this.protocol,
         station,
         this.state
@@ -216,31 +208,31 @@ export default class appStore {
     );
   }
 
-  @observable station = JSON.parse(localStorage.getItem('station')) || {};
+  @observable station = JSON.parse(localStorage.getItem("station")) || {};
   @action
   setStation = stationName => {
-    localStorage.removeItem('station');
+    localStorage.removeItem("station");
     this.station = this.stations.find(station => station.name === stationName);
-    localStorage.setItem('station', JSON.stringify(this.station));
+    localStorage.setItem("station", JSON.stringify(this.station));
   };
 
   // Dates---------------------------------------------------------------------
   @observable currentYear = new Date().getFullYear().toString();
   @observable
-  endDate = JSON.parse(localStorage.getItem('endDate')) ||
-    format(new Date(), 'YYYY-MM-DD');
+  endDate = JSON.parse(localStorage.getItem("endDate")) ||
+    format(new Date(), "YYYY-MM-DD");
   @action
   setEndDate = d => {
-    this.endDate = format(d, 'YYYY-MM-DD');
-    localStorage.setItem('endDate', JSON.stringify(this.endDate));
+    this.endDate = format(d, "YYYY-MM-DD");
+    localStorage.setItem("endDate", JSON.stringify(this.endDate));
   };
   @computed
   get startDate() {
-    return `${format(this.endDate, 'YYYY')}-01-01`;
+    return `${format(this.endDate, "YYYY")}-01-01`;
   }
   @computed
   get startDateYear() {
-    return format(this.endDate, 'YYYY');
+    return format(this.endDate, "YYYY");
   }
 
   // Current Model ------------------------------------------------------------
@@ -253,11 +245,11 @@ export default class appStore {
     this.isLoading = true;
     let edate;
     if (this.startDateYear === this.currentYear) {
-      edate = format(addDays(this.endDate, 5), 'YYYY-MM-DD');
+      edate = format(addDays(this.endDate, 5), "YYYY-MM-DD");
     }
-    edate = format(this.endDate, 'YYYY-MM-DD');
-    let loc = '-75.7000, 42.5000';
-    if (this.state.name !== 'All States') {
+    edate = format(this.endDate, "YYYY-MM-DD");
+    let loc = "-75.7000, 42.5000";
+    if (this.state.name !== "All States") {
       loc = `${this.station.lon}, ${this.station.lat}`;
     }
 
@@ -266,7 +258,7 @@ export default class appStore {
       sdate: this.startDate,
       edate: edate,
       grid: 3,
-      elems: [{ name: 'avgt' }]
+      elems: [{ name: "avgt" }]
     };
 
     // console.log(params);
@@ -281,7 +273,7 @@ export default class appStore {
         // console.log(this.model.slice());
       })
       .catch(err => {
-        console.log('Failed to load data model', err);
+        console.log("Failed to load data model", err);
       });
   }
 
@@ -326,7 +318,7 @@ export default class appStore {
         yesterday = this.crabgrass[i - 1].today;
       }
       this.crabgrass.push({
-        name: 'Large crabgrass',
+        name: "Large crabgrass",
         today: crabgrassY,
         date: day[0],
         yesterday: yesterday,
@@ -340,7 +332,7 @@ export default class appStore {
         yesterday = this.gFoxtail[i - 1].today;
       }
       this.gFoxtail.push({
-        name: 'Giant foxtail',
+        name: "Giant foxtail",
         today: gFoxtailY,
         date: day[0],
         yesterday: yesterday,
@@ -354,7 +346,7 @@ export default class appStore {
         yesterday = this.yFoxtail[i - 1].today;
       }
       this.yFoxtail.push({
-        name: 'Yellow foxtail',
+        name: "Yellow foxtail",
         today: yFoxtailY,
         date: day[0],
         yesterday: yesterday,
@@ -368,7 +360,7 @@ export default class appStore {
         yesterday = this.lambsquarters[i - 1].today;
       }
       this.lambsquarters.push({
-        name: 'Common lambsquarters',
+        name: "Common lambsquarters",
         today: lambsquartersY,
         date: day[0],
         yesterday: yesterday,
@@ -382,7 +374,7 @@ export default class appStore {
         yesterday = this.nightshade[i - 1].today;
       }
       this.nightshade.push({
-        name: 'Eastern black nightshade',
+        name: "Eastern black nightshade",
         today: nightshadeY,
         date: day[0],
         yesterday: yesterday,
@@ -396,7 +388,7 @@ export default class appStore {
         yesterday = this.pigweed[i - 1].today;
       }
       this.pigweed.push({
-        name: 'Smooth pigweed',
+        name: "Smooth pigweed",
         today: pigweedY,
         date: day[0],
         yesterday: yesterday,
@@ -410,7 +402,7 @@ export default class appStore {
         yesterday = this.ragweed[i - 1].today;
       }
       this.ragweed.push({
-        name: 'Common ragweed',
+        name: "Common ragweed",
         today: ragweedY,
         date: day[0],
         yesterday: yesterday,
@@ -424,7 +416,7 @@ export default class appStore {
         yesterday = this.velvetleaf[i - 1].today;
       }
       this.velvetleaf.push({
-        name: 'Velvetleaf',
+        name: "Velvetleaf",
         today: velvetleafY,
         date: day[0],
         yesterday: yesterday,
@@ -504,21 +496,23 @@ export default class appStore {
       }
 
       this.graph.push({
+        key: `${i + Math.random()}`,
         field: `field ${i}`,
-        date: format(day[0], 'MMM D'),
-        'Large crabgrass': crabgrassY,
-        'Giant foxtail': gFoxtailY,
-        'Yellow foxtail': yFoxtailY,
-        'Common lambsquarters': lambsquartersY,
-        'Eastern black nightshade': nightshadeY,
-        'Smooth pigweed': pigweedY,
-        'Common ragweed': ragweedY,
+        date: day[0],
+        dateTable: `${format(day[0], "MMM D")}`,
+        "Large crabgrass": crabgrassY,
+        "Giant foxtail": gFoxtailY,
+        "Yellow foxtail": yFoxtailY,
+        "Common lambsquarters": lambsquartersY,
+        "Eastern black nightshade": nightshadeY,
+        "Smooth pigweed": pigweedY,
+        "Common ragweed": ragweedY,
         Velvetleaf: velvetleafY,
         aboveZero: aboveZero
       });
     });
   }
-  @observable userData = [];
+  @observable userData = JSON.parse(localStorage.getItem("userData")) || [];
   @observable graphStartDate;
 
   @action
@@ -529,17 +523,20 @@ export default class appStore {
 
   @computed
   get startDateIndex() {
-    return this.graph.findIndex(day => day.date === this.graphStartDate);
+    return this.graph.findIndex(day => day.date === this.endDate);
   }
 
   @action
   setUserData() {
-    const selectedDate = this.graph.find(
-      day => day.date === this.graphStartDate
-    );
+    // const selectedDate = this.graph.find(
+    //   day => day.date === this.graphStartDate
+    // );
+    const selectedDate = this.graph.find(day => day.date === this.endDate);
+    console.log(selectedDate);
 
     if (this.startDateIndex !== -1) {
       this.userData.push(selectedDate);
+      localStorage.setItem("userData", JSON.stringify(this.userData));
     }
   }
 }
