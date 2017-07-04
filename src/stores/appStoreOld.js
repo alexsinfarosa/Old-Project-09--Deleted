@@ -261,7 +261,7 @@ export default class appStore {
       elems: [{ name: "avgt" }]
     };
 
-    console.log(params);
+    // console.log(params);
 
     return axios
       .post(`${this.protocol}//grid.rcc-acis.org/GridData`, params)
