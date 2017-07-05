@@ -55,15 +55,15 @@ class Specie {
   }
 }
 
-class Record {
-  @observable date;
-  @observable field;
-
-  constructor({ date, field }) {
-    this.date = date;
-    this.field = field;
-  }
-}
+// class Record {
+//   @observable date;
+//   @observable field;
+//
+//   constructor({ date, field }) {
+//     this.date = date;
+//     this.field = field;
+//   }
+// }
 
 export default class appStore {
   @observable protocol = window.location.protocol;
@@ -241,7 +241,7 @@ export default class appStore {
   @observable graph = [];
 
   @action
-  loadData() {
+  loadGridData() {
     this.isLoading = true;
     let edate;
     if (this.startDateYear === this.currentYear) {
@@ -268,7 +268,7 @@ export default class appStore {
       .then(res => {
         this.updateData(res.data.data);
         this.updateGraph(res.data.data);
-        // this.setUserData();
+        this.setUserData();
         this.isLoading = false;
         // console.log(this.model.slice());
       })
@@ -515,7 +515,6 @@ export default class appStore {
   @observable userData = JSON.parse(localStorage.getItem("userData")) || [];
   @observable graphStartDate;
 
-  @action
   setGraphStartDate = d => {
     this.graphStartDate = d;
     this.setUserData();
@@ -528,8 +527,11 @@ export default class appStore {
 
   @action
   setUserData() {
-    const selectedDate = this.graph.find(day => day.date === this.endDate);
     if (this.startDateIndex !== -1) {
+      let selectedDate = this.graph.find(day => day.date === this.endDate);
+      let x = [...this.graph];
+      console.log(x);
+      console.log(selectedDate);
       this.userData.push(selectedDate);
       localStorage.setItem("userData", JSON.stringify(this.userData));
     }

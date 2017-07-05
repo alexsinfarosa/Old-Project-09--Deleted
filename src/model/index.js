@@ -67,7 +67,6 @@ export default class Weed extends Component {
     } = this.props.store.app;
     const { isTable } = this.props.store.logic;
     const { mobile } = this.props;
-    console.log(crabgrass.slice(-1));
     const species = [
       crabgrass,
       gFoxtail,
@@ -105,6 +104,7 @@ export default class Weed extends Component {
               <Box mt={1} col={12} lg={12} md={12} sm={12}>
                 {species.map((specie, i) =>
                   <Table
+                    key={i}
                     showHeader={i === 0 ? true : false}
                     size={mobile ? "small" : "middle"}
                     columns={columns}

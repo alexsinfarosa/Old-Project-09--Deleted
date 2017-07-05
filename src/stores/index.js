@@ -1,5 +1,5 @@
-import AppStore from './appStore';
-import LogicStore from './logicStore';
+import AppStore from "./appStore";
+import LogicStore from "./logicStore";
 const fetcher = url => window.fetch(url).then(response => response.json());
 
 const store = {
@@ -9,4 +9,4 @@ const store = {
 export default store;
 
 store.app.loadStates();
-store.app.loadData();
+store.app.loadGridData();
