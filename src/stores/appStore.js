@@ -240,6 +240,9 @@ export default class appStore {
   @observable model = [];
   @observable graph = [];
 
+  @observable mainData = [];
+  @action updateMainData = d => (this.mainData = d);
+
   @action
   loadGridData() {
     this.isLoading = true;
@@ -261,14 +264,15 @@ export default class appStore {
       elems: [{ name: "avgt" }]
     };
 
-    console.log(params);
+    // console.log(params);
 
     return axios
       .post(`${this.protocol}//grid.rcc-acis.org/GridData`, params)
       .then(res => {
+        this.updateMainData(res.data.data);
         this.updateData(res.data.data);
         this.updateGraph(res.data.data);
-        this.setUserData();
+        // this.setUserData();
         this.isLoading = false;
         // console.log(this.model.slice());
       })
@@ -426,7 +430,7 @@ export default class appStore {
   }
 
   @action
-  updateGraph(data) {
+  updateGraph(data, idx = 0, destination = this.graph) {
     this.graph.clear();
     let crabgrassCDD = 0;
     let gFoxtailCDD = 0;
@@ -438,7 +442,7 @@ export default class appStore {
     let velvetleafCDD = 0;
 
     const base = 48.2; // 9˚C
-    data.forEach((day, i) => {
+    data.slice(idx).forEach((day, i) => {
       const dd = day[1] - base > 0 ? Math.round(day[1] - base) : 0;
       crabgrassCDD += dd;
       gFoxtailCDD += dd;
@@ -495,7 +499,7 @@ export default class appStore {
         aboveZero = true;
       }
 
-      this.graph.push({
+      destination.push({
         key: `${i + Math.random()}`,
         field: `field ${i}`,
         date: day[0],
@@ -512,9 +516,10 @@ export default class appStore {
       });
     });
   }
-  @observable userData = JSON.parse(localStorage.getItem("userData")) || [];
+
   @observable graphStartDate;
 
+  @action
   setGraphStartDate = d => {
     this.graphStartDate = d;
     this.setUserData();
@@ -525,14 +530,30 @@ export default class appStore {
     return this.graph.findIndex(day => day.date === this.endDate);
   }
 
+  @observable currentField = [];
+  @action
+  setCurrentField = d => {
+    this.currentField.clear();
+    this.updateGraph(this.mainData);
+    console.log(d.date);
+    console.log(this.graph.slice());
+    // const selectedField = this.userData.find(day => day.date === d.date);
+    const idx = this.graph.findIndex(day => day.date === d.date);
+    console.log(idx);
+    this.updateGraph(this.mainData, idx, this.currentField);
+    console.log(this.currentField.slice());
+    this.setIsField(true);
+  };
+
+  @observable isField = false;
+  @action setIsField = d => (this.isField = d);
+
+  @observable userData = JSON.parse(localStorage.getItem("userData")) || [];
   @action
   setUserData() {
     if (this.startDateIndex !== -1) {
-      let selectedDate = this.graph.find(day => day.date === this.endDate);
-      let x = [...this.graph];
-      console.log(x);
-      console.log(selectedDate);
-      this.userData.push(selectedDate);
+      const today = this.graph.find(day => day.date === "2017-03-23");
+      this.userData.push(today);
       localStorage.setItem("userData", JSON.stringify(this.userData));
     }
   }

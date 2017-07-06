@@ -24,10 +24,20 @@ import "antd/lib/spin/style/css";
 @observer
 export default class Graph extends Component {
   render() {
-    const { graph, station, state, isLoading } = this.props.store.app;
-    const idx = graph.findIndex(o => o.aboveZero === true);
+    const {
+      graph,
+      station,
+      state,
+      isLoading,
+      isField,
+      currentField
+    } = this.props.store.app;
+    let idx = graph.findIndex(o => o.aboveZero === true);
     const aboveZero = graph[idx - 1];
-    const filteredGraph = graph.slice(idx - 1);
+    let filteredGraph = graph.slice(idx - 1);
+    if (isField) {
+      filteredGraph = currentField.slice();
+    }
 
     let aspect;
     const w = window.innerWidth;
@@ -44,7 +54,7 @@ export default class Graph extends Component {
           ? <Flex mb={4} mt={4} column>
               <Box>
                 <h2>
-                  Percent Cumulative Emergence for{" "}
+                  Percent Cumulative Emergence (PCE) for{" "}
                   <span style={{ color: "#008751" }}>
                     {station.name}, {state.postalCode}
                   </span>
@@ -52,6 +62,7 @@ export default class Graph extends Component {
               </Box>
               <Box>
                 {idx > 20 &&
+                  !isField &&
                   aboveZero &&
                   <h4>
                     From January 1 to {format(aboveZero.date, "MMMM D")}, all
@@ -66,11 +77,16 @@ export default class Graph extends Component {
                     data={filteredGraph}
                     syncId="anyId"
                     margin={{ top: 30, right: 0, left: -30, bottom: 30 }}
+
                     // onClick={d =>
                     //   this.props.store.app.setGraphStartDate(d.activeLabel)}
                   >
                     <XAxis dataKey="dateTable" tick={<CustomLabels />} />
-                    <YAxis unit="%" />
+                    <YAxis
+                      unit="%"
+                      type="number"
+                      domain={["dataMin", "dataMax"]}
+                    />
                     <CartesianGrid strokeDasharray="3 3" vertical={false} />
                     <Tooltip />
                     {/* <Legend verticalAlign="top" layout="horizontal" height={72} /> */}

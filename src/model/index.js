@@ -38,7 +38,7 @@ const columns = [
         width: 150
       },
       {
-        title: "Tomorrow/Forecast",
+        title: "Forecast (currently not available)",
         dataIndex: "tomorrow",
         key: "tomorrow",
         width: 150
@@ -62,8 +62,7 @@ export default class Weed extends Component {
       pigweed,
       ragweed,
       nightshade,
-      velvetleaf,
-      userData
+      velvetleaf
     } = this.props.store.app;
     const { isTable } = this.props.store.logic;
     const { mobile } = this.props;

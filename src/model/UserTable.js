@@ -43,12 +43,12 @@ export default class UserTable extends Component {
         <Box mb={1} col={12} lg={12} md={12} sm={12}>
           <Flex justify="space-between" align="center" mt={1} mb={1}>
             <h2>User Data</h2>
-            {this.isRecordInArray()
+            {true
               ? <Button
                   onClick={() => this.props.store.app.setUserData()}
                   type="default"
                 >
-                  ADD
+                  Reset PCE
                 </Button>
               : <Button type="default" disabled>
                   ADD
@@ -61,7 +61,8 @@ export default class UserTable extends Component {
             rowKey={record => record.key}
             loading={this.props.store.app.isLoading}
             pagination={false}
-            onRowClick={(record, index, event) => console.log(record)}
+            // onRowClick={(record, index, event) => console.log(record)}
+            onRowClick={d => this.props.store.app.setCurrentField(d)}
             dataSource={areRequiredFieldsSet ? userData.slice() : null}
           />
         </Box>
