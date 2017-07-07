@@ -37,11 +37,8 @@ export default class UserTable extends Component {
   onDelete = index => {
     const { userData } = this.props.store.app;
     const data = [...userData];
-    console.log(data.slice());
-    const x = data.splice(index, 1);
-    console.log(x.slice());
-    console.log(data.slice());
-    // this.props.store.app.setUserData(data.splice(index, 1));
+    data.splice(index, 1);
+    this.props.store.app.updateUserData(data);
   };
 
   render() {
@@ -68,7 +65,7 @@ export default class UserTable extends Component {
         dataIndex: "operation",
         width: "35%",
         render: (text, record, index) => {
-          return true
+          return userData.length > 1
             ? <Popconfirm
                 title="Sure to delete?"
                 onConfirm={() => this.onDelete(index)}

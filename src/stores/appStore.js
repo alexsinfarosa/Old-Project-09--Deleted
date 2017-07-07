@@ -552,4 +552,9 @@ export default class appStore {
       localStorage.setItem("userData", JSON.stringify(this.userData));
     }
   }
+  @action
+  updateUserData = d => {
+    this.userData = d;
+    localStorage.setItem("userData", JSON.stringify(this.userData));
+  };
 }
