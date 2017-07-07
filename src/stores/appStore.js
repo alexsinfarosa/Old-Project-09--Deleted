@@ -501,7 +501,7 @@ export default class appStore {
 
       destination.push({
         key: `${i + Math.random()}`,
-        field: `field ${i}`,
+        field: `Field name`,
         date: day[0],
         dateTable: `${format(day[0], "MMM D")}`,
         "Large crabgrass": crabgrassY,

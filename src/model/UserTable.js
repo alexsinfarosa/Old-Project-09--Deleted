@@ -12,62 +12,10 @@ import "antd/lib/table/style/css";
 import Button from "antd/lib/button";
 import "antd/lib/button/style/css";
 
-import Input from "antd/lib/input";
-import "antd/lib/input/style/css";
-
-import Icon from "antd/lib/icon";
-import "antd/lib/icon/style/css";
-
 import Popconfirm from "antd/lib/popconfirm";
 import "antd/lib/popconfirm/style/css";
 
-class EditableCell extends Component {
-  state = {
-    value: this.props.value,
-    editable: false
-  };
-  handleChange = e => {
-    const value = e.target.value;
-    this.setState({ value });
-  };
-  check = () => {
-    this.setState({ editable: false });
-    if (this.props.onChange) {
-      this.props.onChange(this.state.value);
-    }
-  };
-  edit = () => {
-    this.setState({ editable: true });
-  };
-  render() {
-    const { value, editable } = this.state;
-    return (
-      <div className="editable-cell">
-        {editable
-          ? <div className="editable-cell-input-wrapper">
-              <Input
-                value={value}
-                onChange={this.handleChange}
-                onPressEnter={this.check}
-              />
-              <Icon
-                type="check"
-                className="editable-cell-icon-check"
-                onClick={this.check}
-              />
-            </div>
-          : <div className="editable-cell-text-wrapper">
-              {value || " "}
-              <Icon
-                type="edit"
-                className="editable-cell-icon"
-                onClick={this.edit}
-              />
-            </div>}
-      </div>
-    );
-  }
-}
+import EditableCell from "./EditableCell";
 
 const onCellChange = (index, key) => {
   return value => {
@@ -77,41 +25,6 @@ const onCellChange = (index, key) => {
   };
 };
 
-const onDelete = index => {
-  const dataSource = [...this.state.dataSource];
-  dataSource.splice(index, 1);
-  this.setState({ dataSource });
-};
-
-//columns for the model
-const columns = [
-  {
-    title: "Field",
-    dataIndex: "field",
-    key: "field",
-    width: "30%",
-    render: (text, record, index) =>
-      <EditableCell value={text} onChange={onCellChange(index, "field")} />
-  },
-  {
-    title: "Date",
-    dataIndex: "dateTable",
-    width: "35%"
-  },
-  {
-    title: "Operation",
-    dataIndex: "operation",
-    width: "35%",
-    render: (text, record, index) => {
-      return true
-        ? <Popconfirm title="Sure to delete?" onConfirm={() => onDelete(index)}>
-            <a href="#">Delete</a>
-          </Popconfirm>
-        : null;
-    }
-  }
-];
-
 @inject("store")
 @observer
 export default class UserTable extends Component {
@@ -120,9 +33,53 @@ export default class UserTable extends Component {
     if (userData.find(record => record.date === endDate) === undefined)
       return true;
   };
+
+  onDelete = index => {
+    const { userData } = this.props.store.app;
+    const data = [...userData];
+    console.log(data.slice());
+    const x = data.splice(index, 1);
+    console.log(x.slice());
+    console.log(data.slice());
+    // this.props.store.app.setUserData(data.splice(index, 1));
+  };
+
   render() {
     const { mobile } = this.props;
     const { userData, areRequiredFieldsSet } = this.props.store.app;
+
+    //columns for the model
+    const columns = [
+      {
+        title: "Field",
+        dataIndex: "field",
+        key: "field",
+        width: "30%",
+        render: (text, record, index) =>
+          <EditableCell value={text} onChange={onCellChange(index, "field")} />
+      },
+      {
+        title: "Date",
+        dataIndex: "dateTable",
+        width: "35%"
+      },
+      {
+        title: "Operation",
+        dataIndex: "operation",
+        width: "35%",
+        render: (text, record, index) => {
+          return true
+            ? <Popconfirm
+                title="Sure to delete?"
+                onConfirm={() => this.onDelete(index)}
+              >
+                <a href="#">Delete</a>
+              </Popconfirm>
+            : null;
+        }
+      }
+    ];
+
     return (
       <Flex justify="center">
         <Box mb={1} col={12} lg={12} md={12} sm={12}>
