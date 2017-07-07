@@ -535,13 +535,8 @@ export default class appStore {
   setCurrentField = d => {
     this.currentField.clear();
     this.updateGraph(this.mainData);
-    console.log(d.date);
-    console.log(this.graph.slice());
-    // const selectedField = this.userData.find(day => day.date === d.date);
     const idx = this.graph.findIndex(day => day.date === d.date);
-    console.log(idx);
     this.updateGraph(this.mainData, idx, this.currentField);
-    console.log(this.currentField.slice());
     this.setIsField(true);
   };
 
@@ -552,7 +547,7 @@ export default class appStore {
   @action
   setUserData() {
     if (this.startDateIndex !== -1) {
-      const today = this.graph.find(day => day.date === "2017-03-23");
+      const today = this.graph.find(day => day.date === this.endDate);
       this.userData.push(today);
       localStorage.setItem("userData", JSON.stringify(this.userData));
     }
