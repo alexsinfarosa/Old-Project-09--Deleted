@@ -81,7 +81,11 @@ export default class Graph extends Component {
                     // onClick={d =>
                     //   this.props.store.app.setGraphStartDate(d.activeLabel)}
                   >
-                    <XAxis dataKey="dateTable" tick={<CustomLabels />} />
+                    <XAxis
+                      dataKey="dateTable"
+                      tick={<CustomLabels />}
+                      domain={["dataMin", "dataMax"]}
+                    />
                     <YAxis
                       unit="%"
                       type="number"
