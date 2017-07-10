@@ -16,9 +16,19 @@ export default class EditableCell extends Component {
   };
   handleChange = e => {
     const value = e.target.value;
+    const { userData } = this.props.store.app;
+    const { key } = this.props.record;
+    console.log(key);
+    const idx = userData.findIndex(field => field.key === key);
+    console.log(idx);
+    userData[idx]["field"] = value;
     this.setState({ value });
+    localStorage.setItem(
+      "userData",
+      JSON.stringify(this.props.store.app.userData)
+    );
   };
-  check = () => {
+  check = e => {
     this.setState({ editable: false });
     if (this.props.onChange) {
       this.props.onChange(this.state.value);
@@ -27,6 +37,7 @@ export default class EditableCell extends Component {
   edit = () => {
     this.setState({ editable: true });
   };
+
   render() {
     const { value, editable } = this.state;
     return (

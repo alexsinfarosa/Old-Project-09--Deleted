@@ -53,7 +53,11 @@ export default class UserTable extends Component {
         key: "field",
         width: "30%",
         render: (text, record, index) =>
-          <EditableCell value={text} onChange={onCellChange(index, "field")} />
+          <EditableCell
+            value={text}
+            onChange={onCellChange(index, "field")}
+            record={record}
+          />
       },
       {
         title: "Date",
