@@ -532,12 +532,12 @@ export default class appStore {
   @observable currentField = [];
 
   @action
-  setCurrentField = d => {
+  setCurrentField = date => {
     this.currentField.clear();
-    console.log(this.graph);
+    console.log(this.graph.slice());
     this.updateGraph(this.mainData);
-    console.log(d.date);
-    const idx = this.graph.findIndex(day => day.date === d.date);
+    console.log(date);
+    const idx = this.graph.findIndex(day => day.dateTable === date);
     console.log(idx);
     this.updateGraph(this.mainData, idx, this.currentField);
     this.setIsField(true);

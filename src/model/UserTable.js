@@ -106,17 +106,29 @@ export default class UserTable extends Component {
                   ADD
                 </Button>}
           </Flex>
-          <Table
-            bordered
-            size={mobile ? "small" : "middle"}
-            columns={columns}
-            scroll={{ y: 500 }}
-            rowKey={record => record.key}
-            loading={this.props.store.app.isLoading}
-            pagination={false}
-            onRowClick={d => this.props.store.app.setCurrentField(d)}
-            dataSource={areRequiredFieldsSet ? userData.slice() : null}
-          />
+          {!editable
+            ? <Table
+                bordered
+                size={mobile ? "small" : "middle"}
+                columns={columns}
+                scroll={{ y: 500 }}
+                rowKey={record => record.key}
+                loading={this.props.store.app.isLoading}
+                pagination={false}
+                onRowClick={d =>
+                  this.props.store.app.setCurrentField(d.dateTable)}
+                dataSource={areRequiredFieldsSet ? userData.slice() : null}
+              />
+            : <Table
+                bordered
+                size={mobile ? "small" : "middle"}
+                columns={columns}
+                scroll={{ y: 500 }}
+                rowKey={record => record.key}
+                loading={this.props.store.app.isLoading}
+                pagination={false}
+                dataSource={areRequiredFieldsSet ? userData.slice() : null}
+              />}
         </Box>
       </Flex>
     );

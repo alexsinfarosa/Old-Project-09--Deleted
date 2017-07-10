@@ -21,23 +21,23 @@ export default class FieldCell extends Component {
   };
 
   handleChange = e => {
-    console.log(e);
     const value = format(e, "MMM D");
     this.setState({ value });
   };
 
   check = e => {
     this.setState({ editable: false });
-    // this.props.store.app.setEditable(false);
-    this.props.store.app.setCurrentField(this.props.record);
-    localStorage.setItem(
-      "userData",
-      JSON.stringify(this.props.store.app.userData)
-    );
+    this.props.store.app.setEditable(false);
+    this.props.store.app.loadGridData();
+    this.props.store.app.setCurrentField(this.state.value);
+    // localStorage.setItem(
+    //   "userData",
+    //   JSON.stringify(this.props.store.app.userData)
+    // );
   };
   edit = () => {
     this.setState({ editable: true });
-    // this.props.store.app.setEditable(true);
+    this.props.store.app.setEditable(true);
     this.props.store.app.loadGridData();
   };
 
