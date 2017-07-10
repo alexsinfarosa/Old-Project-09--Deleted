@@ -38,7 +38,6 @@ export default class Graph extends Component {
     if (isField) {
       filteredGraph = currentField.slice();
     }
-
     let aspect;
     const w = window.innerWidth;
     if (w >= 0 && w <= 401) {

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { inject, observer } from "mobx-react";
-// import format from 'date-fns/format';
+import format from "date-fns/format";
 // import { toJS } from 'mobx';
 
 import "styles/table.styl";
@@ -15,7 +15,8 @@ import "antd/lib/button/style/css";
 import Popconfirm from "antd/lib/popconfirm";
 import "antd/lib/popconfirm/style/css";
 
-import EditableCell from "./EditableCell";
+import FieldCell from "./FieldCell";
+import DateCell from "./DateCell";
 
 const onCellChange = (index, key) => {
   return value => {
@@ -43,7 +44,7 @@ export default class UserTable extends Component {
 
   render() {
     const { mobile } = this.props;
-    const { userData, areRequiredFieldsSet } = this.props.store.app;
+    const { userData, areRequiredFieldsSet, editable } = this.props.store.app;
 
     //columns for the model
     const columns = [
@@ -53,7 +54,7 @@ export default class UserTable extends Component {
         key: "field",
         width: "30%",
         render: (text, record, index) =>
-          <EditableCell
+          <FieldCell
             value={text}
             onChange={onCellChange(index, "field")}
             record={record}
@@ -61,21 +62,29 @@ export default class UserTable extends Component {
       },
       {
         title: "Date",
-        dataIndex: "dateTable",
-        width: "35%"
+        dataIndex: "date",
+        width: "35%",
+        render: (text, record, index) =>
+          <DateCell value={format(text, "MMMM DD")} record={record} />
       },
       {
-        title: "Operation",
+        title: "Action",
         dataIndex: "operation",
         width: "35%",
         render: (text, record, index) => {
           return userData.length > 1
-            ? <Popconfirm
-                title="Sure to delete?"
-                onConfirm={() => this.onDelete(index)}
-              >
-                <a href="#">Delete</a>
-              </Popconfirm>
+            ? <span>
+                <Popconfirm
+                  title="Sure to delete?"
+                  onConfirm={() => this.onDelete(index)}
+                >
+                  <a href="#">Delete</a>
+                </Popconfirm>
+                {/* <span className="ant-divider" />
+                <a onClick={() => this.props.store.app.resetUserData()}>
+                  Reset
+                </a> */}
+              </span>
             : null;
         }
       }

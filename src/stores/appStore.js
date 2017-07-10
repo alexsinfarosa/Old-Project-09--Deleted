@@ -239,7 +239,6 @@ export default class appStore {
   @observable gridData = [];
   @observable model = [];
   @observable graph = [];
-
   @observable mainData = [];
   @action updateMainData = d => (this.mainData = d);
 
@@ -531,14 +530,21 @@ export default class appStore {
   }
 
   @observable currentField = [];
+
   @action
   setCurrentField = d => {
     this.currentField.clear();
+    console.log(this.graph);
     this.updateGraph(this.mainData);
+    console.log(d.date);
     const idx = this.graph.findIndex(day => day.date === d.date);
+    console.log(idx);
     this.updateGraph(this.mainData, idx, this.currentField);
     this.setIsField(true);
   };
+
+  @observable editable = false;
+  @action setEditable = d => (this.editable = d);
 
   @observable isField = false;
   @action setIsField = d => (this.isField = d);
@@ -546,12 +552,24 @@ export default class appStore {
   @observable userData = JSON.parse(localStorage.getItem("userData")) || [];
   @action
   setUserData() {
-    if (this.startDateIndex !== -1) {
-      const today = this.graph.find(day => day.date === this.endDate);
-      this.userData.push(today);
-      localStorage.setItem("userData", JSON.stringify(this.userData));
-    }
+    this.userData.push({
+      field: "Field name",
+      key: Math.random(),
+      date: this.endDate
+    });
+    localStorage.setItem("userData", JSON.stringify(this.userData));
   }
+
+  @action
+  resetUserData() {
+    // this.updateGraph(this.mainData);
+    // const idx = this.graph.findIndex(day => day.date === "2017-06-10");
+    // console.log(idx);
+    // this.updateGraph(this.mainData, idx, this.currentField);
+    // this.setIsField(true);
+    // console.log(this.currentField.slice());
+  }
+
   @action
   updateUserData = d => {
     this.userData = d;
