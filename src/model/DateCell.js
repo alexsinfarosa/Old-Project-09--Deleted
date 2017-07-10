@@ -30,6 +30,7 @@ export default class FieldCell extends Component {
     this.props.store.app.setEditable(false);
     this.props.store.app.loadGridData();
     this.props.store.app.setCurrentField(this.state.value);
+    // this.props.store.app.setIsField(true);
     // localStorage.setItem(
     //   "userData",
     //   JSON.stringify(this.props.store.app.userData)

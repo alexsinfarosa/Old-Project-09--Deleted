@@ -129,6 +129,13 @@ export default class UserTable extends Component {
                 pagination={false}
                 dataSource={areRequiredFieldsSet ? userData.slice() : null}
               />}
+          <br />
+          {/* <Button
+            onClick={() => this.props.store.app.tsetIsField(false)}
+            type="default"
+          >
+            Reset PCE
+          </Button> */}
         </Box>
       </Flex>
     );
