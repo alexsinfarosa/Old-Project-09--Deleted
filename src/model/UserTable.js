@@ -109,8 +109,7 @@ export default class UserTable extends Component {
               rowKey={record => record.key}
               loading={this.props.store.app.isLoading}
               pagination={false}
-              onRowClick={d =>
-                this.props.store.app.setCurrentField(d.dateTable)}
+              onRowClick={d => this.props.store.app.updateSelectedField(d)}
               dataSource={areRequiredFieldsSet ? userData.slice() : null}
             />}
         </Box>

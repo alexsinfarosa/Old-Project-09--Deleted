@@ -537,14 +537,28 @@ export default class appStore {
     return results;
   }
 
-  @observable userData = [];
-  @action updateUserData = d => (this.userData = d);
+  @observable userData = JSON.parse(localStorage.getItem("userData")) || [];
+
   @action
-  addUserData = d => {
-    this.userData.push({
-      key: Math.random(),
-      field: `Field name`,
-      date: this.endDate
-    });
+  updateUserData = d => {
+    this.userData = d;
+    localStorage.setItem("userData", JSON.stringify(this.userData));
+  };
+
+  @action
+  addUserData = () => {
+    // change this.endDate with today
+    const field = this.getGraph.find(day => day.date === this.endDate);
+    console.log(field);
+    this.userData.push(field);
+    localStorage.setItem("userData", JSON.stringify(this.userData));
+  };
+
+  @observable selectedField = [];
+  @action
+  updateSelectedField = d => {
+    console.log(d.key);
+    const idx = this.getGraph.findIndex(day => day.key === d.key);
+    console.log(idx);
   };
 }
