@@ -107,7 +107,6 @@ export default class Weed extends Component {
               <Box mt={1} col={12} lg={12} md={12} sm={12}>
                 {species.map((specie, i) =>
                   <Table
-                    bordered
                     key={i}
                     showHeader={i === 0 ? true : false}
                     size={mobile ? "small" : "middle"}
@@ -116,6 +115,7 @@ export default class Weed extends Component {
                     loading={this.props.store.app.isLoading}
                     pagination={false}
                     dataSource={areRequiredFieldsSet ? specie.slice(-1) : null}
+                    onChange={this.handleChange}
                   />
                 )}
               </Box>

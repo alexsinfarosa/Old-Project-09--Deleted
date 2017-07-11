@@ -18,7 +18,7 @@ export default class LogicStore {
   @observable isGraph = false;
   @action setIsGraph = d => (this.isGraph = !this.isGraph);
 
-  @observable isTable = true;
+  @observable isTable = false;
   @action setIsTable = d => (this.isTable = !this.isTable);
 
   @observable

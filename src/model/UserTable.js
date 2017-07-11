@@ -29,12 +29,6 @@ const onCellChange = (index, key) => {
 @inject("store")
 @observer
 export default class UserTable extends Component {
-  isRecordInArray = () => {
-    const { endDate, userData } = this.props.store.app;
-    if (userData.find(record => record.date === endDate) === undefined)
-      return true;
-  };
-
   onDelete = index => {
     const { userData } = this.props.store.app;
     const data = [...userData];
