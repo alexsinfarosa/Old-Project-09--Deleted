@@ -1,4 +1,4 @@
-import { observable, action } from 'mobx';
+import { observable, action } from "mobx";
 
 export default class LogicStore {
   @observable isVisible = true;
@@ -11,24 +11,24 @@ export default class LogicStore {
   @action setIsLoading = d => (this.isLoading = d);
 
   @observable
-  isMap = JSON.parse(localStorage.getItem('state')) !== null ? false : true;
+  isMap = JSON.parse(localStorage.getItem("state")) !== null ? false : true;
   @action setIsMap = d => (this.isMap = d);
   @action toggleMap = d => (this.isMap = !this.isMap);
 
   @observable isGraph = false;
   @action setIsGraph = d => (this.isGraph = !this.isGraph);
 
-  @observable isTable = false;
+  @observable isTable = true;
   @action setIsTable = d => (this.isTable = !this.isTable);
 
   @observable
   breakpoints = {
-    xs: '(max-width: 767px)',
-    su: '(min-width: 768px)',
-    sm: '(min-width: 768px) and (max-width: 991px)',
-    md: '(min-width: 992px) and (max-width: 1199px)',
-    mu: '(min-width: 992px)',
-    lg: '(min-width: 1200px)'
+    xs: "(max-width: 767px)",
+    su: "(min-width: 768px)",
+    sm: "(min-width: 768px) and (max-width: 991px)",
+    md: "(min-width: 992px) and (max-width: 1199px)",
+    mu: "(min-width: 992px)",
+    lg: "(min-width: 1200px)"
   };
 
   @observable isSidebarOpen;

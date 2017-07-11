@@ -24,20 +24,13 @@ import "antd/lib/spin/style/css";
 @observer
 export default class Graph extends Component {
   render() {
-    const {
-      graph,
-      station,
-      state,
-      isLoading,
-      isField,
-      currentField
-    } = this.props.store.app;
-    let idx = graph.findIndex(o => o.aboveZero === true);
-    const aboveZero = graph[idx - 1];
-    let filteredGraph = graph.slice(idx - 1);
-    if (isField) {
-      filteredGraph = currentField.slice();
-    }
+    const { getGraph, station, state, isLoading } = this.props.store.app;
+    let idx = getGraph.findIndex(o => o.aboveZero === true);
+    const aboveZero = getGraph[idx - 1];
+    let filteredGraph = getGraph.slice(idx - 1);
+    // if (isField) {
+    //   filteredGraph = currentField.slice();
+    // }
     let aspect;
     const w = window.innerWidth;
     if (w >= 0 && w <= 401) {
@@ -50,7 +43,7 @@ export default class Graph extends Component {
     return (
       <div>
         {!isLoading
-          ? <Flex mb={4} mt={4} column>
+          ? <Flex mb={4} mt={2} column>
               <Box>
                 <h2>
                   Percent Cumulative Emergence (PCE) for{" "}
@@ -61,7 +54,7 @@ export default class Graph extends Component {
               </Box>
               <Box>
                 {idx > 20 &&
-                  !isField &&
+                  true &&
                   aboveZero &&
                   <h4>
                     From January 1 to {format(aboveZero.date, "MMMM D")}, all

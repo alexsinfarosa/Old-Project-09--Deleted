@@ -1,21 +1,21 @@
-import React, { Component } from 'react';
-import { inject, observer } from 'mobx-react';
-import { TileLayer, Marker } from 'react-leaflet';
-import L from 'leaflet';
+import React, { Component } from "react";
+import { inject, observer } from "mobx-react";
+import { TileLayer, Marker } from "react-leaflet";
+import L from "leaflet";
 // import { toJS } from "mobx";
 
 // styled-components
-import { MapContainer } from './styles';
+import { MapContainer } from "./styles";
 
 // reflexbox
-import { Flex, Box } from 'reflexbox';
+import { Flex, Box } from "reflexbox";
 
 const myIcon = e =>
   L.icon({
     iconUrl: e
   });
 
-@inject('store')
+@inject("store")
 @observer
 export default class TheMap extends Component {
   onClickSetStation = e => {
@@ -25,18 +25,18 @@ export default class TheMap extends Component {
       station => station.lat === lat && station.lon === lng
     );
 
-    if (state.name === 'All States') {
-      this.props.store.app.setStateFromEntireMap(selectedStation.state);
+    if (state.name === "All States") {
+      this.props.store.app.setStateFromMap(selectedStation.state);
       this.props.store.app.setStation(selectedStation.name);
       this.props.store.app.addIconsToStations();
-      this.props.store.app.loadData();
+      this.props.store.app.loadGridData();
       this.props.store.logic.setIsMap(false);
       return;
     }
 
     if (selectedStation.state === state.postalCode) {
       this.props.store.app.setStation(selectedStation.name);
-      this.props.store.app.loadData();
+      this.props.store.app.loadGridData();
       this.props.store.logic.setIsMap(false);
     } else {
       const selectedStation = stations.find(

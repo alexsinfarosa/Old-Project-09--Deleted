@@ -1,12 +1,12 @@
-import React, { Component } from 'react';
-import { inject, observer } from 'mobx-react';
-import { when } from 'mobx';
+import React, { Component } from "react";
+import { inject, observer } from "mobx-react";
+import { when } from "mobx";
 
 // components
-import Home from 'views/Home';
+import Home from "views/Home";
 // import Test from "components/Test";
 
-@inject('store')
+@inject("store")
 @observer
 class App extends Component {
   constructor(props) {

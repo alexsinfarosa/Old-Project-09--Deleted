@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import { inject, observer } from "mobx-react";
+import format from "date-fns/format";
+import subDays from "date-fns/sub_days";
 
 // import takeRight from 'lodash/takeRight';
 // import isAfter from 'date-fns/is_after';
@@ -14,44 +16,12 @@ import "antd/lib/table/style/css";
 import UserTable from "./UserTable";
 import Graph from "./Graph";
 
-//columns for the model
-const columns = [
-  {
-    title: "Species",
-    dataIndex: "name",
-    key: "name",
-    width: 150
-  },
-  {
-    title: "Percent Cumulative Emergence",
-    children: [
-      {
-        title: "Yesterday",
-        dataIndex: "yesterday",
-        key: "yesterday",
-        width: 150
-      },
-      {
-        title: "Today",
-        dataIndex: "today",
-        key: "today",
-        width: 150
-      },
-      {
-        title: "Forecast (currently not available)",
-        dataIndex: "tomorrow",
-        key: "tomorrow",
-        width: 150
-      }
-    ]
-  }
-];
-
 @inject("store")
 @observer
 export default class Weed extends Component {
   render() {
     const {
+      getGraph,
       station,
       state,
       areRequiredFieldsSet,
@@ -62,7 +32,8 @@ export default class Weed extends Component {
       pigweed,
       ragweed,
       nightshade,
-      velvetleaf
+      velvetleaf,
+      endDate
     } = this.props.store.app;
     const { isTable } = this.props.store.logic;
     const { mobile } = this.props;
@@ -77,10 +48,43 @@ export default class Weed extends Component {
       velvetleaf
     ];
 
+    //columns for the model
+    const columns = [
+      {
+        title: "Species",
+        dataIndex: "name",
+        key: "name",
+        width: 150
+      },
+      {
+        title: "Percent Cumulative Emergence (PCE) from January 1st",
+        children: [
+          {
+            title: `${format(subDays(endDate, 2), "MMM Do")}`,
+            dataIndex: `indexMinus2`,
+            key: "indexMinus2",
+            width: 150
+          },
+          {
+            title: `${format(endDate, "MMMM Do")}`,
+            dataIndex: "index",
+            key: "index",
+            width: 150
+          },
+          {
+            title: "Forecast (currently not available)",
+            dataIndex: "tomorrow",
+            key: "tomorrow",
+            width: 150
+          }
+        ]
+      }
+    ];
+
     return (
       <div>
-        <UserTable />
-        <Graph />
+        {/* <UserTable /> */}
+        {getGraph.length > 0 && <Graph />}
         {isTable &&
           <Flex column>
             <Box>
