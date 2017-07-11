@@ -83,7 +83,7 @@ export default class Weed extends Component {
 
     return (
       <div>
-        {/* <UserTable /> */}
+        <UserTable />
         {getGraph.length > 0 && <Graph />}
         {isTable &&
           <Flex column>

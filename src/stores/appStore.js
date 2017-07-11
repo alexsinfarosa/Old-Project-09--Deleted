@@ -536,4 +536,15 @@ export default class appStore {
     });
     return results;
   }
+
+  @observable userData = [];
+  @action updateUserData = d => (this.userData = d);
+  @action
+  addUserData = d => {
+    this.userData.push({
+      key: Math.random(),
+      field: `Field name`,
+      date: this.endDate
+    });
+  };
 }

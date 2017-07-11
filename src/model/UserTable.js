@@ -39,34 +39,34 @@ export default class UserTable extends Component {
   render() {
     const { mobile } = this.props;
     const { userData, areRequiredFieldsSet, editable } = this.props.store.app;
-
+    console.log(userData.slice());
     //columns for the model
     const columns = [
       {
         title: "Field",
         dataIndex: "field",
         key: "field",
-        width: "30%",
-        render: (text, record, index) =>
-          <FieldCell
-            value={text}
-            onChange={onCellChange(index, "field")}
-            record={record}
-          />
+        width: "30%"
+        // render: (text, record, index) =>
+        //   <FieldCell
+        //     value={text}
+        //     onChange={onCellChange(index, "field")}
+        //     record={record}
+        //   />
       },
       {
         title: "Date",
         dataIndex: "date",
-        width: "35%",
-        render: (text, record, index) =>
-          <DateCell value={format(text, "MMMM DD")} record={record} />
+        width: "35%"
+        // render: (text, record, index) =>
+        //   <DateCell value={format(text, "MMMM DD")} record={record} />
       },
       {
         title: "Action",
         dataIndex: "operation",
         width: "35%",
         render: (text, record, index) => {
-          return userData.length > 1
+          return userData.length > 0
             ? <span>
                 <Popconfirm
                   title="Sure to delete?"
@@ -91,7 +91,7 @@ export default class UserTable extends Component {
             <h2>User Data</h2>
             {true
               ? <Button
-                  onClick={() => this.props.store.app.setUserData()}
+                  onClick={() => this.props.store.app.addUserData()}
                   type="default"
                 >
                   Reset PCE
@@ -100,36 +100,19 @@ export default class UserTable extends Component {
                   ADD
                 </Button>}
           </Flex>
-          {!editable
-            ? <Table
-                bordered
-                size={mobile ? "small" : "middle"}
-                columns={columns}
-                scroll={{ y: 500 }}
-                rowKey={record => record.key}
-                loading={this.props.store.app.isLoading}
-                pagination={false}
-                onRowClick={d =>
-                  this.props.store.app.setCurrentField(d.dateTable)}
-                dataSource={areRequiredFieldsSet ? userData.slice() : null}
-              />
-            : <Table
-                bordered
-                size={mobile ? "small" : "middle"}
-                columns={columns}
-                scroll={{ y: 500 }}
-                rowKey={record => record.key}
-                loading={this.props.store.app.isLoading}
-                pagination={false}
-                dataSource={areRequiredFieldsSet ? userData.slice() : null}
-              />}
-          <br />
-          {/* <Button
-            onClick={() => this.props.store.app.tsetIsField(false)}
-            type="default"
-          >
-            Reset PCE
-          </Button> */}
+          {true &&
+            <Table
+              bordered
+              size={mobile ? "small" : "middle"}
+              columns={columns}
+              scroll={{ y: 500 }}
+              rowKey={record => record.key}
+              loading={this.props.store.app.isLoading}
+              pagination={false}
+              onRowClick={d =>
+                this.props.store.app.setCurrentField(d.dateTable)}
+              dataSource={areRequiredFieldsSet ? userData.slice() : null}
+            />}
         </Box>
       </Flex>
     );
