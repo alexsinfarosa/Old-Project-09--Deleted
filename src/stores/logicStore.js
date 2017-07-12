@@ -21,6 +21,9 @@ export default class LogicStore {
   @observable isTable = false;
   @action setIsTable = d => (this.isTable = !this.isTable);
 
+  @observable isEditing = false;
+  @action setIsEditing = d => (this.isEditing = d);
+
   @observable
   breakpoints = {
     xs: "(max-width: 767px)",

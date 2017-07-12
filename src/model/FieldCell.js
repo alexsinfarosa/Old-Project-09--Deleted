@@ -15,6 +15,7 @@ export default class FieldCell extends Component {
     editable: false
   };
   handleChange = e => {
+    this.props.store.logic.setIsEditing(true);
     const value = e.target.value;
     const { userData } = this.props.store.app;
     const { key } = this.props.record;
@@ -25,14 +26,18 @@ export default class FieldCell extends Component {
       "userData",
       JSON.stringify(this.props.store.app.userData)
     );
+    this.props.store.logic.setIsEditing(false);
   };
   check = e => {
+    this.props.store.logic.setIsEditing(true);
     this.setState({ editable: false });
     if (this.props.onChange) {
       this.props.onChange(this.state.value);
     }
+    this.props.store.logic.setIsEditing(false);
   };
   edit = () => {
+    this.props.store.logic.setIsEditing(true);
     this.setState({ editable: true });
   };
 
