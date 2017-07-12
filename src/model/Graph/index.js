@@ -24,7 +24,16 @@ import "antd/lib/spin/style/css";
 @observer
 export default class Graph extends Component {
   render() {
-    const { getGraph, station, state, isLoading } = this.props.store.app;
+    const {
+      getGraph,
+      station,
+      state,
+      isLoading,
+      userData,
+      selectedField
+    } = this.props.store.app;
+    const { isRowSelected } = this.props.store.logic;
+
     let idx = getGraph.findIndex(o => o.aboveZero === true);
     const aboveZero = getGraph[idx - 1];
     let filteredGraph = getGraph.slice(idx - 1);
@@ -40,27 +49,46 @@ export default class Graph extends Component {
     } else {
       aspect = 2;
     }
+
     return (
       <div>
         {!isLoading
           ? <Flex mb={4} mt={2} column>
-              <Box>
-                <h2>
-                  Percent Cumulative Emergence (PCE) for{" "}
-                  <span style={{ color: "#008751" }}>
-                    {station.name}, {state.postalCode}
-                  </span>
-                </h2>
-              </Box>
-              <Box>
-                {idx > 20 &&
-                  true &&
-                  aboveZero &&
-                  <h4>
-                    From January 1 to {format(aboveZero.date, "MMMM D")}, all
-                    species are at 0%.
-                  </h4>}
-              </Box>
+              <Flex column>
+                {!isRowSelected
+                  ? <Box>
+                      <h2>
+                        Percent Cumulative Emergence (PCE) for{" "}
+                        <span style={{ color: "#008751" }}>
+                          {station.name}, {state.postalCode}
+                        </span>
+                      </h2>
+                    </Box>
+                  : <Box>
+                      <h2>
+                        Percent Cumulative Emergence (PCE) for{" "}
+                        <span style={{ color: "#008751" }}>
+                          {selectedField.station}, {selectedField.state}
+                        </span>
+                      </h2>
+                      <h3>
+                        Field name:{" "}
+                        <span style={{ color: "#008751" }}>
+                          {selectedField.field}
+                        </span>
+                      </h3>
+                    </Box>}
+
+                <Box>
+                  {idx > 20 &&
+                    aboveZero &&
+                    <h4>
+                      From January 1 to {format(aboveZero.date, "MMMM D")}, all
+                      species are at 0%.
+                    </h4>}
+                </Box>
+              </Flex>
+
               <Box mb={4}>
                 <ResponsiveContainer width="100%" aspect={aspect}>
                   <LineChart

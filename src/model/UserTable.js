@@ -18,14 +18,6 @@ import "antd/lib/popconfirm/style/css";
 import FieldCell from "./FieldCell";
 import DateCell from "./DateCell";
 
-const onCellChange = (index, key) => {
-  return value => {
-    const dataSource = [...this.state.dataSource];
-    dataSource[index][key] = value;
-    this.setState({ dataSource });
-  };
-};
-
 @inject("store")
 @observer
 export default class UserTable extends Component {
@@ -37,11 +29,21 @@ export default class UserTable extends Component {
     this.props.store.app.updateUserData(data);
   };
 
+  onRowClick = d => {
+    this.props.store.logic.setIsRowSelected(true);
+    this.props.store.app.setSelectedField(d);
+    const { isEditing } = this.props.store.logic;
+    const today = format(new Date(), "YYYY-MM-DD");
+
+    if (!isEditing) {
+      this.props.store.app.loadGridData(d.date, today);
+    }
+  };
+
   render() {
     const { mobile } = this.props;
     const { userData, areRequiredFieldsSet, editable } = this.props.store.app;
     const { isEditing } = this.props.store.logic;
-    const today = format(new Date(), "YYYY-MM-DD");
     //columns for the model
     const columns = [
       {
@@ -50,11 +52,7 @@ export default class UserTable extends Component {
         key: "field",
         width: "30%",
         render: (text, record, index) =>
-          <FieldCell
-            value={text}
-            onChange={onCellChange(index, "field")}
-            record={record}
-          />
+          <FieldCell value={text} record={record} />
       },
       {
         title: "Date",
@@ -86,6 +84,14 @@ export default class UserTable extends Component {
       }
     ];
 
+    // rowSelection object indicates the need for row selection
+    const rowSelection = {
+      type: "radio",
+      onSelect: (rec, sel, selRows) => {
+        console.log(rec, sel);
+      }
+    };
+
     return (
       <Flex justify="center">
         <Box mb={1} col={12} lg={12} md={12} sm={12}>
@@ -101,18 +107,15 @@ export default class UserTable extends Component {
           </Flex>
 
           <Table
-            bordered
+            // bordered
             size={mobile ? "small" : "middle"}
             columns={columns}
             scroll={{ y: 500 }}
             rowKey={record => record.key}
             // loading={this.props.store.app.isLoading}
             pagination={false}
-            onRowClick={
-              !isEditing
-                ? d => this.props.store.app.loadGridData(d.date, today)
-                : null
-            }
+            // rowSelection={rowSelection}
+            onRowClick={this.onRowClick}
             dataSource={areRequiredFieldsSet ? userData.slice() : null}
           />
         </Box>

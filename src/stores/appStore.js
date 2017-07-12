@@ -516,6 +516,8 @@ export default class appStore {
       results.push({
         key: i,
         field: `Field name`,
+        state: this.state.postalCode,
+        station: this.station.name,
         date: day[0],
         dateTable: format(day[0], "MMM D"),
         "Large crabgrass": this.crabgrass[i].index,
@@ -539,6 +541,9 @@ export default class appStore {
     this.userData = d;
     localStorage.setItem("userData", JSON.stringify(this.userData));
   };
+
+  @observable selectedField = {};
+  @action setSelectedField = d => (this.selectedField = d);
 
   @action
   addUserData = () => {

@@ -9,10 +9,12 @@ import moment from "moment";
 @observer
 export default class Datepicker extends Component {
   onChange = (date, dateString) => {
+    this.props.store.logic.setIsRowSelected(false);
     const { areRequiredFieldsSet } = this.props.store.app;
     const mobile = this.props.size;
     this.props.store.app.setEndDate(dateString);
     this.props.store.app.loadGridData();
+    this.props.store.logic.setIsMap(false);
     if (areRequiredFieldsSet && mobile) {
       this.props.store.logic.setIsSidebarOpen(false);
     }
