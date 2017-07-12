@@ -30,13 +30,18 @@ export default class Graph extends Component {
       state,
       isLoading,
       userData,
-      selectedField
+      selectedField,
+      startDate
     } = this.props.store.app;
     const { isRowSelected } = this.props.store.logic;
 
     let idx = getGraph.findIndex(o => o.aboveZero === true);
     const aboveZero = getGraph[idx - 1];
-    let filteredGraph = getGraph.slice(idx - 1);
+
+    let filteredGraph = getGraph;
+    if (getGraph[0].date === startDate) {
+      filteredGraph = getGraph.slice(idx - 1);
+    }
     // if (isField) {
     //   filteredGraph = currentField.slice();
     // }

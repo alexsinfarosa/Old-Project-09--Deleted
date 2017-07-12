@@ -10,62 +10,36 @@ import "antd/lib/icon/style/css";
 @inject("store")
 @observer
 export default class FieldCell extends Component {
-  state = {
-    value: this.props.value,
-    editable: false
-  };
   handleChange = e => {
-    this.props.store.logic.setIsEditing(true);
     const value = e.target.value;
-    const { userData } = this.props.store.app;
-    const { key } = this.props.record;
-    const idx = userData.findIndex(field => field.key === key);
-    userData[idx]["field"] = value;
-    this.setState({ value });
-    localStorage.setItem(
-      "userData",
-      JSON.stringify(this.props.store.app.userData)
-    );
-    this.props.store.logic.setIsEditing(false);
-  };
-  check = e => {
-    this.props.store.logic.setIsEditing(true);
-    this.setState({ editable: false });
-    if (this.props.onChange) {
-      this.props.onChange(this.state.value);
-    }
-    this.props.store.logic.setIsEditing(false);
-  };
-  edit = () => {
-    this.props.store.logic.setIsEditing(true);
-    this.setState({ editable: true });
+    const { record } = this.props;
   };
 
+  // onEdit = d => {
+  //   const { userData } = this.props.store.app;
+  //   const { record } = this.props;
+  //   const idx = userData.findIndex(field => field.key === record.key);
+  //   userData[idx]["field"] = dateString;
+  //   this.props.store.logic.setIsEditing(true);
+  //   const { userData } = this.props.store.app;
+  //   const data = userData.slice(index, 1);
+  //   this.props.store.app.updateUserData(data);
+  // };
+
   render() {
-    const { value, editable } = this.state;
+    const { userData } = this.props.store.app;
     return (
-      <div className="editable-cell">
-        {editable
-          ? <div className="editable-cell-input-wrapper">
-              <Input
-                value={value}
-                onChange={this.handleChange}
-                onPressEnter={this.check}
-              />
-              <Icon
-                type="check"
-                className="editable-cell-icon-check"
-                onClick={this.check}
-              />
-            </div>
-          : <div className="editable-cell-text-wrapper">
-              {value || " "}
-              <Icon
-                type="edit"
-                className="editable-cell-icon"
-                onClick={this.edit}
-              />
-            </div>}
+      <div>
+        {false
+          ? <Input
+              style={{ width: 120 }}
+              size="small"
+              onChange={this.handleChange}
+              onPressEnter={this.check}
+            />
+          : <p>
+              {this.props.value}
+            </p>}
       </div>
     );
   }

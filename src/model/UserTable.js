@@ -16,28 +16,33 @@ import Popconfirm from "antd/lib/popconfirm";
 import "antd/lib/popconfirm/style/css";
 
 import FieldCell from "./FieldCell";
-import DateCell from "./DateCell";
+import DatePickerCell from "./DatePickerCell";
 
 @inject("store")
 @observer
 export default class UserTable extends Component {
+  onGraph = d => {
+    this.props.store.app.setSelectedField(d);
+    const { isEditing } = this.props.store.logic;
+    const today = format(new Date(), "YYYY-MM-DD");
+    console.log(d.date);
+
+    if (!isEditing) {
+      this.props.store.app.loadGridData(d.date, today);
+    }
+  };
+
+  onEdit = index => {
+    const { userData } = this.props.store.app;
+    userData[index]["editing"] = true;
+  };
+
   onDelete = index => {
     this.props.store.logic.setIsEditing(true);
     const { userData } = this.props.store.app;
     const data = [...userData];
     data.splice(index, 1);
     this.props.store.app.updateUserData(data);
-  };
-
-  onRowClick = d => {
-    this.props.store.logic.setIsRowSelected(true);
-    this.props.store.app.setSelectedField(d);
-    const { isEditing } = this.props.store.logic;
-    const today = format(new Date(), "YYYY-MM-DD");
-
-    if (!isEditing) {
-      this.props.store.app.loadGridData(d.date, today);
-    }
   };
 
   render() {
@@ -57,9 +62,8 @@ export default class UserTable extends Component {
       {
         title: "Date",
         dataIndex: "date",
-        width: "35%"
-        // render: (text, record, index) =>
-        //   <DateCell value={format(text, "MMMM DD")} record={record} />
+        width: "35%",
+        render: (text, record, index) => <DatePickerCell record={record} />
       },
       {
         title: "Action",
@@ -68,16 +72,16 @@ export default class UserTable extends Component {
         render: (text, record, index) => {
           return userData.length > 0
             ? <span>
+                <a onClick={() => this.onGraph(record)}>Graph</a>
+                <span className="ant-divider" />
+                <a onClick={() => this.onEdit(index)}>Edit</a>
+                <span className="ant-divider" />
                 <Popconfirm
                   title="Sure to delete?"
                   onConfirm={() => this.onDelete(index)}
                 >
                   <a href="#">Delete</a>
                 </Popconfirm>
-                {/* <span className="ant-divider" />
-                <a onClick={() => this.props.store.app.resetUserData()}>
-                  Reset
-                </a> */}
               </span>
             : null;
         }
@@ -115,7 +119,7 @@ export default class UserTable extends Component {
             // loading={this.props.store.app.isLoading}
             pagination={false}
             // rowSelection={rowSelection}
-            onRowClick={this.onRowClick}
+            // onGraph={this.onGraph}
             dataSource={areRequiredFieldsSet ? userData.slice() : null}
           />
         </Box>

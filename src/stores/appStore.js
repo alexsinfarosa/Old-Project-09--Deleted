@@ -237,10 +237,14 @@ export default class appStore {
 
   // Current Model ------------------------------------------------------------
   @observable gridData = [];
-  @action updateGridData = d => (this.gridData = d);
+  @action
+  updateGridData = d => {
+    this.gridData.clear();
+    this.gridData = d;
+  };
 
   @action
-  loadGridData(startDate = this.startDate, endDate = this.endDate) {
+  loadGridData(sDate = this.startDate, eDate = this.endDate) {
     this.isLoading = true;
 
     let loc = "-75.7000, 42.5000";
@@ -250,8 +254,8 @@ export default class appStore {
 
     const params = {
       loc: loc,
-      sdate: startDate,
-      edate: endDate,
+      sdate: sDate,
+      edate: eDate,
       grid: 3,
       elems: [{ name: "avgt" }]
     };
@@ -514,10 +518,11 @@ export default class appStore {
       }
 
       results.push({
-        key: i,
+        key: i + Math.random(),
         field: `Field name`,
         state: this.state.postalCode,
         station: this.station.name,
+        editing: false,
         date: day[0],
         dateTable: format(day[0], "MMM D"),
         "Large crabgrass": this.crabgrass[i].index,
@@ -531,6 +536,7 @@ export default class appStore {
         aboveZero: aboveZero
       });
     });
+    console.log(results.slice());
     return results;
   }
 
@@ -538,6 +544,7 @@ export default class appStore {
 
   @action
   updateUserData = d => {
+    this.userData.clear();
     this.userData = d;
     localStorage.setItem("userData", JSON.stringify(this.userData));
   };
