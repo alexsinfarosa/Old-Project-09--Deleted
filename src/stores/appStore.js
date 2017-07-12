@@ -240,13 +240,8 @@ export default class appStore {
   @action updateGridData = d => (this.gridData = d);
 
   @action
-  loadGridData() {
+  loadGridData(startDate = this.startDate, endDate = this.endDate) {
     this.isLoading = true;
-
-    let edate = this.endDate;
-    // if (this.startDateYear === this.currentYear) {
-    //   edate = format(addDays(this.endDate, 5), "YYYY-MM-DD");
-    // }
 
     let loc = "-75.7000, 42.5000";
     if (this.state.name !== "All States") {
@@ -255,8 +250,8 @@ export default class appStore {
 
     const params = {
       loc: loc,
-      sdate: this.startDate,
-      edate: edate,
+      sdate: startDate,
+      edate: endDate,
       grid: 3,
       elems: [{ name: "avgt" }]
     };
@@ -549,16 +544,7 @@ export default class appStore {
   addUserData = () => {
     // change this.endDate with today
     const field = this.getGraph.find(day => day.date === this.endDate);
-    console.log(field);
     this.userData.push(field);
     localStorage.setItem("userData", JSON.stringify(this.userData));
-  };
-
-  @observable selectedField = [];
-  @action
-  updateSelectedField = d => {
-    console.log(d.key);
-    const idx = this.getGraph.findIndex(day => day.key === d.key);
-    console.log(idx);
   };
 }

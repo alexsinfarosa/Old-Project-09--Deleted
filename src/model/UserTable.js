@@ -39,7 +39,7 @@ export default class UserTable extends Component {
   render() {
     const { mobile } = this.props;
     const { userData, areRequiredFieldsSet, editable } = this.props.store.app;
-    console.log(userData.slice());
+    const today = format(new Date(), "YYYY-MM-DD");
     //columns for the model
     const columns = [
       {
@@ -109,7 +109,7 @@ export default class UserTable extends Component {
               rowKey={record => record.key}
               loading={this.props.store.app.isLoading}
               pagination={false}
-              onRowClick={d => this.props.store.app.updateSelectedField(d)}
+              onRowClick={d => this.props.store.app.loadGridData(d.date, today)}
               dataSource={areRequiredFieldsSet ? userData.slice() : null}
             />}
         </Box>
