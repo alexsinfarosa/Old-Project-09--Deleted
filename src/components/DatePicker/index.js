@@ -9,7 +9,6 @@ import moment from "moment";
 @observer
 export default class Datepicker extends Component {
   onChange = (date, dateString) => {
-    this.props.store.logic.setIsRowSelected(false);
     const { areRequiredFieldsSet } = this.props.store.app;
     const mobile = this.props.size;
     this.props.store.app.setEndDate(dateString);
@@ -18,6 +17,7 @@ export default class Datepicker extends Component {
     if (areRequiredFieldsSet && mobile) {
       this.props.store.logic.setIsSidebarOpen(false);
     }
+    this.props.store.logic.setIsRowSelected(false);
   };
 
   render() {
@@ -32,7 +32,7 @@ export default class Datepicker extends Component {
           allowClear={false}
           value={moment(endDate)}
           format="MMM DD YYYY"
-          onChange={this.onChange}
+          onChange={(date, dateString) => this.onChange(date, dateString)}
         />
       </div>
     );

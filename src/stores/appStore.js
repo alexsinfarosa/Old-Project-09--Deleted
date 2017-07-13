@@ -536,7 +536,6 @@ export default class appStore {
         aboveZero: aboveZero
       });
     });
-    console.log(results.slice());
     return results;
   }
 

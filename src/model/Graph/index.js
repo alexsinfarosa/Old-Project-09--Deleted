@@ -54,22 +54,14 @@ export default class Graph extends Component {
     } else {
       aspect = 2;
     }
-
+    console.log(this.props.store.logic.isRowSelected);
     return (
       <div>
         {!isLoading
           ? <Flex mb={4} mt={2} column>
               <Flex column>
-                {!isRowSelected
+                {isRowSelected
                   ? <Box>
-                      <h2>
-                        Percent Cumulative Emergence (PCE) for{" "}
-                        <span style={{ color: "#008751" }}>
-                          {station.name}, {state.postalCode}
-                        </span>
-                      </h2>
-                    </Box>
-                  : <Box>
                       <h2>
                         Percent Cumulative Emergence (PCE) for{" "}
                         <span style={{ color: "#008751" }}>
@@ -82,16 +74,25 @@ export default class Graph extends Component {
                           {selectedField.field}
                         </span>
                       </h3>
-                    </Box>}
-
-                <Box>
-                  {idx > 20 &&
-                    aboveZero &&
-                    <h4>
-                      From January 1 to {format(aboveZero.date, "MMMM D")}, all
-                      species are at 0%.
-                    </h4>}
-                </Box>
+                    </Box>
+                  : <Flex column>
+                      <Box>
+                        <h2>
+                          Percent Cumulative Emergence (PCE) for{" "}
+                          <span style={{ color: "#008751" }}>
+                            {station.name}, {state.postalCode}
+                          </span>
+                        </h2>
+                      </Box>
+                      <Box>
+                        {idx > 20 &&
+                          aboveZero &&
+                          <h4>
+                            From January 1 to {format(aboveZero.date, "MMMM D")},
+                            all species are at 0%.
+                          </h4>}
+                      </Box>
+                    </Flex>}
               </Flex>
 
               <Box mb={4}>

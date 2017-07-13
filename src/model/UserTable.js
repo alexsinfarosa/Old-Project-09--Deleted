@@ -22,14 +22,10 @@ import DatePickerCell from "./DatePickerCell";
 @observer
 export default class UserTable extends Component {
   onGraph = d => {
+    this.props.store.logic.setIsRowSelected(true);
     this.props.store.app.setSelectedField(d);
-    const { isEditing } = this.props.store.logic;
     const today = format(new Date(), "YYYY-MM-DD");
-    console.log(d.date);
-
-    if (!isEditing) {
-      this.props.store.app.loadGridData(d.date, today);
-    }
+    this.props.store.app.loadGridData(d.date, today);
   };
 
   onEdit = index => {
@@ -38,7 +34,6 @@ export default class UserTable extends Component {
   };
 
   onDelete = index => {
-    this.props.store.logic.setIsEditing(true);
     const { userData } = this.props.store.app;
     const data = [...userData];
     data.splice(index, 1);
