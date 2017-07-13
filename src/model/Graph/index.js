@@ -54,7 +54,6 @@ export default class Graph extends Component {
     } else {
       aspect = 2;
     }
-    console.log(this.props.store.logic.isRowSelected);
     return (
       <div>
         {!isLoading

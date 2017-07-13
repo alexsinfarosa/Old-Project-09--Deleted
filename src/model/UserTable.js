@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { observable, action } from "mobx";
 import { inject, observer } from "mobx-react";
 import format from "date-fns/format";
 // import { toJS } from 'mobx';
@@ -28,11 +29,6 @@ export default class UserTable extends Component {
     this.props.store.app.loadGridData(d.date, today);
   };
 
-  onEdit = index => {
-    const { userData } = this.props.store.app;
-    userData[index]["editing"] = true;
-  };
-
   onDelete = index => {
     const { userData } = this.props.store.app;
     const data = [...userData];
@@ -52,7 +48,7 @@ export default class UserTable extends Component {
         key: "field",
         width: "30%",
         render: (text, record, index) =>
-          <FieldCell value={text} record={record} />
+          <FieldCell value={text} record={record} idx={this.index} />
       },
       {
         title: "Date",
@@ -69,8 +65,8 @@ export default class UserTable extends Component {
             ? <span>
                 <a onClick={() => this.onGraph(record)}>Graph</a>
                 <span className="ant-divider" />
-                <a onClick={() => this.onEdit(index)}>Edit</a>
-                <span className="ant-divider" />
+                {/* <a onClick={() => this.setIndex(index)}>Edit</a>
+                <span className="ant-divider" /> */}
                 <Popconfirm
                   title="Sure to delete?"
                   onConfirm={() => this.onDelete(index)}

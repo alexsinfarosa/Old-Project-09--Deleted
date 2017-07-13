@@ -10,15 +10,8 @@ import format from "date-fns/format";
 @observer
 export default class DatePickerCell extends Component {
   onChange = (date, dateString) => {
-    this.props.store.logic.setIsRowSelected(true);
-
-    const { userData } = this.props.store.app;
-    const { record } = this.props;
+    this.props.store.app.replaceField(this.props.record, dateString);
     const today = format(new Date(), "YYYY-MM-DD");
-    const idx = userData.findIndex(field => field.key === record.key);
-    userData[idx]["date"] = dateString;
-    userData[idx]["key"] = Math.round();
-    this.props.store.app.updateUserData(userData);
     this.props.store.app.loadGridData(dateString, today);
   };
 

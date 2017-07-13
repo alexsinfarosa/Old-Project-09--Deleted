@@ -1,17 +1,17 @@
-import React, { Component } from 'react';
-import { inject, observer } from 'mobx-react';
+import React, { Component } from "react";
+import { inject, observer } from "mobx-react";
 
-import Select from 'antd/lib/select';
-import 'antd/lib/select/style/css';
+import Select from "antd/lib/select";
+import "antd/lib/select/style/css";
 const Option = Select.Option;
 
-@inject('store')
+@inject("store")
 @observer
 export default class Station extends Component {
   handleChange = async value => {
     const mobile = this.props.size;
     await this.props.store.app.setStation(value);
-    this.props.store.app.loadData();
+    this.props.store.app.loadGridData();
     this.props.store.logic.setIsMap(false);
 
     if (this.props.store.app.areRequiredFieldsSet && mobile) {
@@ -28,7 +28,7 @@ export default class Station extends Component {
     );
 
     return (
-      <div style={{ marginBottom: '2rem' }}>
+      <div style={{ marginBottom: "2rem" }}>
         <label>Station:</label>
         <Select
           name="station"

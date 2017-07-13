@@ -558,4 +558,15 @@ export default class appStore {
     this.userData.push(field);
     localStorage.setItem("userData", JSON.stringify(this.userData));
   };
+
+  @action
+  replaceField = (field, date) => {
+    let selectedField = this.userData.find(d => d.key === field.key);
+    selectedField["date"] = date;
+    const idx = this.userData.findIndex(d => d.key === field.key);
+    const data = [...this.userData];
+    data.splice(idx, 1, selectedField);
+    this.userData = data;
+    localStorage.setItem("userData", JSON.stringify(this.userData));
+  };
 }
