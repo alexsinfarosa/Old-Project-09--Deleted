@@ -29,7 +29,6 @@ export default class Graph extends Component {
       station,
       state,
       isLoading,
-      userData,
       selectedField,
       startDate
     } = this.props.store.app;

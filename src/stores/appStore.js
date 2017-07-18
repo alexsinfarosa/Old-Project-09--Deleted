@@ -1,7 +1,6 @@
 import { observable, action, computed } from "mobx";
 import axios from "axios";
 import format from "date-fns/format";
-import addDays from "date-fns/add_days";
 
 import { matchIconsToStations } from "utils";
 
@@ -52,16 +51,6 @@ class Specie {
   constructor({ name, graph }) {
     this.name = name;
     this.graph = graph;
-  }
-}
-
-class Field {
-  @observable name;
-  @observable date;
-
-  constructor({ name, date }) {
-    this.name = name;
-    this.date = date;
   }
 }
 
@@ -553,6 +542,9 @@ export default class appStore {
 
   @action
   addUserData = () => {
+    // const today = format(new Date(), "YYYY-MM-DD");
+    // console.log(today);
+    // console.log(this.endDate);
     // change this.endDate with today
     const field = this.getGraph.find(day => day.date === this.endDate);
     this.userData.push(field);

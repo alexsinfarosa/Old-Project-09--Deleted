@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { observable, action } from "mobx";
 import { inject, observer } from "mobx-react";
 import format from "date-fns/format";
 // import { toJS } from 'mobx';
@@ -38,8 +37,7 @@ export default class UserTable extends Component {
 
   render() {
     const { mobile } = this.props;
-    const { userData, areRequiredFieldsSet, editable } = this.props.store.app;
-    const { isEditing } = this.props.store.logic;
+    const { userData, areRequiredFieldsSet } = this.props.store.app;
     //columns for the model
     const columns = [
       {
@@ -78,14 +76,6 @@ export default class UserTable extends Component {
         }
       }
     ];
-
-    // rowSelection object indicates the need for row selection
-    const rowSelection = {
-      type: "radio",
-      onSelect: (rec, sel, selRows) => {
-        console.log(rec, sel);
-      }
-    };
 
     return (
       <Flex justify="center">

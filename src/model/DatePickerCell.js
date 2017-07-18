@@ -16,7 +16,6 @@ export default class DatePickerCell extends Component {
   };
 
   render() {
-    const { endDate } = this.props.store.app;
     return (
       <DatePicker
         showToday={false}

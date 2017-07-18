@@ -60,7 +60,7 @@ export default class Weed extends Component {
         title: "Percent Cumulative Emergence (PCE) from January 1st",
         children: [
           {
-            title: `${format(subDays(endDate, 2), "MMM Do")}`,
+            title: `${format(subDays(endDate, 1), "MMM Do")}`,
             dataIndex: `indexMinus2`,
             key: "indexMinus2",
             width: 150
