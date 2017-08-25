@@ -80,15 +80,8 @@ export default class UserTable extends Component {
     return (
       <Flex justify="center">
         <Box mb={1} col={12} lg={12} md={12} sm={12}>
-          <Flex justify="space-between" align="center" mt={1} mb={1}>
+          <Flex align="center" mt={1} mb={1}>
             <h2>User Data</h2>
-
-            <Button
-              onClick={() => this.props.store.app.addUserData()}
-              type="default"
-            >
-              Reset PCE
-            </Button>
           </Flex>
 
           <Table

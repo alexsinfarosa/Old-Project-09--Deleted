@@ -56,7 +56,7 @@ export default class Graph extends Component {
     return (
       <div>
         {!isLoading
-          ? <Flex mb={4} mt={2} column>
+          ? <Flex mb={2} mt={4} column>
               <Flex column>
                 {isRowSelected
                   ? <Box>
@@ -97,13 +97,14 @@ export default class Graph extends Component {
                 <ResponsiveContainer width="100%" aspect={aspect}>
                   <LineChart
                     width={600}
-                    height={200}
+                    height={400}
                     data={filteredGraph}
                     syncId="anyId"
                     margin={{ top: 30, right: 0, left: -30, bottom: 30 }}
-
-                    // onClick={d =>
-                    //   this.props.store.app.setGraphStartDate(d.activeLabel)}
+                    onClick={d =>
+                      this.props.store.app.addUserData(
+                        d.activePayload[0].payload.date
+                      )}
                   >
                     <XAxis
                       dataKey="dateTable"

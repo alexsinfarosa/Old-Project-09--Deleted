@@ -541,12 +541,12 @@ export default class appStore {
   @action setSelectedField = d => (this.selectedField = d);
 
   @action
-  addUserData = () => {
+  addUserData = clickedDate => {
     // const today = format(new Date(), "YYYY-MM-DD");
     // console.log(today);
     // console.log(this.endDate);
     // change this.endDate with today
-    const field = this.getGraph.find(day => day.date === this.endDate);
+    const field = this.getGraph.find(day => day.date === clickedDate);
     this.userData.push(field);
     localStorage.setItem("userData", JSON.stringify(this.userData));
   };
