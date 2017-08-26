@@ -16,7 +16,7 @@ export default class LogicStore {
   @action toggleMap = d => (this.isMap = !this.isMap);
 
   @observable isGraph = false;
-  @action setIsGraph = d => (this.isGraph = !this.isGraph);
+  @action setIsGraph = d => (this.isGraph = d);
 
   @observable isTable = false;
   @action setIsTable = d => (this.isTable = !this.isTable);

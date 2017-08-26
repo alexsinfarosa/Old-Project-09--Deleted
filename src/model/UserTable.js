@@ -21,16 +21,28 @@ import DatePickerCell from "./DatePickerCell";
 @inject("store")
 @observer
 export default class UserTable extends Component {
-  onGraph = field => {
-    const { isGraph } = this.props.store.logic;
-    console.log(isGraph);
+  constructor(props) {
+    super(props);
     const { userData } = this.props.store.app;
     userData.map(e => (e.selected = ""));
-    field.selected = "selected";
-    this.props.store.logic.setIsRowSelected(true);
-    this.props.store.app.setSelectedField(field);
-    const today = format(new Date(), "YYYY-MM-DD");
-    this.props.store.app.loadGridData(field.date, today);
+  }
+
+  onGraph = field => {
+    const { isGraph } = this.props.store.logic;
+    const { userData } = this.props.store.app;
+    userData.map(e => (e.selected = ""));
+    if (!isGraph) {
+      field.selected = "selected";
+      this.props.store.logic.setIsRowSelected(true);
+      this.props.store.app.setSelectedField(field);
+      const today = format(new Date(), "YYYY-MM-DD");
+      this.props.store.app.loadGridData(field.date, today);
+      this.props.store.logic.setIsGraph(true);
+    } else {
+      this.props.store.app.loadGridData();
+      this.props.store.logic.setIsRowSelected(false);
+      this.props.store.logic.setIsGraph(false);
+    }
   };
 
   onDelete = index => {
@@ -89,24 +101,24 @@ export default class UserTable extends Component {
     return (
       <Flex justify="center">
         {userData.map(e => console.log(e.field, e.selected))}
-        {userData &&
-          <Box mb={1} col={12} lg={12} md={12} sm={12}>
-            <Flex align="center" mt={1} mb={1}>
-              <h2>User Data</h2>
-            </Flex>
 
-            <Table
-              size={
-                mobile ? "small" : "middle" // bordered
-              }
-              columns={columns}
-              scroll={{ y: 500 }}
-              rowKey={record => record.key}
-              pagination={false}
-              rowClassName={record => record.selected}
-              dataSource={areRequiredFieldsSet ? userData.slice() : null}
-            />
-          </Box>}
+        <Box mb={1} col={12} lg={12} md={12} sm={12}>
+          <Flex align="center" mt={1} mb={1}>
+            <h2>User Data</h2>
+          </Flex>
+
+          <Table
+            size={
+              mobile ? "small" : "middle" // bordered
+            }
+            columns={columns}
+            scroll={{ y: 500 }}
+            rowKey={record => record.key}
+            pagination={false}
+            rowClassName={record => record.selected}
+            dataSource={areRequiredFieldsSet ? userData.slice() : null}
+          />
+        </Box>
       </Flex>
     );
   }
