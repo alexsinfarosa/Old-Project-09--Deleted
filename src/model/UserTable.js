@@ -21,11 +21,16 @@ import DatePickerCell from "./DatePickerCell";
 @inject("store")
 @observer
 export default class UserTable extends Component {
-  onGraph = d => {
+  onGraph = field => {
+    const { isGraph } = this.props.store.logic;
+    console.log(isGraph);
+    const { userData } = this.props.store.app;
+    userData.map(e => (e.selected = ""));
+    field.selected = "selected";
     this.props.store.logic.setIsRowSelected(true);
-    this.props.store.app.setSelectedField(d);
+    this.props.store.app.setSelectedField(field);
     const today = format(new Date(), "YYYY-MM-DD");
-    this.props.store.app.loadGridData(d.date, today);
+    this.props.store.app.loadGridData(field.date, today);
   };
 
   onDelete = index => {
@@ -34,6 +39,10 @@ export default class UserTable extends Component {
     data.splice(index, 1);
     this.props.store.app.updateUserData(data);
   };
+
+  // rowSelection = record => {
+  //   return record.selected === "selected" ? "selected" : "";
+  // };
 
   render() {
     const { mobile } = this.props;
@@ -51,20 +60,20 @@ export default class UserTable extends Component {
       {
         title: "Date",
         dataIndex: "date",
+        key: "date",
         width: "35%",
         render: (text, record, index) => <DatePickerCell record={record} />
       },
       {
         title: "Action",
         dataIndex: "operation",
+        key: "operation",
         width: "35%",
         render: (text, record, index) => {
           return userData.length > 0
             ? <span>
                 <a onClick={() => this.onGraph(record)}>Graph</a>
                 <span className="ant-divider" />
-                {/* <a onClick={() => this.setIndex(index)}>Edit</a>
-                <span className="ant-divider" /> */}
                 <Popconfirm
                   title="Sure to delete?"
                   onConfirm={() => this.onDelete(index)}
@@ -79,24 +88,25 @@ export default class UserTable extends Component {
 
     return (
       <Flex justify="center">
-        <Box mb={1} col={12} lg={12} md={12} sm={12}>
-          <Flex align="center" mt={1} mb={1}>
-            <h2>User Data</h2>
-          </Flex>
+        {userData.map(e => console.log(e.field, e.selected))}
+        {userData &&
+          <Box mb={1} col={12} lg={12} md={12} sm={12}>
+            <Flex align="center" mt={1} mb={1}>
+              <h2>User Data</h2>
+            </Flex>
 
-          <Table
-            // bordered
-            size={mobile ? "small" : "middle"}
-            columns={columns}
-            scroll={{ y: 500 }}
-            rowKey={record => record.key}
-            // loading={this.props.store.app.isLoading}
-            pagination={false}
-            // rowSelection={rowSelection}
-            // onGraph={this.onGraph}
-            dataSource={areRequiredFieldsSet ? userData.slice() : null}
-          />
-        </Box>
+            <Table
+              size={
+                mobile ? "small" : "middle" // bordered
+              }
+              columns={columns}
+              scroll={{ y: 500 }}
+              rowKey={record => record.key}
+              pagination={false}
+              rowClassName={record => record.selected}
+              dataSource={areRequiredFieldsSet ? userData.slice() : null}
+            />
+          </Box>}
       </Flex>
     );
   }

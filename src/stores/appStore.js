@@ -512,6 +512,7 @@ export default class appStore {
         state: this.state.postalCode,
         station: this.station.name,
         editing: false,
+        selected: "",
         date: day[0],
         dateTable: format(day[0], "MMM D"),
         "Large crabgrass": this.crabgrass[i].index,
