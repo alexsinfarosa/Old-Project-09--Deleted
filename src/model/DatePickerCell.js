@@ -10,9 +10,12 @@ import format from "date-fns/format";
 @observer
 export default class DatePickerCell extends Component {
   onChange = (date, dateString) => {
+    const { isGraph } = this.props.store.logic;
     this.props.store.app.replaceField(this.props.record, dateString);
-    const today = format(new Date(), "YYYY-MM-DD");
-    this.props.store.app.loadGridData(dateString, today);
+    if (isGraph) {
+      const today = format(new Date(), "YYYY-MM-DD");
+      this.props.store.app.loadGridData(dateString, today);
+    }
   };
 
   render() {

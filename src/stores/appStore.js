@@ -548,8 +548,13 @@ export default class appStore {
     // console.log(this.endDate);
     // change this.endDate with today
     const field = this.getGraph.find(day => day.date === clickedDate);
-    this.userData.push(field);
-    localStorage.setItem("userData", JSON.stringify(this.userData));
+    console.log(field);
+    const match = this.userData.filter(oldField => oldField.key === field.key);
+    console.log(match);
+    if (match.length === 0) {
+      this.userData.push(field);
+      localStorage.setItem("userData", JSON.stringify(this.userData));
+    }
   };
 
   @action
