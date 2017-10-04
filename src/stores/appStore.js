@@ -217,7 +217,7 @@ export default class appStore {
   };
   @computed
   get startDate() {
-    return `${format(this.endDate, "YYYY")}-01-01`;
+    return `${format(this.endDate, "YYYY")}-03-01`;
   }
   @computed
   get startDateYear() {
@@ -236,13 +236,12 @@ export default class appStore {
   loadGridData(sDate = this.startDate, eDate = this.endDate) {
     this.isLoading = true;
 
-    let loc = "-75.7000, 42.5000";
+    let loc = "-75.7,42.5";
     if (this.state.name !== "All States") {
-      loc = `${this.station.lon}, ${this.station.lat}`;
+      loc = `${this.station.lon},${this.station.lat}`;
     }
 
     const params = {
-      // cover: "bare",
       loc: loc,
       sdate: sDate,
       edate: eDate,
@@ -252,25 +251,31 @@ export default class appStore {
 
     console.log(params);
 
-    return axios
-      .post(`${this.protocol}//grid.rcc-acis.org/GridData`, params)
-      .then(res => {
-        console.log(res.data.data);
-        this.updateGridData(res.data.data);
-        this.crabgrass;
-        this.gFoxtail;
-        this.yFoxtail;
-        this.lambsquarters;
-        this.nightshade;
-        this.pigweed;
-        this.ragweed;
-        this.velvetleaf;
-        this.getGraph;
-        this.isLoading = false;
-      })
-      .catch(err => {
-        console.log("Failed to load data model", err);
-      });
+    return (
+      axios
+        // .post(
+        //   `${this
+        //     .protocol}//newa.nrcc.cornell.edu/newaUtil/gridSoilTemps?cover=bare&ll=${loc}&sdate=${sDate}&edate=${eDate}`
+        // )
+        .post(`${this.protocol}//grid.rcc-acis.org/GridData`, params)
+        .then(res => {
+          console.log(res.data.data);
+          this.updateGridData(res.data.data);
+          this.crabgrass;
+          this.gFoxtail;
+          this.yFoxtail;
+          this.lambsquarters;
+          this.nightshade;
+          this.pigweed;
+          this.ragweed;
+          this.velvetleaf;
+          this.getGraph;
+          this.isLoading = false;
+        })
+        .catch(err => {
+          console.log("Failed to load data model", err);
+        })
+    );
   }
 
   @computed

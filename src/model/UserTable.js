@@ -50,6 +50,7 @@ export default class UserTable extends Component {
     const data = [...userData];
     data.splice(index, 1);
     this.props.store.app.updateUserData(data);
+    this.props.store.app.loadGridData();
   };
 
   // rowSelection = record => {
@@ -66,8 +67,9 @@ export default class UserTable extends Component {
         dataIndex: "field",
         key: "field",
         width: "30%",
-        render: (text, record, index) =>
+        render: (text, record, index) => (
           <FieldCell value={text} record={record} idx={this.index} />
+        )
       },
       {
         title: "Date",
@@ -82,18 +84,18 @@ export default class UserTable extends Component {
         key: "operation",
         width: "35%",
         render: (text, record, index) => {
-          return userData.length > 0
-            ? <span>
-                <a onClick={() => this.onGraph(record)}>Graph</a>
-                <span className="ant-divider" />
-                <Popconfirm
-                  title="Sure to delete?"
-                  onConfirm={() => this.onDelete(index)}
-                >
-                  <a href="#">Delete</a>
-                </Popconfirm>
-              </span>
-            : null;
+          return userData.length > 0 ? (
+            <span>
+              <a onClick={() => this.onGraph(record)}>Graph</a>
+              <span className="ant-divider" />
+              <Popconfirm
+                title="Sure to delete?"
+                onConfirm={() => this.onDelete(index)}
+              >
+                <a href="#">Delete</a>
+              </Popconfirm>
+            </span>
+          ) : null;
         }
       }
     ];
