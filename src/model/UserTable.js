@@ -51,6 +51,8 @@ export default class UserTable extends Component {
     data.splice(index, 1);
     this.props.store.app.updateUserData(data);
     this.props.store.app.loadGridData();
+    this.props.store.logic.setIsRowSelected(false);
+    this.props.store.logic.setIsGraph(false);
   };
 
   // rowSelection = record => {
