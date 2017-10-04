@@ -242,21 +242,18 @@ export default class appStore {
     }
 
     const params = {
-      cover: "bare",
-      ll: loc,
+      // cover: "bare",
+      loc: loc,
       sdate: sDate,
-      edate: eDate
-      // grid: 3,
-      // elems: [{ name: "avgt" }]
+      edate: eDate,
+      grid: 3,
+      elems: [{ name: "avgt" }]
     };
 
     console.log(params);
 
     return axios
-      .post(
-        `${this.protocol}//newa.nrcc.cornell.edu/newaUtil/gridSoilTemps`,
-        params
-      )
+      .post(`${this.protocol}//grid.rcc-acis.org/GridData`, params)
       .then(res => {
         console.log(res.data.data);
         this.updateGridData(res.data.data);
