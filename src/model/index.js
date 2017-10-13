@@ -85,27 +85,29 @@ export default class Weed extends Component {
       <div>
         <UserTable />
         {getGraph.length > 0 && <Graph />}
-        {isTable &&
+        {isTable && (
           <Flex column>
             <Box>
-              {!mobile
-                ? <h2>
-                    Weed species for{" "}
-                    <em style={{ color: "#008751" }}>
-                      {station.name}, {state.postalCode}
-                    </em>
-                  </h2>
-                : <h3>
-                    Weed species for{" "}
-                    <em style={{ color: "#008751" }}>
-                      {station.name}, {state.postalCode}
-                    </em>
-                  </h3>}
+              {!mobile ? (
+                <h2>
+                  Weed species for{" "}
+                  <em style={{ color: "#008751" }}>
+                    {station.name}, {state.postalCode}
+                  </em>
+                </h2>
+              ) : (
+                <h3>
+                  Weed species for{" "}
+                  <em style={{ color: "#008751" }}>
+                    {station.name}, {state.postalCode}
+                  </em>
+                </h3>
+              )}
             </Box>
 
             <Flex justify="center">
-              <Box mt={1} col={12} lg={12} md={12} sm={12}>
-                {species.map((specie, i) =>
+              <Box mt={1} mb={4} col={12} lg={12} md={12} sm={12}>
+                {species.map((specie, i) => (
                   <Table
                     key={i}
                     showHeader={i === 0 ? true : false}
@@ -117,10 +119,11 @@ export default class Weed extends Component {
                     dataSource={areRequiredFieldsSet ? specie.slice(-1) : null}
                     onChange={this.handleChange}
                   />
-                )}
+                ))}
               </Box>
             </Flex>
-          </Flex>}
+          </Flex>
+        )}
       </div>
     );
   }

@@ -259,7 +259,7 @@ export default class appStore {
         // )
         .post(`${this.protocol}//grid.rcc-acis.org/GridData`, params)
         .then(res => {
-          console.log(res.data.data);
+          // console.log(res.data.data);
           this.updateGridData(res.data.data);
           this.crabgrass;
           this.gFoxtail;
