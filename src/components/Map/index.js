@@ -52,8 +52,11 @@ export default class TheMap extends Component {
     // const position = [this.state.lat, this.state.lng];
     const { stationsWithIcons, state, protocol } = this.props.store.app;
     // const {mobile} = this.props;
-
-    const MarkerList = stationsWithIcons.map(station =>
+    stationsWithIcons
+      .filter(s => s.icon === undefined)
+      .map(s => console.log(s.name));
+    // stationsWithIcons.map(s => console.log(s.icon));
+    const MarkerList = stationsWithIcons.map(station => (
       <Marker
         key={`${station.id} ${station.network}`}
         // network={station.network}
@@ -63,7 +66,7 @@ export default class TheMap extends Component {
         title={station.name}
         onClick={this.onClickSetStation}
       />
-    );
+    ));
 
     return (
       <Flex justify="center">

@@ -1,5 +1,5 @@
-import format from 'date-fns/format';
-import addDays from 'date-fns/add_days';
+import format from "date-fns/format";
+import addDays from "date-fns/add_days";
 
 // PRE FETCHING ---------------------------------------------------------
 export const matchIconsToStations = (protocol, station, state) => {
@@ -14,93 +14,58 @@ export const matchIconsToStations = (protocol, station, state) => {
   const culogGray = `${protocol}//newa2.nrcc.cornell.edu/gifs/culogGray.png`;
 
   if (
-    network === 'newa' ||
-    network === 'njwx' ||
-    network === 'miwx' ||
-    ((network === 'cu_log' || network === 'culog') && station.state !== 'NY')
+    network === "newa" ||
+    network === "njwx" ||
+    network === "miwx" ||
+    network === "oardc" ||
+    ((network === "cu_log" || network === "culog") && station.state !== "NY")
   ) {
-    return station.state === postalCode || postalCode === 'ALL'
+    return station.state === postalCode || postalCode === "ALL"
       ? newa
       : newaGray;
   }
 
-  if (network === 'cu_log' || network === 'culog') {
-    return station.state === postalCode || postalCode === 'ALL'
+  if (network === "cu_log" || network === "culog") {
+    return station.state === postalCode || postalCode === "ALL"
       ? culog
       : culogGray;
   }
 
-  if (network === 'icao') {
-    return station.state === postalCode || postalCode === 'ALL'
+  if (network === "icao") {
+    return station.state === postalCode || postalCode === "ALL"
       ? airport
       : airportGray;
   }
 };
 
-// export const matchIconsToStations = (protocol, stations, state) => {
-//   const arr = [];
-//   const newa = `${protocol}//newa2.nrcc.cornell.edu/gifs/newa_small.png`;
-//   const newaGray = `${protocol}//newa2.nrcc.cornell.edu/gifs/newa_smallGray.png`;
-//   const airport = `${protocol}//newa2.nrcc.cornell.edu/gifs/airport.png`;
-//   const airportGray = `${protocol}//newa2.nrcc.cornell.edu/gifs/airportGray.png`;
-//   const culog = `${protocol}//newa2.nrcc.cornell.edu/gifs/culog.png`;
-//   const culogGray = `${protocol}//newa2.nrcc.cornell.edu/gifs/culogGray.png`;
-//
-//   stations.forEach(station => {
-//     if (
-//       station.network === 'newa' ||
-//       station.network === 'njwx' ||
-//       station.network === 'miwx' ||
-//       ((station.network === 'cu_log' || station.network === 'culog') &&
-//         station.state !== 'NY')
-//     ) {
-//       const newObj = station;
-//       station.state === state.postalCode || state.postalCode === 'ALL'
-//         ? (newObj['icon'] = newa)
-//         : (newObj['icon'] = newaGray);
-//       arr.push(newObj);
-//     } else if (station.network === 'cu_log' || station.network === 'culog') {
-//       const newObj = station;
-//       station.state === state.postalCode || state.postalCode === 'ALL'
-//         ? (newObj['icon'] = culog)
-//         : (newObj['icon'] = culogGray);
-//       newObj['icon'] = culog;
-//       arr.push(newObj);
-//     } else if (station.network === 'icao') {
-//       const newObj = station;
-//       station.state === state.postalCode || state.postalCode === 'ALL'
-//         ? (newObj['icon'] = airport)
-//         : (newObj['icon'] = airportGray);
-//       arr.push(newObj);
-//     }
-//   });
-//   console.log(arr);
-//   return arr;
-// };
-
 // Handling Temperature parameter and Michigan network id adjustment
 export const networkTemperatureAdjustment = network => {
   // Handling different temperature parameter for each network
-  if (network === 'newa' || network === 'icao' || network === 'njwx') {
-    return '23';
-  } else if (
-    network === 'miwx' ||
-    (network === 'cu_log' || network === 'culog')
+  if (
+    network === "newa" ||
+    network === "icao" ||
+    network === "njwx" ||
+    network === "oardc"
   ) {
-    return '126';
+    return "23";
+  } else if (
+    network === "miwx" ||
+    (network === "cu_log" || network === "culog")
+  ) {
+    return "126";
   }
 };
 
 // Handling Relative Humidity Adjustment
 export const networkHumidityAdjustment = network =>
-  network === 'miwx' ? '143' : '24';
+  network === "miwx" ? "143" : "24";
 
 // Handling Michigan state ID adjustment
 export const michiganIdAdjustment = station => {
   if (
-    station.state === 'MI' &&
-    station.network === 'miwx' &&
-    station.id.slice(0, 3) === 'ew_'
+    station.state === "MI" &&
+    station.network === "miwx" &&
+    station.id.slice(0, 3) === "ew_"
   ) {
     // example: ew_ITH
     return station.id.slice(3, 6);
@@ -120,19 +85,19 @@ export const allStations = (
 
   // building the station object with the things I might need
   for (const station of stationsWithIcons) {
-    station['sid'] = `${station.name} ${station.network}`;
-    station['sdate'] = startDate;
-    station['edate'] = format(addDays(endDate, 6), 'YYYY-MM-DD');
-    station['id-adj'] = michiganIdAdjustment(station);
-    station['elems'] = [
+    station["sid"] = `${station.name} ${station.network}`;
+    station["sdate"] = startDate;
+    station["edate"] = format(addDays(endDate, 6), "YYYY-MM-DD");
+    station["id-adj"] = michiganIdAdjustment(station);
+    station["elems"] = [
       // temperature
       networkTemperatureAdjustment(station.network),
       // relative humidity
       networkHumidityAdjustment(station.network),
       // leaf wetness
-      '118',
+      "118",
       // precipitation
-      '5'
+      "5"
     ];
   }
   // console.log(stationsWithIcons);
@@ -153,14 +118,14 @@ export const replaceNonConsecutiveMissingValues = data => {
     return day.map(param => {
       if (Array.isArray(param)) {
         return param.map((e, i) => {
-          if (i === 0 && e === 'M') {
+          if (i === 0 && e === "M") {
             return param[i + 1];
-          } else if (i === param.length - 1 && e === 'M') {
+          } else if (i === param.length - 1 && e === "M") {
             return param[i - 1];
           } else if (
-            e === 'M' &&
-            param[i - 1] !== 'M' &&
-            param[i + 1] !== 'M'
+            e === "M" &&
+            param[i - 1] !== "M" &&
+            param[i + 1] !== "M"
           ) {
             return avgTwoStringNumbers(param[i - 1], param[i + 1]);
           } else {
@@ -176,7 +141,7 @@ export const replaceNonConsecutiveMissingValues = data => {
 // Replaces current station (cStation) missing values with compared station
 export const replaceMissingValues = (cStation, sStation) => {
   return cStation.map((e, i) => {
-    if (e === 'M' && sStation[i] !== 'M') {
+    if (e === "M" && sStation[i] !== "M") {
       return sStation[i].toString();
     }
     return e.toString();
@@ -187,7 +152,7 @@ export const replaceMissingValues = (cStation, sStation) => {
 // The new values are calculated according to the equation below.
 export const RHAdjustment = arr => {
   return arr.map(e => {
-    if (e !== 'M') {
+    if (e !== "M") {
       return Math.round(parseFloat(e) / (0.0047 * parseFloat(e) + 0.53));
     } else {
       return e;

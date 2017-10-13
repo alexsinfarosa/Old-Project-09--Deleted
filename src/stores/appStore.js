@@ -249,7 +249,7 @@ export default class appStore {
       elems: [{ name: "avgt" }]
     };
 
-    console.log(params);
+    // console.log(params);
 
     return (
       axios
@@ -265,10 +265,11 @@ export default class appStore {
           this.gFoxtail;
           this.yFoxtail;
           this.lambsquarters;
-          this.nightshade;
           this.pigweed;
           this.ragweed;
+          this.nightshade;
           this.velvetleaf;
+
           this.getGraph;
           this.isLoading = false;
         })
@@ -484,7 +485,7 @@ export default class appStore {
         indexMinus2 = results[i - 2].index;
       }
       results.push({
-        name: "Common ragweed",
+        name: "Velvetleaf",
         date: day[0],
         index: index,
         indexMinus2: indexMinus2,
