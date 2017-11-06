@@ -261,16 +261,6 @@ export default class appStore {
         .then(res => {
           // console.log(res.data.data);
           this.updateGridData(res.data.data);
-          this.crabgrass;
-          this.gFoxtail;
-          this.yFoxtail;
-          this.lambsquarters;
-          this.pigweed;
-          this.ragweed;
-          this.nightshade;
-          this.velvetleaf;
-
-          this.getGraph;
           this.isLoading = false;
         })
         .catch(err => {
@@ -516,7 +506,7 @@ export default class appStore {
 
       results.push({
         key: i + Math.random(),
-        field: `Field name`,
+        field: `Define action`,
         state: this.state.postalCode,
         station: this.station.name,
         editing: false,
@@ -556,9 +546,9 @@ export default class appStore {
     // console.log(this.endDate);
     // change this.endDate with today
     const field = this.getGraph.find(day => day.date === clickedDate);
-    console.log(field);
+    // console.log(field);
     const match = this.userData.filter(oldField => oldField.key === field.key);
-    console.log(match);
+    // console.log(match);
     if (match.length === 0) {
       this.userData.push(field);
       localStorage.setItem("userData", JSON.stringify(this.userData));

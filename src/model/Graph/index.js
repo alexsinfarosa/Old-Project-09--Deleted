@@ -67,7 +67,6 @@ export default class Graph extends Component {
                     </span>
                   </h2>
                   <h3>
-                    Field name:{" "}
                     <span style={{ color: "#008751" }}>
                       {selectedField.field}
                     </span>

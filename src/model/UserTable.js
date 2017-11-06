@@ -9,8 +9,8 @@ import { Flex, Box } from "reflexbox";
 import Table from "antd/lib/table";
 import "antd/lib/table/style/css";
 
-import Button from "antd/lib/button";
-import "antd/lib/button/style/css";
+// import Button from "antd/lib/button";
+// import "antd/lib/button/style/css";
 
 import Popconfirm from "antd/lib/popconfirm";
 import "antd/lib/popconfirm/style/css";
@@ -21,28 +21,28 @@ import DatePickerCell from "./DatePickerCell";
 @inject("store")
 @observer
 export default class UserTable extends Component {
-  constructor(props) {
-    super(props);
-    const { userData } = this.props.store.app;
-    userData.map(e => (e.selected = ""));
-  }
-
-  onGraph = field => {
+  onGraph = record => {
     const { isGraph } = this.props.store.logic;
     const { userData } = this.props.store.app;
-    userData.map(e => (e.selected = ""));
-    if (!isGraph) {
-      field.selected = "selected";
-      this.props.store.logic.setIsRowSelected(true);
-      this.props.store.app.setSelectedField(field);
-      const today = format(new Date(), "YYYY-MM-DD");
-      this.props.store.app.loadGridData(field.date, today);
-      this.props.store.logic.setIsGraph(true);
+    if (record.selected === "selected") {
+      record.selected = "";
     } else {
-      this.props.store.app.loadGridData();
-      this.props.store.logic.setIsRowSelected(false);
-      this.props.store.logic.setIsGraph(false);
+      record.selected = "selected";
     }
+
+    console.log(record.field, record.selected);
+    // if (!isGraph) {
+    //   record.selected = "selected";
+    //   this.props.store.logic.setIsRowSelected(true);
+    //   this.props.store.app.setSelectedField(record);
+    //   const today = format(new Date(), "YYYY-MM-DD");
+    //   this.props.store.app.loadGridData(record.date, today);
+    //   this.props.store.logic.setIsGraph(true);
+    // } else {
+    //   this.props.store.app.loadGridData();
+    //   this.props.store.logic.setIsRowSelected(false);
+    //   this.props.store.logic.setIsGraph(false);
+    // }
   };
 
   onDelete = index => {
@@ -59,13 +59,17 @@ export default class UserTable extends Component {
   //   return record.selected === "selected" ? "selected" : "";
   // };
 
+  onTesting = (s, r, sr) => {
+    console.log(s, r, sr);
+  };
+
   render() {
     const { mobile } = this.props;
     const { userData, areRequiredFieldsSet } = this.props.store.app;
     //columns for the model
     const columns = [
       {
-        title: "Field",
+        title: "Action",
         dataIndex: "field",
         key: "field",
         width: "30%",
@@ -81,7 +85,7 @@ export default class UserTable extends Component {
         render: (text, record, index) => <DatePickerCell record={record} />
       },
       {
-        title: "Action",
+        title: "",
         dataIndex: "operation",
         key: "operation",
         width: "35%",
@@ -104,8 +108,6 @@ export default class UserTable extends Component {
 
     return (
       <Flex justify="center">
-        {userData.map(e => console.log(e.field, e.selected))}
-
         <Box mb={1} col={12} lg={12} md={12} sm={12}>
           <Flex align="center" mt={1} mb={1}>
             <h2>User Data</h2>
@@ -115,6 +117,7 @@ export default class UserTable extends Component {
             size={
               mobile ? "small" : "middle" // bordered
             }
+            onSelect={(r, s, sr) => this.onTesting(r, s, sr)}
             columns={columns}
             scroll={{ y: 500 }}
             rowKey={record => record.key}
